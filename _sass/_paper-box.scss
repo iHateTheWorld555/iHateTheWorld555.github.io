@@ -62,23 +62,52 @@ h1:before, .anchor:before {
   position: absolute;
   margin-top: .5em;
   margin-left: -.5em;
-  color: white;
-  background-color: #00369f;
+  color: #FFFEFE;
+  background-color: #2A3336;
   font-size: .8em;
 }
 
-/* Sidebar font size increase */
+/* Selection/highlight color */
+::selection {
+  background: #CEBEBB !important;
+  color: #2A3336 !important;
+}
+::-moz-selection {
+  background: #CEBEBB !important;
+  color: #2A3336 !important;
+}
+
+/* Sidebar font size increase - much larger */
 .author__name {
-  font-size: 1.3em !important;
+  font-size: 1.6em !important;
+  font-weight: bold !important;
 }
 .author__bio {
-  font-size: 0.95em !important;
+  font-size: 1.1em !important;
+  line-height: 1.5 !important;
 }
 .author__urls.social-icons {
-  font-size: 0.95em !important;
+  font-size: 1.1em !important;
+}
+.author__urls.social-icons li {
+  margin-bottom: 0.6em !important;
 }
 .author__avatar img {
-  max-width: 200px !important;
+  max-width: 220px !important;
+  border-radius: 50% !important;
+}
+.author__desktop {
+  font-size: 1em !important;
+}
+/* Follow button in sidebar */
+.author__urls-wrapper .btn {
+  font-size: 0.9em !important;
+  background-color: #2A3336 !important;
+  border-color: #5E5451 !important;
+}
+/* Paper box border color match palette */
+.paper-box {
+  border-bottom: 1px #CEBEBB solid;
 }
 
 /* Remove focus outline (yellow box on click) */
