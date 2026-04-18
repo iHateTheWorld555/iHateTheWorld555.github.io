@@ -5,7 +5,7 @@ title                    : "Yanru Huo"
 title_separator          : "-"
 name                     : &name "Yanru Huo"
 description              : &description "Yanru Huo's academic homepage"
-url                      : "https://iHateTheWorld555.github.io"
+url                      : "" # https://iHateTheWorld555.github.io when deploying to GitHub Pages
 baseurl                  : "" # the subpath of your site
 repository               : "iHateTheWorld555/iHateTheWorld555.github.io"
 google_scholar_stats_use_cdn : true
@@ -15,7 +15,7 @@ author:
   avatar           : "profile.png"
   name             : "Yanru Huo"
   pronouns         :
-  bio              : "Undergraduate at XMU | Incoming PhD (2026) @X-LANCE & @bigai-nlco"
+  bio              : "Incoming PhD @SJTU X-LANCE & BIGAI NLCO"
   location         : "Xiamen, China"
   employer         : "Xiamen University"
   uri              :

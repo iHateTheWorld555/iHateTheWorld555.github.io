@@ -66,3 +66,39 @@ h1:before, .anchor:before {
   background-color: #00369f;
   font-size: .8em;
 }
+
+/* Sidebar font size increase */
+.author__name {
+  font-size: 1.3em !important;
+}
+.author__bio {
+  font-size: 0.95em !important;
+}
+.author__urls.social-icons {
+  font-size: 0.95em !important;
+}
+.author__avatar img {
+  max-width: 200px !important;
+}
+
+/* Remove focus outline (yellow box on click) */
+a:focus,
+button:focus,
+input:focus,
+select:focus,
+textarea:focus,
+.btn:focus,
+:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* No navbar - remove top padding */
+body {
+  padding-top: 0 !important;
+}
+
+/* Hide masthead (navbar) */
+.masthead {
+  display: none !important;
+}
