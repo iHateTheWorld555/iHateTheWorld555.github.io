@@ -42,7 +42,8 @@ html[data-theme="dark"] {
 
 .paper-box:last-of-type {
   border-bottom: none !important;
-  padding-bottom: 0 !important;
+  padding-bottom: 2em !important;
+  margin-bottom: 1em !important;
 }
 
 .paper-box .paper-box-image {
@@ -111,10 +112,24 @@ h1:before, .anchor:before {
    ========================================================================== */
 
 .sidebar {
-  padding: 2em 1.5em 2em 2em !important;
-  max-width: 450px !important;
-  margin-right: 2em !important;
+  padding: 1em 1.5em 2em 2em !important;
   border-right: 1px solid var(--accent-border) !important;
+  margin-top: 0 !important;
+  top: 0 !important;
+}
+
+/* Remove top margin from page to align with sidebar */
+.page {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+.page__inner-wrap {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+/* Minimal top padding for page content */
+.page__content {
+  padding-top: 0 !important;
 }
 
 .sidebar .author__avatar,
@@ -288,6 +303,29 @@ body {
   display: none !important;
 }
 
+/* Wider wrapper */
+.wrapper {
+  max-width: 1400px !important;
+}
+
+/* Remove top blank space, animation, and widen container */
+#main {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  max-width: 100% !important;
+  animation: none !important;
+  animation-delay: 0s !important;
+}
+
+/* Remove the huge right padding on page content */
+@media (min-width: 57.8125em) {
+  .page {
+    padding-right: 2em !important;
+  }
+}
+
 /* Minimize footer / sitemap */
 .page__footer-follow {
   display: none !important;
@@ -303,10 +341,10 @@ body {
   display: none !important;
 }
 
-/* Add gap between sidebar divider and main content */
+/* Gap between sidebar divider and main content */
 .page__content,
 .archive {
-  padding-left: 3em !important;
+  padding-left: 1.5em !important;
 }
 
 /* Hide page title (redundant with sidebar name) */
