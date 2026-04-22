@@ -5,7 +5,7 @@ title                    : "Yanru Huo"
 title_separator          : "-"
 name                     : &name "Yanru Huo"
 description              : &description "Yanru Huo's academic homepage"
-url                      : "" # https://iHateTheWorld555.github.io when deploying to GitHub Pages
+url                      : "https://iHateTheWorld555.github.io"
 baseurl                  : "" # the subpath of your site
 repository               : "iHateTheWorld555/iHateTheWorld555.github.io"
 google_scholar_stats_use_cdn : true
