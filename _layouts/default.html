@@ -5,15 +5,33 @@ layout: compress
 {% include base_path %}
 
 <!doctype html>
-<html lang="{{ site.locale | slice: 0,2 }}" class="no-js"{% if site.site_theme == "dark" %} data-theme="dark"{% endif %}>
+<html lang="{{ site.locale | slice: 0,2 }}" class="no-js">
   <head>
     {% include head.html %}
     {% include head/custom.html %}
+    <!-- Theme toggle: apply saved theme immediately to prevent flash -->
+    <script>
+      (function(){
+        var t = localStorage.getItem('theme');
+        if (t === 'dark') {
+          document.documentElement.setAttribute('data-theme', 'dark');
+        } else if (t === 'light') {
+          document.documentElement.removeAttribute('data-theme');
+        } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+          document.documentElement.setAttribute('data-theme', 'dark');
+        }
+      })();
+    </script>
   </head>
 
   <body>
 
     {{ content }}
+
+    <!-- Theme toggle button -->
+    <button id="theme-toggle" title="Toggle dark/light theme" style="position:fixed;bottom:1.5em;right:1.5em;z-index:9999;width:44px;height:44px;border-radius:50%;border:2px solid var(--global-border-color,#CEBEBB);background:var(--global-bg-color,#FFFEFE);color:var(--global-text-color,#2A3336);cursor:pointer;font-size:1.3em;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,0.15);transition:all 0.2s ease;">
+      <span id="theme-icon">🌙</span>
+    </button>
 
     <div class="page__footer">
       <footer>
@@ -23,6 +41,30 @@ layout: compress
     </div>
 
     {% include scripts.html %}
+
+    <!-- Theme toggle logic -->
+    <script>
+      (function(){
+        var btn = document.getElementById('theme-toggle');
+        var icon = document.getElementById('theme-icon');
+        function updateIcon() {
+          var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+          icon.textContent = isDark ? '☀️' : '🌙';
+        }
+        updateIcon();
+        btn.addEventListener('click', function() {
+          var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+          if (isDark) {
+            document.documentElement.removeAttribute('data-theme');
+            localStorage.setItem('theme', 'light');
+          } else {
+            document.documentElement.setAttribute('data-theme', 'dark');
+            localStorage.setItem('theme', 'dark');
+          }
+          updateIcon();
+        });
+      })();
+    </script>
 
   </body>
 </html>

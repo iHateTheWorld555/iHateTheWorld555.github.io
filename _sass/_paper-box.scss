@@ -1,11 +1,48 @@
+/* ==========================================================================
+   CSS Custom Properties — Light (default) & Dark theme
+   ========================================================================== */
+
+:root {
+  --accent-bg: #FFFEFE;
+  --accent-bg-alt: #EBE0DD;
+  --accent-border: #CEBEBB;
+  --accent-muted: #9F908C;
+  --accent-primary: #807471;
+  --accent-dark: #5E5451;
+  --accent-text: #2A3336;
+  --accent-heading: #151F22;
+  --accent-shadow: rgba(42, 51, 54, 0.12);
+}
+
+html[data-theme="dark"] {
+  --accent-bg: #151F22;
+  --accent-bg-alt: #2A3336;
+  --accent-border: #5E5451;
+  --accent-muted: #807471;
+  --accent-primary: #9F908C;
+  --accent-dark: #CEBEBB;
+  --accent-text: #EBE0DD;
+  --accent-heading: #FFFEFE;
+  --accent-shadow: rgba(0, 0, 0, 0.3);
+}
+
+/* ==========================================================================
+   Paper Box — Publication card layout
+   ========================================================================== */
+
 .paper-box {
   display: flex;
   justify-content: left;
   align-items: center;
   flex-direction: row;
   flex-wrap: wrap;
-  border-bottom: 1px #efefef solid;
+  border-bottom: 1px solid var(--accent-border) !important;
   padding: 2em 0 2em 0;
+}
+
+.paper-box:last-of-type {
+  border-bottom: none !important;
+  padding-bottom: 0 !important;
 }
 
 .paper-box .paper-box-image {
@@ -17,8 +54,9 @@
 
 .paper-box .paper-box-image img {
   max-width: 400px;
-  box-shadow: 3px 3px 6px #888;
+  box-shadow: 3px 3px 8px var(--accent-shadow);
   object-fit: cover;
+  border-radius: 4px;
 }
 
 .paper-box .paper-box-text {
@@ -30,13 +68,13 @@
   .paper-box .paper-box-image {
     justify-content: left;
     min-width: 200px;
-    max-width: 40%;
+    max-width: 30%;
     order: 1;
   }
   .paper-box .paper-box-text {
     justify-content: left;
     padding-left: 2em;
-    max-width: 60%;
+    max-width: 70%;
     order: 2;
   }
 }
@@ -47,70 +85,190 @@
   padding: 0.8em 2em 0.8em 0;
 }
 
+/* Remove anchor offset spacer above headings */
 h1:before, .anchor:before {
-  content: '';
-  display: block;
-  position: relative;
-  width: 0;
-  height: 2em;
-  margin-top: -2em;
+  content: none !important;
+  display: none !important;
+  height: 0 !important;
+  margin: 0 !important;
 }
 
-.badge {
-  padding-left: 1rem;
-  padding-right: 1rem;
-  position: absolute;
-  margin-top: .5em;
-  margin-left: -.5em;
-  color: #FFFEFE;
-  background-color: #2A3336;
-  font-size: .8em;
-}
+/* ==========================================================================
+   Selection / highlight color
+   ========================================================================== */
 
-/* Selection/highlight color */
 ::selection {
-  background: #CEBEBB !important;
-  color: #2A3336 !important;
+  background: var(--accent-border) !important;
+  color: var(--accent-heading) !important;
 }
 ::-moz-selection {
-  background: #CEBEBB !important;
-  color: #2A3336 !important;
+  background: var(--accent-border) !important;
+  color: var(--accent-heading) !important;
 }
 
-/* Sidebar font size increase - much larger */
-.author__name {
-  font-size: 1.6em !important;
-  font-weight: bold !important;
+/* ==========================================================================
+   Sidebar — clean, professional academic homepage
+   ========================================================================== */
+
+.sidebar {
+  padding: 2em 1.5em 2em 2em !important;
+  max-width: 450px !important;
+  margin-right: 2em !important;
+  border-right: 1px solid var(--accent-border) !important;
 }
-.author__bio {
-  font-size: 1.1em !important;
-  line-height: 1.5 !important;
+
+.sidebar .author__avatar,
+.sidebar .author__content,
+.sidebar .author__urls-wrapper {
+  text-align: left !important;
+  display: block !important;
+  width: 100% !important;
 }
-.author__urls.social-icons {
-  font-size: 1.1em !important;
+
+/* Avatar */
+.author__avatar {
+  text-align: left !important;
+  margin-bottom: 1em !important;
+  float: none !important;
 }
-.author__urls.social-icons li {
-  margin-bottom: 0.6em !important;
-}
+
 .author__avatar img {
-  max-width: 220px !important;
+  max-width: 240px !important;
+  width: 240px !important;
+  height: auto !important;
   border-radius: 50% !important;
-}
-.author__desktop {
-  font-size: 1em !important;
-}
-/* Follow button in sidebar */
-.author__urls-wrapper .btn {
-  font-size: 0.9em !important;
-  background-color: #2A3336 !important;
-  border-color: #5E5451 !important;
-}
-/* Paper box border color match palette */
-.paper-box {
-  border-bottom: 1px #CEBEBB solid;
+  border: 3px solid var(--accent-border) !important;
+  padding: 0 !important;
+  display: block !important;
+  margin: 0 auto !important;
+  box-shadow: 0 2px 8px var(--accent-shadow) !important;
 }
 
-/* Remove focus outline (yellow box on click) */
+/* Author name */
+.author__content {
+  padding: 0 !important;
+  margin: 0 !important;
+  text-align: left !important;
+}
+
+.author__name {
+  font-size: 1.5em !important;
+  font-weight: bold !important;
+  color: var(--accent-heading) !important;
+  margin-top: 0.2em !important;
+  margin-bottom: 0.2em !important;
+  text-align: left !important;
+  letter-spacing: 0.01em !important;
+  line-height: 1.3 !important;
+}
+
+/* Bio */
+.author__bio {
+  font-size: 1em !important;
+  line-height: 1.5 !important;
+  color: var(--accent-dark) !important;
+  margin-top: 0.3em !important;
+  margin-bottom: 1.2em !important;
+  text-align: left !important;
+}
+
+/* Desktop info */
+.author__desktop {
+  font-size: 0.9em !important;
+  color: var(--accent-muted) !important;
+  line-height: 1.6 !important;
+  text-align: left !important;
+}
+
+/* Social links */
+.author__urls-wrapper {
+  text-align: left !important;
+  margin-top: 0.5em !important;
+}
+
+.author__urls-wrapper .btn {
+  display: none !important;
+}
+
+.author__urls.social-icons {
+  font-size: 1em !important;
+  line-height: 1.8 !important;
+  position: relative !important;
+  margin: 0 auto !important;
+  padding: 0 !important;
+  border: none !important;
+  box-shadow: none !important;
+  background: transparent !important;
+  display: block !important;
+  text-align: left !important;
+  width: 100% !important;
+}
+
+.author__urls.social-icons li {
+  margin-bottom: 0.4em !important;
+  padding: 0.1em 0 !important;
+  white-space: normal !important;
+  text-align: left !important;
+}
+
+.author__urls.social-icons a {
+  color: var(--accent-dark) !important;
+  font-size: 0.95em !important;
+  transition: color 0.2s ease !important;
+  display: inline-block !important;
+  text-decoration: none !important;
+  padding: 0.15em 0 !important;
+}
+
+.author__urls.social-icons a:hover {
+  color: var(--accent-heading) !important;
+}
+
+/* Sidebar link colors */
+.sidebar a {
+  color: var(--accent-dark) !important;
+  transition: color 0.2s ease !important;
+}
+.sidebar a:hover {
+  color: var(--accent-heading) !important;
+}
+
+/* Sidebar p/li font size */
+.sidebar p,
+.sidebar li {
+  font-size: 0.9em !important;
+  line-height: 1.6 !important;
+}
+
+.sidebar h3 {
+  font-size: 1.2em !important;
+}
+
+/* ==========================================================================
+   Color palette overrides (theme-aware)
+   ========================================================================== */
+
+.paper-box a {
+  color: var(--accent-primary) !important;
+}
+.paper-box a:hover {
+  color: var(--accent-heading) !important;
+}
+.paper-box strong {
+  color: var(--accent-heading) !important;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: var(--accent-heading) !important;
+}
+
+code {
+  background-color: var(--accent-bg-alt) !important;
+  color: var(--accent-text) !important;
+  border-color: var(--accent-border) !important;
+}
+
+/* Remove focus outline */
 a:focus,
 button:focus,
 input:focus,
@@ -122,12 +280,36 @@ textarea:focus,
   box-shadow: none !important;
 }
 
-/* No navbar - remove top padding */
+/* No navbar */
 body {
   padding-top: 0 !important;
 }
-
-/* Hide masthead (navbar) */
 .masthead {
+  display: none !important;
+}
+
+/* Minimize footer / sitemap */
+.page__footer-follow {
+  display: none !important;
+}
+.page__footer-copyright {
+  font-size: 0.75em !important;
+  color: var(--accent-muted) !important;
+}
+.page__footer a {
+  color: var(--accent-muted) !important;
+}
+.page__meta {
+  display: none !important;
+}
+
+/* Add gap between sidebar divider and main content */
+.page__content,
+.archive {
+  padding-left: 3em !important;
+}
+
+/* Hide page title (redundant with sidebar name) */
+.page__title {
   display: none !important;
 }

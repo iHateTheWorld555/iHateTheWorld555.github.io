@@ -12,8 +12,59 @@
   document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
 </script>
 
-<base target="_blank">
+<!-- VSCode proxy fix: use document.write for synchronous <base href> injection.
+     Must run BEFORE any <link> tags so relative CSS paths resolve correctly.
+     document.write is synchronous during initial parse — guaranteed ordering. -->
+<script>
+(function(){
+  var path = window.location.pathname;
+  var proxyMatch = path.match(/^(.*\/proxy\/\d+\/)/);
+  if (proxyMatch) {
+    document.write('<base href="' + window.location.origin + proxyMatch[1] + '">');
+  }
+})();
+</script>
 
-<!-- For all browsers -->
-<link rel="stylesheet" href="{{ base_path }}/assets/css/main.css">
-<link rel="stylesheet" href="{{ base_path }}/assets/css/academicons.css"/>
+<!-- For all browsers — relative paths so they work with <base href> -->
+<link rel="stylesheet" href="assets/css/main.css">
+<link rel="stylesheet" href="assets/css/academicons.css"/>
+
+<!-- Open external links in new tab + fix absolute paths in proxy mode -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Fix absolute-path resources in proxy mode (they bypass <base href>)
+    var path = window.location.pathname;
+    var proxyMatch = path.match(/^(.*\/proxy\/\d+\/)/);
+    if (proxyMatch) {
+      var proxyPrefix = proxyMatch[1];
+      // Fix <img src="/..."> and <script src="/...">
+      document.querySelectorAll('img[src^="/"], script[src^="/"]').forEach(function(el) {
+        var attr = el.hasAttribute('src') ? 'src' : 'src';
+        el.setAttribute(attr, proxyPrefix + el.getAttribute(attr).substring(1));
+      });
+      // Fix <a href="/..."> (internal links only, not external)
+      document.querySelectorAll('a[href^="/"]').forEach(function(el) {
+        var href = el.getAttribute('href');
+        if (href && !href.startsWith('//')) {
+          el.setAttribute('href', proxyPrefix + href.substring(1));
+        }
+      });
+      // Fix <link href="/...">
+      document.querySelectorAll('link[href^="/"]').forEach(function(el) {
+        var href = el.getAttribute('href');
+        if (href && !href.startsWith('//')) {
+          el.setAttribute('href', proxyPrefix + href.substring(1));
+        }
+      });
+    }
+
+    // Open external links in new tab
+    document.querySelectorAll('a[href]').forEach(function(a) {
+      var href = a.getAttribute('href');
+      if (href && (href.indexOf('://') > -1 || href.indexOf('//') === 0)) {
+        a.setAttribute('target', '_blank');
+        a.setAttribute('rel', 'noopener noreferrer');
+      }
+    });
+  });
+</script>
