@@ -28,71 +28,49 @@ I'm an incoming Ph.D. student (2026) at [X-LANCE Lab](https://x-lance.sjtu.edu.c
 
 ## 📝 Publications
 
-<div class='paper-box'>
-    <div class='paper-box-image'>
-        <div>
-            <img src='/images/ditreducio.png' alt="DiTReducio" width="100%">
-        </div>
-    </div>
-    <div class='paper-box-text' markdown="1">
+<div class='paper-box'><div class='paper-box-image'><div><img src='/images/ditreducio.png' alt="DiTReducio" width="100%"></div></div><div class='paper-box-text' markdown="1">
 
 [DiTReducio: A Training-Free Acceleration for DiT-Based TTS via Progressive Calibration](https://arxiv.org/abs/2509.09748)
 
-**Yanru Huo**, Ziyue Jiang, Zuoli Tang, Qingyang Hong, Zhou Zhao* \\
+**Yanru Huo**, Ziyue Jiang, Zuoli Tang, Qingyang Hong, Zhou Zhao\*
+\\
 ACL 2026 Findings | [**arXiv**](https://arxiv.org/abs/2509.09748) | [**Code**](https://github.com/MM-Speech/DiTReducio)
 
-    </div>
-</div>
+</div></div>
 
-<div class='paper-box'>
-    <div class='paper-box-image'>
-        <div>
-            <img src='/images/visa.png' alt="VISA" width="100%">
-        </div>
-    </div>
-    <div class='paper-box-text' markdown="1">
+<div class='paper-box'><div class='paper-box-image'><div><img src='/images/visa.png' alt="VISA" width="100%"></div></div><div class='paper-box-text' markdown="1">
 
 [VISA: A Visual Information Strengthened Audio-Reasoning System for the Interspeech 2026 ARC Agent Track](https://arxiv.org/abs/2606.07264)
 
-Wenming Tu, Jian Gao, **Yanru Huo**, Yixuan Wang, Jing Peng, Bohan Li, Ziyang Ma, Tao Liu, Shuai Fan, Kai Yu, Xie Chen, Zilong Zheng \\
+Wenming Tu, Jian Gao, **Yanru Huo**, Yixuan Wang, Jing Peng, Bohan Li, Ziyang Ma, Tao Liu, Shuai Fan, Kai Yu, Xie Chen, Zilong Zheng
+\\
 INTERSPEECH 2026 | [**arXiv**](https://arxiv.org/abs/2606.07264)
 
-    </div>
-</div>
+</div></div>
 
-<div class='paper-box'>
-    <div class='paper-box-image'>
-        <div>
-            <img src='/images/mmae.png' alt="MMAE" width="100%">
-        </div>
-    </div>
-    <div class='paper-box-text' markdown="1">
+<div class='paper-box'><div class='paper-box-image'><div><img src='/images/mmae.png' alt="MMAE" width="100%"></div></div><div class='paper-box-text' markdown="1">
 
 [MMAE: A Massive Multitask Audio Editing Benchmark](https://arxiv.org/abs/2606.07229)
 
-MMAE Team \\
-Contributor. \\
+MMAE Team
+\\
+Contributor.
+\\
 arXiv 2606.07229 | [**arXiv**](https://arxiv.org/abs/2606.07229) | [**Code**](https://github.com/ddlBoJack/MMAE)
 
-    </div>
-</div>
+</div></div>
 
-<div class='paper-box'>
-    <div class='paper-box-image'>
-        <div>
-            <img src='/images/mova.png' alt="MOVA" width="100%">
-        </div>
-    </div>
-    <div class='paper-box-text' markdown="1">
+<div class='paper-box'><div class='paper-box-image'><div><img src='/images/mova.png' alt="MOVA" width="100%"></div></div><div class='paper-box-text' markdown="1">
 
 [MOVA: Towards Scalable and Synchronized Video-Audio Generation](https://arxiv.org/abs/2602.08794)
 
-SII-OpenMOSS Team \\
-*Core contributor.* \\
+SII-OpenMOSS Team
+\\
+*Core contributor.*
+\\
 arXiv 2602.08794 | [**arXiv**](https://arxiv.org/abs/2602.08794) | [**Code**](https://github.com/OpenMOSS/MOVA)
 
-    </div>
-</div>
+</div></div>
 
 ## 🎖 Honors and Awards
 - 2024.11, Second Prize, China Undergraduate Mathematical Contest in Modeling (CUMCM), National Level
