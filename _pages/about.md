@@ -15,11 +15,11 @@ I'm an incoming Ph.D. student (2026) at [X-LANCE Lab](https://x-lance.sjtu.edu.c
 **Research Interests:** Speech synthesis, Audio understanding.
 
 ## 📖 Education
-- 2026.09 - 2031.06 (expected), Ph.D., X-LANCE Lab, Shanghai Jiao Tong University (SJTU) & Beijing Institute for General Artificial Intelligence (BIGAI)
-- 2022.09 - 2026.06, B.E., Xiamen University (XMU)
+- **2026.09 - 2031.06 (expected)**, Ph.D., X-LANCE Lab, Shanghai Jiao Tong University (SJTU) & Beijing Institute for General Artificial Intelligence (BIGAI)
+- **2022.09 - 2026.06**, B.E., Xiamen University (XMU)
 
 ## 💼 Internship
-- 2025.11 - 2026.06, Sii & OpenMOSS, Shanghai, China
+- **2025.11 - 2026.06**, Sii & OpenMOSS, Shanghai, China
 
 ## 🔥 News
 - **2026.06**: 1 papers were accepted by **INTERSPEECH 2026**!
@@ -73,5 +73,5 @@ arXiv 2602.08794 | [**arXiv**](https://arxiv.org/abs/2602.08794) | [**Code**](ht
 </div></div>
 
 ## 🎖 Honors and Awards
-- 2024.11, Second Prize, China Undergraduate Mathematical Contest in Modeling (CUMCM), National Level
-- 2024.09, National Scholarship
+- **2024.11**, Second Prize, China Undergraduate Mathematical Contest in Modeling (CUMCM), National Level
+- **2024.09**, National Scholarship
