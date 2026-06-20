@@ -3,27 +3,35 @@
    ========================================================================== */
 
 :root {
-  --accent-bg: #FFFEFE;
-  --accent-bg-alt: #EBE0DD;
-  --accent-border: #CEBEBB;
-  --accent-muted: #9F908C;
-  --accent-primary: #807471;
-  --accent-dark: #5E5451;
-  --accent-text: #2A3336;
-  --accent-heading: #151F22;
-  --accent-shadow: rgba(42, 51, 54, 0.12);
+  --accent-bg: #faf9f5;
+  --accent-bg-alt: #f1ede4;
+  --accent-panel: #fffaf3;
+  --accent-border: #ddd4c5;
+  --accent-muted: #81786d;
+  --accent-primary: #b86a4b;
+  --accent-dark: #554a40;
+  --accent-text: #26221d;
+  --accent-heading: #171411;
+  --accent-shadow: rgba(38, 34, 29, 0.08);
+  --accent-shadow-strong: rgba(38, 34, 29, 0.12);
+  --accent-highlight: #d7eee5;
+  --accent-font-serif: "LXGW WenKai", "Noto Serif SC", "Source Han Serif SC", Georgia, serif;
+  --accent-font-ui: "DM Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 
 html[data-theme="dark"] {
-  --accent-bg: #151F22;
-  --accent-bg-alt: #2A3336;
-  --accent-border: #5E5451;
-  --accent-muted: #807471;
-  --accent-primary: #9F908C;
-  --accent-dark: #CEBEBB;
-  --accent-text: #EBE0DD;
-  --accent-heading: #FFFEFE;
-  --accent-shadow: rgba(0, 0, 0, 0.3);
+  --accent-bg: #1a1714;
+  --accent-bg-alt: #27221d;
+  --accent-panel: #27221d;
+  --accent-border: #4d4338;
+  --accent-muted: #a89b8c;
+  --accent-primary: #e29a74;
+  --accent-dark: #e8ddd0;
+  --accent-text: #efe7dc;
+  --accent-heading: #fffaf3;
+  --accent-shadow: rgba(0, 0, 0, 0.28);
+  --accent-shadow-strong: rgba(0, 0, 0, 0.36);
+  --accent-highlight: #233b34;
 }
 
 /* ==========================================================================
@@ -36,14 +44,17 @@ html[data-theme="dark"] {
   align-items: center;
   flex-direction: row;
   flex-wrap: wrap;
-  border-bottom: 1px solid var(--accent-border) !important;
-  padding: 2em 0 2em 0;
+  border: 1px solid var(--accent-border) !important;
+  border-radius: 10px;
+  background: var(--accent-panel);
+  box-shadow: 0 3px 12px var(--accent-shadow);
+  padding: 1.5em;
+  margin-bottom: 1.5em;
 }
 
 .paper-box:last-of-type {
-  border-bottom: none !important;
-  padding-bottom: 2em !important;
-  margin-bottom: 1em !important;
+  padding-bottom: 1.5em !important;
+  margin-bottom: 1.5em !important;
 }
 
 .paper-box .paper-box-image {
@@ -55,9 +66,9 @@ html[data-theme="dark"] {
 
 .paper-box .paper-box-image img {
   max-width: 400px;
-  box-shadow: 3px 3px 8px var(--accent-shadow);
+  box-shadow: 0 4px 14px var(--accent-shadow-strong);
   object-fit: cover;
-  border-radius: 4px;
+  border-radius: 8px;
 }
 
 .paper-box .paper-box-text {
@@ -112,10 +123,15 @@ h1:before, .anchor:before {
    ========================================================================== */
 
 .sidebar {
-  padding: 1em 1.5em 2em 2em !important;
+  padding: 1.5em 1.5em 2em 2em !important;
   border-right: 1px solid var(--accent-border) !important;
+  background: var(--accent-bg);
   margin-top: 0 !important;
   top: 0 !important;
+}
+
+html[data-theme="dark"] .sidebar {
+  background: linear-gradient(180deg, rgba(39, 34, 29, 0.95), rgba(26, 23, 20, 0.82));
 }
 
 /* Remove top margin from page to align with sidebar */
@@ -125,9 +141,9 @@ h1:before, .anchor:before {
 }
 .page__inner-wrap {
   margin-top: 0 !important;
-  padding-top: 0 !important;
+  padding-top: 1.25rem !important;
+  padding-bottom: 3rem !important;
 }
-/* Minimal top padding for page content */
 .page__content {
   padding-top: 0 !important;
 }
@@ -180,7 +196,7 @@ h1:before, .anchor:before {
 /* Bio */
 .author__bio {
   font-size: 1em !important;
-  line-height: 1.5 !important;
+  line-height: 1.7 !important;
   color: var(--accent-dark) !important;
   margin-top: 0.3em !important;
   margin-bottom: 1.2em !important;
@@ -298,6 +314,9 @@ textarea:focus,
 /* No navbar */
 body {
   padding-top: 0 !important;
+  background: linear-gradient(180deg, var(--accent-bg-alt) 0%, var(--accent-bg) 16rem) !important;
+  color: var(--accent-text) !important;
+  font-family: var(--accent-font-ui) !important;
 }
 .masthead {
   display: none !important;
@@ -305,7 +324,7 @@ body {
 
 /* Wider wrapper */
 .wrapper {
-  max-width: 1400px !important;
+  max-width: 1440px !important;
 }
 
 /* Remove top blank space, animation, and widen container */
@@ -350,4 +369,25 @@ body {
 /* Hide page title (redundant with sidebar name) */
 .page__title {
   display: none !important;
+}
+
+/* ==========================================================================
+   Typography
+   ========================================================================== */
+
+body,
+p,
+li,
+.page__content {
+  font-family: var(--accent-font-ui) !important;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.author__name {
+  font-family: var(--accent-font-serif) !important;
 }

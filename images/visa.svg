@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 726 344" role="img" aria-labelledby="title desc">
+  <title id="title">VISA paper thumbnail</title>
+  <desc id="desc">Visual information strengthened audio reasoning system thumbnail.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f7f1e8"/>
+      <stop offset="0.54" stop-color="#e7f0eb"/>
+      <stop offset="1" stop-color="#f3dccf"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#b85f40"/>
+      <stop offset="1" stop-color="#3f8f7a"/>
+    </linearGradient>
+  </defs>
+  <rect width="726" height="344" rx="28" fill="url(#bg)"/>
+  <rect x="34" y="32" width="658" height="280" rx="24" fill="#fffaf3" opacity="0.76" stroke="#d7c8b8"/>
+  <circle cx="152" cy="142" r="54" fill="#d7eee5" stroke="#3f8f7a" stroke-width="6"/>
+  <path d="M107 142c26-34 65-34 90 0-25 34-64 34-90 0z" fill="#fffaf3" stroke="#2e6f62" stroke-width="7"/>
+  <circle cx="152" cy="142" r="17" fill="#b85f40"/>
+  <path d="M256 104h246M256 142h330M256 180h278" stroke="#56483d" stroke-width="12" stroke-linecap="round"/>
+  <path d="M104 242c30-38 60 38 90 0s60 38 90 0 60 38 90 0 60 38 90 0 60 38 90 0" fill="none" stroke="url(#accent)" stroke-width="10" stroke-linecap="round"/>
+  <text x="102" y="286" fill="#1f1a16" font-family="Georgia, serif" font-size="42" font-weight="700">VISA</text>
+  <text x="254" y="286" fill="#6f6257" font-family="Arial, sans-serif" font-size="22">Visual Audio Reasoning</text>
+</svg>
