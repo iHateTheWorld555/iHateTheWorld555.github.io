@@ -3,6 +3,8 @@ main:
     url: "/#about-me"
   - title: "Publications"
     url: "/#-publications"
+  - title: "Daily Papers"
+    url: "/daily-papers/"
   - title: "Education"
     url: "/#-education"
   - title: "Honors"

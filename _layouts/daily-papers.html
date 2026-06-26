@@ -1,0 +1,166 @@
+---
+layout: default
+---
+
+{% include base_path %}
+
+<div id="main" role="main">
+  <article class="page wide" itemscope itemtype="http://schema.org/CreativeWork">
+    <div class="page__inner-wrap">
+      <header>
+        <h1 class="page__title" itemprop="headline">{{ page.title | markdownify | remove: "<p>" | remove: "</p>" }}</h1>
+        {% if page.excerpt %}
+        <p class="page__excerpt">{{ page.excerpt | markdownify | remove: "<p>" | remove: "</p>" }}</p>
+        {% endif %}
+      </header>
+
+      <section class="page__content" itemprop="text">
+        <!-- Date selector -->
+        <div class="paper-date-selector">
+          <label for="paper-date">Date:</label>
+          <select id="paper-date" onchange="showPaperDate(this.value)">
+            <option value="">All dates</option>
+            {% assign papers = site.papers | sort: "date" | reverse %}
+            {% assign dates = "" | split: "" %}
+            {% for p in papers %}
+              {% assign d = p.date | date: "%Y-%m-%d" %}
+              {% unless dates contains d %}
+                {% assign dates = dates | push: d %}
+                <option value="{{ d }}">{{ d }}</option>
+              {% endunless %}
+            {% endfor %}
+          </select>
+        </div>
+
+        {{ content }}
+      </section>
+    </div>
+  </article>
+</div>
+
+<style>
+/* Full-width layout, hide sidebar */
+.page.wide {
+  max-width: 100%;
+  clear: both;
+}
+.page.wide .page__inner-wrap {
+  max-width: 100%;
+}
+.sidebar { display: none !important; }
+#main { width: 100% !important; }
+
+/* Date selector */
+.paper-date-selector {
+  margin-bottom: 1.5rem;
+  padding: 0.8rem 1rem;
+  background: #f8f9fa;
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.paper-date-selector label {
+  font-weight: 600;
+  font-size: 0.9em;
+}
+.paper-date-selector select {
+  padding: 4px 12px;
+  border-radius: 6px;
+  border: 1px solid #dee2e6;
+  font-size: 0.9em;
+  cursor: pointer;
+}
+
+/* Paper day sections */
+.paper-day { margin-bottom: 3rem; }
+.paper-day h1 {
+  border-bottom: 2px solid #52b788;
+  padding-bottom: 0.3em;
+  margin-bottom: 1.5rem;
+}
+.paper-day h2 {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5em;
+  margin-top: 2rem;
+  scroll-margin-top: 4rem;
+}
+.score-badge {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 0.85em;
+  margin-left: 0.5em;
+  vertical-align: middle;
+}
+.score-high { background: #d8f3dc; color: #1b4332; }
+.score-mid  { background: #e0e1dd; color: #333; }
+.score-low  { background: #fce4ec; color: #880e4f; }
+.paper-day blockquote {
+  border-left: 4px solid #52b788;
+  background: #f8f9fa;
+  padding: 0.8em 1em;
+  font-size: 0.92em;
+}
+.paper-day hr { margin: 2rem 0; border: none; border-top: 1px solid #dee2e6; }
+.rank-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.8em;
+  height: 1.8em;
+  border-radius: 50%;
+  background: #52b788;
+  color: #fff;
+  font-size: 0.75em;
+  font-weight: 700;
+  margin-right: 0.4em;
+  flex-shrink: 0;
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Style score badges
+  document.querySelectorAll('.paper-day strong').forEach(function(el) {
+    var text = el.textContent;
+    var m = text.match(/Score:\s*([\d.]+)\/10/);
+    if (!m) return;
+    var score = parseFloat(m[1]);
+    var cls = score >= 8 ? 'score-high' : score >= 6.5 ? 'score-mid' : 'score-low';
+    var badge = document.createElement('span');
+    badge.className = 'score-badge ' + cls;
+    badge.textContent = m[1] + '/10';
+    el.textContent = 'Score: ';
+    el.appendChild(badge);
+    var rest = text.replace(/Score:\s*[\d.]+\/10/, '').trim();
+    if (rest) {
+      el.parentNode.insertBefore(document.createTextNode(' ' + rest), el.nextSibling);
+    }
+  });
+
+  // Add rank numbers to h2 headings (per day group)
+  document.querySelectorAll('.paper-day').forEach(function(day) {
+    day.querySelectorAll('h2').forEach(function(h2, i) {
+      var rank = document.createElement('span');
+      rank.className = 'rank-num';
+      rank.textContent = i + 1;
+      h2.insertBefore(rank, h2.firstChild);
+    });
+  });
+});
+
+function showPaperDate(date) {
+  var days = document.querySelectorAll('.paper-day');
+  days.forEach(function(d) {
+    if (!date) {
+      d.style.display = '';
+    } else {
+      var h1 = d.querySelector('h1');
+      d.style.display = (h1 && h1.textContent.includes(date)) ? '' : 'none';
+    }
+  });
+}
+</script>

@@ -27,3 +27,7 @@ package-lock.json
 
 # Ignore Jekyll cache
 .jekyll-cache/
+
+# Python cache
+__pycache__/
+*.pyc
