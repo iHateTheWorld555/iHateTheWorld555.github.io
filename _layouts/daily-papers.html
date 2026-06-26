@@ -1,21 +1,26 @@
 ---
-layout: default
+layout: compress
 ---
 
 {% include base_path %}
 
-<div id="main" role="main" class="papers-main">
-  {% include sidebar.html %}
-  <article class="page papers-page" itemscope itemtype="http://schema.org/CreativeWork">
-    <div class="page__inner-wrap">
-      <header>
-        <h1 class="page__title" itemprop="headline">{{ page.title | markdownify | remove: "<p>" | remove: "</p>" }}</h1>
-        {% if page.excerpt %}
-        <p class="page__excerpt">{{ page.excerpt | markdownify | remove: "<p>" | remove: "</p>" }}</p>
-        {% endif %}
-      </header>
+<!doctype html>
+<html lang="{{ site.locale | slice: 0,2 | default: "en" }}" class="no-js">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% if page.title %}{{ page.title | escape }}{% else %}{{ site.title | escape }}{% endif %} | {{ site.name | default: site.title }}</title>
+    {% include head.html %}
+    {% include head/custom.html %}
+  </head>
 
-      <section class="page__content" itemprop="text">
+  <body class="papers-layout">
+    {% include browser-upgrade.html %}
+    {% include masthead.html %}
+
+    <div id="main" role="main">
+      <div class="papers-container">
         <!-- Date selector -->
         <div class="paper-date-selector">
           <label for="paper-date">日期</label>
@@ -35,231 +40,249 @@ layout: default
         </div>
 
         {{ content }}
-      </section>
+      </div>
     </div>
-  </article>
-</div>
 
-<style>
-/* Full-width layout */
-.papers-main {
-  max-width: 100% !important;
-  padding-left: 2em !important;
-  padding-right: 2em !important;
-}
-.papers-page {
-  width: 100% !important;
-  max-width: 960px;
-  margin: 0 auto;
-  float: none !important;
-  padding: 0;
-}
-.papers-page .page__inner-wrap {
-  max-width: 100%;
-}
+    <div class="page__footer">
+      <footer>
+        {% include footer/custom.html %}
+        {% include footer.html %}
+      </footer>
+    </div>
 
-/* Date selector */
-.paper-date-selector {
-  margin-bottom: 1.5rem;
-  padding: 0.6rem 1rem;
-  background: var(--global-code-background-color, #EBE0DD);
-  border: 1px solid var(--global-border-color, #EBE0DD);
-  border-radius: 6px;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.6rem;
-}
-.paper-date-selector label {
-  font-weight: 600;
-  font-size: 0.85em;
-  color: var(--global-text-color-light, #9F908C);
-}
-.paper-date-selector select {
-  padding: 4px 10px;
-  border-radius: 4px;
-  border: 1px solid var(--global-border-color, #EBE0DD);
-  background: var(--global-bg-color, #FFFEFE);
-  color: var(--global-text-color, #2A3336);
-  font-size: 0.85em;
-  cursor: pointer;
-  font-family: inherit;
-}
+    {% include scripts.html %}
 
-/* Paper day sections */
-.paper-day { margin-bottom: 2.5rem; }
-.paper-day[data-hidden="true"] { display: none; }
-.paper-day > h1 {
-  font-size: 1.4em;
-  border-bottom: 2px solid var(--global-border-color, #EBE0DD);
-  padding-bottom: 0.3em;
-  margin-bottom: 1.2rem;
-  color: var(--global-text-color, #2A3336);
-}
-.paper-day h2 {
-  font-size: 1.1em;
-  line-height: 1.4;
-  margin-top: 1.8rem;
-  scroll-margin-top: 4rem;
-  border-bottom: none;
-  padding-bottom: 0;
-}
-.paper-day h2 a {
-  color: var(--global-link-color, #5E5451);
-  text-decoration: none;
-}
-.paper-day h2 a:hover {
-  color: var(--global-link-color-hover, #2A3336);
-  text-decoration: underline;
-}
-
-/* Score badge */
-.score-badge {
-  display: inline-block;
-  padding: 1px 8px;
-  border-radius: 10px;
-  font-weight: 700;
-  font-size: 0.8em;
-  margin-left: 0.4em;
-  vertical-align: middle;
-  letter-spacing: 0.02em;
-}
-.score-high {
-  background: #d8f3dc;
-  color: #1b4332;
-}
-.score-mid {
-  background: var(--global-code-background-color, #EBE0DD);
-  color: var(--global-text-color, #2A3336);
-}
-.score-low {
-  background: #fce4ec;
-  color: #880e4f;
-}
-
-/* Strength / Weakness */
-.paper-strength, .paper-weakness {
-  margin: 0.3rem 0;
-  font-size: 0.9em;
-  line-height: 1.5;
-}
-.paper-strength {
-  color: #1b4332;
-}
-.paper-weakness {
-  color: #880e4f;
-}
-.paper-strength strong, .paper-weakness strong {
-  font-weight: 600;
-}
-
-/* Blockquote (abstract) */
-.paper-day blockquote {
-  border-left: 3px solid var(--global-border-color, #EBE0DD);
-  background: var(--global-code-background-color, #EBE0DD);
-  padding: 0.6em 1em;
-  font-size: 0.88em;
-  color: var(--global-text-color-light, #9F908C);
-  margin: 0.5rem 0 1rem 0;
-}
-.paper-day blockquote p {
-  margin: 0;
-}
-
-/* Divider */
-.paper-day hr {
-  margin: 1.5rem 0;
-  border: none;
-  border-top: 1px solid var(--global-border-color, #EBE0DD);
-}
-
-/* Rank number */
-.rank-num {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 1.6em;
-  height: 1.6em;
-  border-radius: 50%;
-  background: var(--global-text-color, #2A3336);
-  color: var(--global-bg-color, #FFFEFE);
-  font-size: 0.7em;
-  font-weight: 700;
-  margin-right: 0.4em;
-  flex-shrink: 0;
-}
-
-/* Meta info (authors, categories) */
-.paper-day p {
-  margin: 0.2rem 0;
-  font-size: 0.88em;
-  color: var(--global-text-color-light, #9F908C);
-}
-.paper-day p strong {
-  color: var(--global-text-color, #2A3336);
-  font-weight: 600;
-}
-
-/* Categories code */
-.paper-day code {
-  background: var(--global-code-background-color, #EBE0DD);
-  color: var(--global-code-text-color, #2A3336);
-  padding: 1px 5px;
-  border-radius: 3px;
-  font-size: 0.82em;
-}
-</style>
-
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-  // Style score badges
-  document.querySelectorAll('.paper-day strong').forEach(function(el) {
-    var text = el.textContent;
-    var m = text.match(/Score:\s*([\d.]+)\/10/);
-    if (!m) return;
-    var score = parseFloat(m[1]);
-    var cls = score >= 8 ? 'score-high' : score >= 6.5 ? 'score-mid' : 'score-low';
-    var badge = document.createElement('span');
-    badge.className = 'score-badge ' + cls;
-    badge.textContent = m[1] + '/10';
-    el.textContent = 'Score: ';
-    el.appendChild(badge);
-    var rest = text.replace(/Score:\s*[\d.]+\/10/, '').trim();
-    if (rest) {
-      el.parentNode.insertBefore(document.createTextNode(' ' + rest), el.nextSibling);
+    <style>
+    /* Papers layout — full width, no sidebar */
+    .papers-layout .sidebar { display: none !important; }
+    .papers-layout #main {
+      max-width: 100%;
+      padding: 2em 3em;
+      margin-top: 2em;
     }
-  });
+    .papers-container {
+      max-width: 960px;
+      margin: 0 auto;
+    }
 
-  // Add rank numbers to h2 headings (per day group)
-  document.querySelectorAll('.paper-day').forEach(function(day) {
-    day.querySelectorAll('h2').forEach(function(h2, i) {
-      var rank = document.createElement('span');
-      rank.className = 'rank-num';
-      rank.textContent = i + 1;
-      h2.insertBefore(rank, h2.firstChild);
-    });
-  });
+    /* Date selector */
+    .paper-date-selector {
+      margin-bottom: 1.5rem;
+      padding: 0.6rem 1rem;
+      background: var(--global-code-background-color, #EBE0DD);
+      border: 1px solid var(--global-border-color, #EBE0DD);
+      border-radius: 6px;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+    .paper-date-selector label {
+      font-weight: 600;
+      font-size: 0.85em;
+      color: var(--global-text-color-light, #9F908C);
+    }
+    .paper-date-selector select {
+      padding: 4px 10px;
+      border-radius: 4px;
+      border: 1px solid var(--global-border-color, #EBE0DD);
+      background: var(--global-bg-color, #FFFEFE);
+      color: var(--global-text-color, #2A3336);
+      font-size: 0.85em;
+      cursor: pointer;
+      font-family: inherit;
+    }
 
-  // Default: show only latest date
-  var selector = document.getElementById('paper-date');
-  if (selector && selector.value) {
-    showPaperDate(selector.value);
-  }
-});
+    /* Paper day sections */
+    .paper-day { margin-bottom: 2.5rem; }
+    .paper-day[data-hidden="true"] { display: none !important; }
+    .paper-day > h1 {
+      font-size: 1.4em;
+      border-bottom: 2px solid var(--global-border-color, #EBE0DD);
+      padding-bottom: 0.3em;
+      margin-bottom: 1.2rem;
+      color: var(--global-text-color, #2A3336);
+    }
+    .paper-day h2 {
+      font-size: 1.1em;
+      line-height: 1.4;
+      margin-top: 1.8rem;
+      scroll-margin-top: 4rem;
+      border-bottom: none !important;
+      padding-bottom: 0 !important;
+    }
+    .paper-day h2 a {
+      color: var(--global-link-color, #5E5451);
+      text-decoration: none;
+    }
+    .paper-day h2 a:hover {
+      color: var(--global-link-color-hover, #2A3336);
+      text-decoration: underline;
+    }
 
-function showPaperDate(date) {
-  var days = document.querySelectorAll('.paper-day');
-  days.forEach(function(d) {
-    if (!date) {
-      d.removeAttribute('data-hidden');
-    } else {
-      var h1 = d.querySelector('h1');
-      var show = h1 && h1.textContent.includes(date);
-      if (show) {
-        d.removeAttribute('data-hidden');
-      } else {
-        d.setAttribute('data-hidden', 'true');
+    /* Score badge */
+    .score-badge {
+      display: inline-block;
+      padding: 1px 8px;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 0.8em;
+      margin-left: 0.4em;
+      vertical-align: middle;
+      letter-spacing: 0.02em;
+    }
+    .score-high { background: #d8f3dc; color: #1b4332; }
+    .score-mid { background: var(--global-code-background-color, #EBE0DD); color: var(--global-text-color, #2A3336); }
+    .score-low { background: #fce4ec; color: #880e4f; }
+
+    /* Blockquote (abstract) */
+    .paper-day blockquote {
+      border-left: 3px solid var(--global-border-color, #EBE0DD);
+      background: var(--global-code-background-color, #EBE0DD);
+      padding: 0.6em 1em;
+      font-size: 0.88em;
+      color: var(--global-text-color-light, #9F908C);
+      margin: 0.5rem 0 1rem 0;
+    }
+    .paper-day blockquote p { margin: 0; }
+
+    /* Divider */
+    .paper-day hr {
+      margin: 1.5rem 0;
+      border: none;
+      border-top: 1px solid var(--global-border-color, #EBE0DD);
+    }
+
+    /* Rank number */
+    .rank-num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 1.6em;
+      height: 1.6em;
+      border-radius: 50%;
+      background: var(--global-text-color, #2A3336);
+      color: var(--global-bg-color, #FFFEFE);
+      font-size: 0.7em;
+      font-weight: 700;
+      margin-right: 0.4em;
+      flex-shrink: 0;
+    }
+
+    /* Meta info (authors, categories) */
+    .paper-day p {
+      margin: 0.2rem 0;
+      font-size: 0.88em;
+      color: var(--global-text-color-light, #9F908C);
+    }
+    .paper-day p strong {
+      color: var(--global-text-color, #2A3336);
+      font-weight: 600;
+    }
+    .paper-day code {
+      background: var(--global-code-background-color, #EBE0DD);
+      color: var(--global-code-text-color, #2A3336);
+      padding: 1px 5px;
+      border-radius: 3px;
+      font-size: 0.82em;
+    }
+
+    /* Dark theme overrides */
+    [data-theme="dark"] .score-high { background: #1b4332; color: #d8f3dc; }
+    [data-theme="dark"] .score-low { background: #4a0028; color: #fce4ec; }
+    </style>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Style score badges
+      document.querySelectorAll('.paper-day strong').forEach(function(el) {
+        var text = el.textContent;
+        var m = text.match(/Score:\s*([\d.]+)\/10/);
+        if (!m) return;
+        var score = parseFloat(m[1]);
+        var cls = score >= 8 ? 'score-high' : score >= 6.5 ? 'score-mid' : 'score-low';
+        var badge = document.createElement('span');
+        badge.className = 'score-badge ' + cls;
+        badge.textContent = m[1] + '/10';
+        el.textContent = 'Score: ';
+        el.appendChild(badge);
+        var rest = text.replace(/Score:\s*[\d.]+\/10/, '').trim();
+        if (rest) {
+          el.parentNode.insertBefore(document.createTextNode(' ' + rest), el.nextSibling);
+        }
+      });
+
+      // Add rank numbers to h2 headings (per day group)
+      document.querySelectorAll('.paper-day').forEach(function(day) {
+        day.querySelectorAll('h2').forEach(function(h2, i) {
+          var rank = document.createElement('span');
+          rank.className = 'rank-num';
+          rank.textContent = i + 1;
+          h2.insertBefore(rank, h2.firstChild);
+        });
+      });
+
+      // Default: show only latest date
+      var selector = document.getElementById('paper-date');
+      if (selector && selector.value) {
+        showPaperDate(selector.value);
       }
+    });
+
+    function showPaperDate(date) {
+      var days = document.querySelectorAll('.paper-day');
+      days.forEach(function(d) {
+        if (!date) {
+          d.removeAttribute('data-hidden');
+        } else {
+          var h1 = d.querySelector('h1');
+          var show = h1 && h1.textContent.includes(date);
+          if (show) {
+            d.removeAttribute('data-hidden');
+          } else {
+            d.setAttribute('data-hidden', 'true');
+          }
+        }
+      });
     }
-  });
-}
-</script>
+
+    // Theme toggle
+    (function(){
+      // Apply saved theme
+      var t = localStorage.getItem('theme');
+      if (t === 'dark') {
+        document.documentElement.setAttribute('data-theme', 'dark');
+      } else if (t === 'light') {
+        document.documentElement.removeAttribute('data-theme');
+      } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.documentElement.setAttribute('data-theme', 'dark');
+      }
+      // Toggle button
+      var btn = document.createElement('button');
+      btn.id = 'theme-toggle';
+      btn.title = 'Toggle dark/light theme';
+      btn.style.cssText = 'position:fixed;bottom:1.5em;right:1.5em;z-index:9999;width:44px;height:44px;border-radius:50%;border:2px solid var(--global-border-color,#CEBEBB);background:var(--global-bg-color,#FFFEFE);color:var(--global-text-color,#2A3336);cursor:pointer;font-size:1.3em;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,0.15);transition:all 0.2s ease;';
+      var icon = document.createElement('span');
+      icon.id = 'theme-icon';
+      function updateIcon() {
+        var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+        icon.textContent = isDark ? '\u2600\uFE0F' : '\uD83C\uDF19';
+      }
+      updateIcon();
+      btn.appendChild(icon);
+      btn.addEventListener('click', function() {
+        var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+        if (isDark) {
+          document.documentElement.removeAttribute('data-theme');
+          localStorage.setItem('theme', 'light');
+        } else {
+          document.documentElement.setAttribute('data-theme', 'dark');
+          localStorage.setItem('theme', 'dark');
+        }
+        updateIcon();
+      });
+      document.body.appendChild(btn);
+    })();
+    </script>
+
+  </body>
+</html>
