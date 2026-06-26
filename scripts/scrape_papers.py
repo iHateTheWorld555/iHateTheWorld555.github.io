@@ -79,10 +79,17 @@ WS_RE = re.compile(r"\s+")
 RETRY_STATUSES = {429, 500, 502, 503, 504}
 
 
+LIQUID_RE = re.compile(r"\{%.*?%\}|\{\{.*?\}\}")
+
 def normalise(text: str | None) -> str:
     if text is None:
         return ""
-    return WS_RE.sub(" ", text).strip()
+    text = WS_RE.sub(" ", text).strip()
+    # Escape Liquid template delimiters that could break Jekyll builds
+    text = LIQUID_RE.sub("", text)
+    # Escape angle brackets that could be interpreted as HTML
+    text = text.replace("<", "&lt;").replace(">", "&gt;")
+    return text
 
 
 def backoff(attempt: int) -> float:

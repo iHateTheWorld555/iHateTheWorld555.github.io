@@ -206,7 +206,7 @@ def parse_paper_markdown(filepath: Path) -> list[dict]:
 def fetch_html_paper(arxiv_url: str) -> str | None:
     """Fetch paper HTML from arxiv if available."""
     # Convert abs URL to HTML URL: arxiv.org/abs/XXXX -> arxiv.org/html/XXXX
-    arxiv_id = arxiv_url.split("/abs/")[-1].replace("v1", "").replace("v2", "")
+    arxiv_id = re.sub(r"v\d+$", "", arxiv_url.split("/abs/")[-1])
     html_url = f"https://arxiv.org/html/{arxiv_id}"
 
     try:
@@ -355,14 +355,18 @@ def reorder_by_score(content: str) -> str:
     total_count = len(all_sections)
     result = re.sub(r"\*\*\d+ papers\*\*", f"**{total_count} papers**", result, count=1)
 
-    # Update front matter stats
+    # Update front matter stats (add if missing, update if present)
     scored_list = [s[0] for s in scored_sections]
     if scored_list:
         avg = sum(scored_list) / len(scored_list)
         top = max(scored_list)
-        result = re.sub(r"avg_score: .*\n", f"avg_score: {avg:.1f}\n", result)
-        result = re.sub(r"top_score: .*\n", f"top_score: {top:.1f}\n", result)
-        result = re.sub(r"papers_scored: .*\n", f"papers_scored: {len(scored_list)}\n", result)
+        stats_line = f"avg_score: {avg:.1f}\ntop_score: {top:.1f}\npapers_scored: {len(scored_list)}\n"
+        # Remove existing stats lines
+        result = re.sub(r"avg_score: .*\n", "", result)
+        result = re.sub(r"top_score: .*\n", "", result)
+        result = re.sub(r"papers_scored: .*\n", "", result)
+        # Insert before closing front matter
+        result = re.sub(r"---\n\n# Daily", stats_line + "---\n\n# Daily", result, count=1)
 
     return result
 
@@ -408,8 +412,8 @@ def main():
                 + score.get("a2_identification", 5) * 0.1
                 + score.get("a3_independence", 5) * 0.1
                 + score.get("a4_compression", 5) * 0.1
-                + score.get("a5_effectiveness", 5) * 0.3
-                + score.get("a6_novelty", 5) * 0.3
+                + score.get("a5_effectiveness", 5) * 0.4
+                + score.get("a6_novelty", 5) * 0.2
             )
             score["total"] = round(total, 1)
             scores[paper["idx"]] = score
