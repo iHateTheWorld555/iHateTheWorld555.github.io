@@ -7,12 +7,8 @@ layout: daily-papers
 
 {% assign papers = site.papers | sort: "date" | reverse %}
 {% if papers.size > 0 %}
-  {% for paper in papers %}
-<div class="paper-day">
-  <h1>{{ paper.date | date: "%Y-%m-%d" }} — {{ paper.title }}</h1>
+  {% assign paper = papers | first %}
   {{ paper.content }}
-</div>
-  {% endfor %}
 {% else %}
 <p>No papers yet. Check back after the next arxiv update!</p>
 {% endif %}
