@@ -41,9 +41,10 @@ KEYWORDS = [
 ]
 # Topics to exclude — not relevant to general audio/speech research
 EXCLUDE_PATTERNS = [
-    # Pathological / clinical
+    # Pathological / clinical / medical
     r"\bdysarthri", r"\bpatholog", r"\bclinical\b", r"\bpatient\b", r"\bdisease",
     r"\bcancer", r"\bcough", r"\bheart sound", r"\blung sound",
+    r"\bdementia\b", r"\bAlzheimer\b", r"\bcognitive decline\b",
     # Pediatric / elderly-specific
     r"\bchild\b", r"\bpediatric", r"\binfant\b", r"\belderly\b", r"\baging voice",
     # Niche languages (keep: English, Chinese, multilingual as concept)
@@ -53,12 +54,27 @@ EXCLUDE_PATTERNS = [
     # Pure hardware / physics / engineering (not ML)
     r"\bunderwater\b", r"\bAUV\b", r"\bmarine\b", r"\bsonar\b",
     r"\broom equalization\b", r"\bloudspeaker\b", r"\bheadrest\b",
+    r"\bacoustic attack", r"\bover-the-air attack",
+    # Security / fraud (not audio ML)
+    r"\bfraud\b", r"\bfraud detection\b",
     # Non-audio domains that leak via cross-category keywords
     r"\bspacecraft\b", r"\bGNC\b", r"\bfinitely axiomatiz",
     r"\bAFDM\b", r"\bISAC\b",
+    # Video codec (not audio codec)
+    r"\bvideo codec\b", r"\blearned video\b",
+    # Facial animation (edge case: speech-driven but not audio research)
+    r"\bfacial animation\b", r"\bface animation\b", r"\btalking head\b",
 ]
 
 EXCLUDE_RE = re.compile("|".join(EXCLUDE_PATTERNS), re.IGNORECASE)
+
+# For cross-category papers: title must contain audio keywords
+TITLE_AUDIO_KEYWORDS = re.compile(
+    r"\b(audio|speech|voice|sound|acoustic|music|TTS|ASR|speaker|vocoder|"
+    r"phoneme|prosody|diarization|utterance|spoken|waveform|singing|codec)\b",
+    re.IGNORECASE,
+)
+CORE_CATEGORIES_SET = set(CORE_CATEGORIES)
 
 ARXIV_API = "https://export.arxiv.org/api/query"
 PAGE_SIZE = 200  # max results per request (arxiv max=2000, 200 is safer)
@@ -66,7 +82,8 @@ MAX_RETRIES = 7
 BACKOFF_BASE = 15.0
 BACKOFF_CAP = 120.0
 RETRY_429_MIN = 30.0
-REQUEST_TIMEOUT = 90.0
+REQUEST_TIMEOUT = 120.0
+MIN_REQUEST_INTERVAL = 3.0  # arxiv ToU: no more than 1 request per 3 seconds
 
 # ArXiv throttles generic UAs aggressively, especially from GitHub Actions IPs.
 USER_AGENT = (
@@ -96,8 +113,17 @@ def backoff(attempt: int) -> float:
     return min(BACKOFF_BASE * (2 ** (attempt - 1)), BACKOFF_CAP)
 
 
+_last_request_time: float = 0
+
+
 def request_with_retry(client: httpx.Client, params: dict) -> str:
     """GET arxiv API with retry/backoff on 429, 5xx, and network errors."""
+    global _last_request_time
+    # Enforce arxiv ToU: no more than 1 request per 3 seconds
+    elapsed = time.time() - _last_request_time
+    if elapsed < MIN_REQUEST_INTERVAL:
+        time.sleep(MIN_REQUEST_INTERVAL - elapsed)
+
     for attempt in range(1, MAX_RETRIES + 1):
         try:
             resp = client.get(ARXIV_API, params=params)
@@ -132,6 +158,7 @@ def request_with_retry(client: httpx.Client, params: dict) -> str:
             raise RuntimeError(f"ArXiv returned {resp.status_code} after {MAX_RETRIES} attempts")
 
         resp.raise_for_status()
+        _last_request_time = time.time()
         return resp.text
 
     raise RuntimeError("ArXiv request exhausted retries")
@@ -257,6 +284,26 @@ def filter_excluded(papers: list[dict]) -> list[dict]:
     return kept
 
 
+def filter_cross_by_title(papers: list[dict]) -> list[dict]:
+    """Cross-category papers must have audio keywords in title."""
+    kept = []
+    for p in papers:
+        cats = [c.strip() for c in p.get("categories", "").split(",")]
+        # Core audio categories always pass
+        if any(c in CORE_CATEGORIES_SET for c in cats):
+            kept.append(p)
+            continue
+        # Cross-category: title must contain audio keywords
+        if TITLE_AUDIO_KEYWORDS.search(p["title"]):
+            kept.append(p)
+        else:
+            log.debug("Cross-cat filtered (no title keyword): %s", p["title"][:80])
+    filtered = len(papers) - len(kept)
+    if filtered:
+        log.info("Filtered out %d cross-category papers (no title keyword)", filtered)
+    return kept
+
+
 def generate_markdown(date: str, papers: list[dict]) -> str:
     """Generate Jekyll markdown for one day's papers."""
     # Sort: core audio categories first, then cross-category
@@ -317,6 +364,7 @@ def main():
     all_papers = deduplicate(papers + cross_papers)
     all_papers = filter_recent(all_papers, days=3)
     all_papers = filter_excluded(all_papers)
+    all_papers = filter_cross_by_title(all_papers)
     log.info("Total after dedup+filter+exclude: %d papers", len(all_papers))
 
     if not all_papers:

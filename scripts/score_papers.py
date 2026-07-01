@@ -128,12 +128,16 @@ TITLE_AUDIO_KEYWORDS = re.compile(
 # Exclusion patterns (same as scrape_papers.py)
 EXCLUDE_RE = re.compile(
     r"\bdysarthri|\bpatholog|\bclinical\b|\bpatient\b|\bdisease|\bcancer|"
-    r"\bcough|\bheart sound|\blung sound|\bchild\b|\bpediatric|\binfant\b|"
-    r"\belderly\b|\baging voice|\bVietnamese\b|\bGreek\b|\bTamil\b|\bSwahili\b|"
+    r"\bcough|\bheart sound|\blung sound|\bdementia\b|\bAlzheimer\b|\bcognitive decline\b|"
+    r"\bchild\b|\bpediatric|\binfant\b|\belderly\b|\baging voice|"
+    r"\bVietnamese\b|\bGreek\b|\bTamil\b|\bSwahili\b|"
     r"\bIcelandic\b|\bBasque\b|\bMalayalam\b|\bKannada\b|\bTangkhul\b|\bAlgerian\b|"
     r"\bunderwater\b|\bAUV\b|\bmarine\b|\bsonar\b|\broom equalization\b|"
-    r"\bloudspeaker\b|\bheadrest\b|\bspacecraft\b|\bGNC\b|"
-    r"\bfinitely axiomatiz|\bAFDM\b|\bISAC\b|"
+    r"\bloudspeaker\b|\bheadrest\b|\bacoustic attack|\bover-the-air attack|"
+    r"\bfraud\b|\bfraud detection\b|"
+    r"\bspacecraft\b|\bGNC\b|\bfinitely axiomatiz|\bAFDM\b|\bISAC\b|"
+    r"\bvideo codec\b|\blearned video\b|"
+    r"\bfacial animation\b|\bface animation\b|\btalking head\b|"
     r"\bjailbreak\b|\brole-play\b|\broleplay\b",
     re.IGNORECASE,
 )
