@@ -365,7 +365,10 @@ def main() -> None:
         return
 
     for paper in selected:
-        run_review(args, date, paper)
+        try:
+            run_review(args, date, paper)
+        except Exception as exc:
+            print(f"  [FAIL] {paper['arxiv_id']}: {exc}", flush=True)
 
     if args.commit:
         git_commit(args, date)
