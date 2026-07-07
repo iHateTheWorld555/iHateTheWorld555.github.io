@@ -24,6 +24,7 @@ package-lock.json
 
 # Ignore OMC state
 .omc/
+.claude-review/
 
 # Ignore Jekyll cache
 .jekyll-cache/
