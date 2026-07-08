@@ -1,7 +1,7 @@
 ---
 permalink: /daily-papers/
-title: "Daily Papers"
-excerpt: "Daily arxiv papers on audio, speech, music, and acoustics — ranked by score"
+title: "每日论文"
+excerpt: "每日 arXiv 音频/语音/音乐/声学论文 — 按评分排序"
 layout: daily-papers
 ---
 
@@ -10,5 +10,5 @@ layout: daily-papers
   {% assign paper = papers | first %}
   {{ paper.content }}
 {% else %}
-<p>No papers yet. Check back after the next arxiv update!</p>
+<p>暂无论文，下次 arXiv 更新后再来！</p>
 {% endif %}

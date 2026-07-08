@@ -48,14 +48,14 @@ layout: compress
       <div class="papers-shell">
         <header class="papers-header">
           <div class="papers-title-block">
-            <p class="papers-kicker">Daily Arxiv Papers</p>
-            <h1>Audio, speech, music, and acoustics</h1>
-            <p class="papers-dek">A daily reading list of newly scraped arxiv papers, ranked and annotated for fast triage.</p>
+            <p class="papers-kicker">每日 arXiv 论文</p>
+            <h1>音频 · 语音 · 音乐 · 声学</h1>
+            <p class="papers-dek">每日新爬取的 arXiv 论文清单，按评分排序，便于快速筛选。</p>
             <div class="papers-meta">
               {% if current_date %}<span>{{ current_date }}</span>{% endif %}
-              {% if current_paper.papers_scored %}<span>{{ current_paper.papers_scored }} scored</span>{% endif %}
-              {% if current_paper.avg_score %}<span>Avg {{ current_paper.avg_score }}</span>{% endif %}
-              {% if current_paper.top_score %}<span>Top {{ current_paper.top_score }}</span>{% endif %}
+              {% if current_paper.papers_scored %}<span>{{ current_paper.papers_scored }} 篇已评分</span>{% endif %}
+              {% if current_paper.avg_score %}<span>均分 {{ current_paper.avg_score }}</span>{% endif %}
+              {% if current_paper.top_score %}<span>最高 {{ current_paper.top_score }}</span>{% endif %}
             </div>
           </div>
 
