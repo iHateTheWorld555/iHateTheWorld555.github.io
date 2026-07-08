@@ -48,67 +48,39 @@ layout: compress
       <div class="papers-shell">
         <header class="papers-header">
           <div class="papers-title-block">
-            <p class="papers-kicker">每日 arXiv 论文</p>
+            <p class="papers-kicker">每日 arXiv</p>
             <h1>音频 · 语音 · 音乐 · 声学</h1>
-            <p class="papers-dek">每日新爬取的 arXiv 论文清单，按评分排序，便于快速筛选。</p>
+            <p class="papers-dek">每日新爬取的 arXiv 论文，按评分排序。中文摘要帮你快速判断是否值得深读。</p>
             <div class="papers-meta">
               {% if current_date %}<span>{{ current_date }}</span>{% endif %}
-              {% if current_paper.papers_scored %}<span>{{ current_paper.papers_scored }} 篇已评分</span>{% endif %}
-              {% if current_paper.avg_score %}<span>均分 {{ current_paper.avg_score }}</span>{% endif %}
-              {% if current_paper.top_score %}<span>最高 {{ current_paper.top_score }}</span>{% endif %}
             </div>
           </div>
 
+          <div class="papers-date-nav">
+            <label for="paper-date">日期</label>
+            <select id="paper-date" aria-label="选择日期">
+              {% for p in all_papers %}
+                {% assign p_date = p.date | date: "%Y-%m-%d" %}
+                <option value="{% if forloop.first %}{{ '/daily-papers/' | relative_url }}{% else %}{{ p.url | relative_url }}{% endif %}"{% if p_date == current_date %} selected{% endif %}>{{ p_date }}</option>
+              {% endfor %}
+            </select>
+          </div>
         </header>
 
-        <div class="papers-main-grid">
-          <aside class="papers-rail" aria-label="Paper metadata">
-            <div class="paper-date-selector">
-              <label for="paper-date">Date</label>
-              <select id="paper-date" aria-label="Paper date">
-                {% for p in all_papers %}
-                  {% assign p_date = p.date | date: "%Y-%m-%d" %}
-                  <option value="{% if forloop.first %}{{ '/daily-papers/' | relative_url }}{% else %}{{ p.url | relative_url }}{% endif %}"{% if p_date == current_date %} selected{% endif %}>{{ p_date }}</option>
-                {% endfor %}
-              </select>
-            </div>
-
-            <dl class="papers-stats">
-              {% if current_date %}
-              <div>
-                <dt>Date</dt>
-                <dd>{{ current_date }}</dd>
-              </div>
-              {% endif %}
-              {% if current_paper.papers_scored %}
-              <div>
-                <dt>Papers</dt>
-                <dd>{{ current_paper.papers_scored }}</dd>
-              </div>
-              {% endif %}
-              {% if current_paper.avg_score %}
-              <div>
-                <dt>Average</dt>
-                <dd>{{ current_paper.avg_score }}</dd>
-              </div>
-              {% endif %}
-              {% if current_paper.top_score %}
-              <div>
-                <dt>Top score</dt>
-                <dd>{{ current_paper.top_score }}</dd>
-              </div>
-              {% endif %}
-            </dl>
-          </aside>
-
-          <article class="paper-day" data-paper-date="{{ current_date }}">
-            {{ content }}
-          </article>
+        <div class="papers-stats-bar" id="papers-stats">
+          {% if current_date %}<div><span class="stat-label">日期</span><span class="stat-value">{{ current_date }}</span></div>{% endif %}
+          <div><span class="stat-label">已评分</span><span class="stat-value" id="stat-scored">—</span></div>
+          <div><span class="stat-label">均分</span><span class="stat-value" id="stat-avg">—</span></div>
+          <div><span class="stat-label">最高</span><span class="stat-value" id="stat-top">—</span></div>
         </div>
+
+        <article class="paper-day" data-paper-date="{{ current_date }}">
+          {{ content }}
+        </article>
       </div>
     </main>
 
-    <button id="theme-toggle" class="papers-theme-toggle" title="Toggle dark/light theme" type="button" aria-label="Toggle dark/light theme">
+    <button id="theme-toggle" class="papers-theme-toggle" title="切换深色/浅色主题" type="button" aria-label="切换深色/浅色主题">
       <i id="theme-icon" class="fas fa-sun" aria-hidden="true"></i>
     </button>
 
@@ -123,35 +95,47 @@ layout: compress
 
     <style>
     :root {
-      --papers-bg: #f7f4ed;
+      --papers-bg: #f5f1ea;
       --papers-surface: #fbfaf7;
-      --papers-line: #d8d0c3;
-      --papers-line-strong: #bdb3a5;
-      --papers-ink: #191714;
+      --papers-surface-2: #f0ebe1;
+      --papers-zh-bg: #f1ebde;
+      --papers-line: #ddd6c8;
+      --papers-line-strong: #c4bcae;
+      --papers-ink: #1a1a1a;
       --papers-text: #3d392f;
       --papers-muted: #766f64;
       --papers-faint: #948b7f;
       --papers-accent: #c76542;
-      --papers-accent-soft: #efe1d8;
-      --papers-good: #dce8db;
-      --papers-low: #eedcd5;
-      --papers-font: "Anthropic Sans", "Helvetica Neue", Helvetica, Arial, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      --papers-accent-soft: #e8d9cf;
+      --papers-good: #4a7c59;
+      --papers-good-soft: #d8e4d8;
+      --papers-mid: #c76542;
+      --papers-mid-soft: #efe1d8;
+      --papers-low: #948b7f;
+      --papers-low-soft: #e0dad0;
+      --papers-font: "Anthropic Sans", "Helvetica Neue", Helvetica, Arial, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
       --papers-mono: "Anthropic Mono", "JetBrains Mono", "SFMono-Regular", Consolas, monospace;
     }
 
     html[data-theme="dark"] {
-      --papers-bg: #191714;
-      --papers-surface: #211f1b;
-      --papers-line: #423d35;
-      --papers-line-strong: #5c554b;
+      --papers-bg: #1a1815;
+      --papers-surface: #232120;
+      --papers-surface-2: #2a2826;
+      --papers-zh-bg: #2a2520;
+      --papers-line: #3d3935;
+      --papers-line-strong: #56504a;
       --papers-ink: #f4efe7;
       --papers-text: #d6cec2;
       --papers-muted: #aaa095;
       --papers-faint: #8b8278;
       --papers-accent: #e09a75;
-      --papers-accent-soft: #352820;
-      --papers-good: #21352d;
-      --papers-low: #3d2720;
+      --papers-accent-soft: #3d2e25;
+      --papers-good: #8fbc9a;
+      --papers-good-soft: #1f2f25;
+      --papers-mid: #e09a75;
+      --papers-mid-soft: #3d2e25;
+      --papers-low: #8b8278;
+      --papers-low-soft: #2a2826;
     }
 
     body.daily-papers-layout {
@@ -177,49 +161,58 @@ layout: compress
     }
 
     .papers-shell {
-      width: min(1120px, calc(100% - 48px));
+      width: min(860px, calc(100% - 40px));
       margin: 0 auto;
-      padding: 64px 0 88px;
+      padding: 48px 0 80px;
     }
 
+    /* --- Header --- */
     .papers-header {
-      max-width: 820px;
-      padding-bottom: 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 24px;
+      padding-bottom: 28px;
+      border-bottom: 1px solid var(--papers-line);
+    }
+
+    .papers-title-block {
+      flex: 1;
     }
 
     .papers-kicker {
-      margin: 0 0 18px !important;
-      color: var(--papers-muted) !important;
-      font: 600 0.84rem/1.2 var(--papers-font) !important;
-      letter-spacing: 0 !important;
+      margin: 0 0 12px !important;
+      color: var(--papers-accent) !important;
+      font: 600 0.78rem/1.2 var(--papers-font) !important;
+      letter-spacing: 0.06em !important;
+      text-transform: uppercase;
     }
 
     .papers-header h1 {
-      max-width: 760px;
       margin: 0 !important;
       color: var(--papers-ink) !important;
       font-family: var(--papers-font) !important;
-      font-size: clamp(2.6rem, 7vw, 5.4rem) !important;
-      font-weight: 500 !important;
-      letter-spacing: 0 !important;
-      line-height: 0.96 !important;
+      font-size: clamp(1.8rem, 4vw, 2.6rem) !important;
+      font-weight: 550 !important;
+      letter-spacing: -0.01em !important;
+      line-height: 1.15 !important;
     }
 
     .papers-dek {
-      max-width: 650px;
-      margin: 22px 0 0 !important;
+      max-width: 560px;
+      margin: 14px 0 0 !important;
       color: var(--papers-muted) !important;
-      font-size: clamp(1.05rem, 2vw, 1.22rem) !important;
-      line-height: 1.5 !important;
+      font-size: 0.95rem !important;
+      line-height: 1.55 !important;
     }
 
     .papers-meta {
       display: flex;
       flex-wrap: wrap;
       gap: 0;
-      margin-top: 28px;
-      color: var(--papers-muted);
-      font-size: 0.9rem;
+      margin-top: 18px;
+      color: var(--papers-faint);
+      font-size: 0.82rem;
       line-height: 1.4;
     }
 
@@ -229,104 +222,100 @@ layout: compress
     }
 
     .papers-meta span + span:before {
-      content: "/";
+      content: "·";
+      padding: 0 0.5rem;
+      color: var(--papers-line-strong);
+    }
+
+    .papers-date-nav {
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .papers-date-nav label {
       color: var(--papers-faint);
-      padding: 0 0.55rem;
-    }
-
-    .papers-main-grid {
-      display: grid;
-      grid-template-columns: 220px minmax(0, 760px);
-      gap: 88px;
-      align-items: start;
-      border-top: 1px solid var(--papers-line);
-      padding-top: 34px;
-    }
-
-    .papers-rail {
-      position: sticky;
-      top: 28px;
-      color: var(--papers-muted);
-      font-size: 0.86rem;
-      line-height: 1.45;
-    }
-
-    .paper-date-selector {
-      margin-bottom: 28px;
-    }
-
-    .paper-date-selector label,
-    .papers-stats dt {
-      display: block;
-      margin-bottom: 8px;
-      color: var(--papers-faint);
-      font-size: 0.72rem;
-      font-weight: 650;
-      letter-spacing: 0.02em;
-      line-height: 1;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
       text-transform: uppercase;
     }
 
-    .paper-date-selector select {
-      width: 100%;
+    .papers-date-nav select {
       border: 1px solid var(--papers-line-strong);
-      border-radius: 3px;
-      background: var(--papers-bg);
+      border-radius: 4px;
+      background: var(--papers-surface);
       color: var(--papers-ink);
       cursor: pointer;
-      font: 500 0.95rem/1.2 var(--papers-font);
-      padding: 0.55rem 0.65rem;
+      font: 500 0.88rem/1.2 var(--papers-font);
+      padding: 0.45rem 0.6rem;
     }
 
-    .papers-stats {
-      display: grid;
-      gap: 18px;
-      margin: 0;
+    /* --- Stats bar --- */
+    .papers-stats-bar {
+      display: flex;
+      gap: 32px;
+      padding: 16px 0;
+      border-bottom: 1px solid var(--papers-line);
     }
 
-    .papers-stats div {
-      padding-top: 16px;
-      border-top: 1px solid var(--papers-line);
+    .papers-stats-bar > div {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
     }
 
-    .papers-stats dd {
-      margin: 0;
+    .stat-label {
+      color: var(--papers-faint);
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    .stat-value {
       color: var(--papers-ink);
-      font-size: 0.98rem;
+      font-size: 1.1rem;
       font-weight: 550;
+      font-family: var(--papers-mono);
     }
 
+    /* --- Paper list --- */
     .paper-day {
-      max-width: 760px;
       color: var(--papers-text);
-      font-size: 1.03rem;
-      line-height: 1.68;
+      font-size: 1rem;
+      line-height: 1.65;
     }
 
     .paper-day > h1:first-child {
       display: none;
     }
 
+    /* First paragraph is the "N papers" count */
+    .paper-day > p:first-of-type {
+      display: none;
+    }
+
+    .paper-day hr {
+      display: none;
+    }
+
+    /* Paper card */
     .paper-day h2 {
-      display: grid;
-      grid-template-columns: 2.35rem minmax(0, 1fr);
-      gap: 1rem;
       margin: 0 !important;
-      padding: 30px 0 10px !important;
-      border-top: 1px solid var(--papers-line) !important;
-      border-bottom: 0 !important;
+      padding: 28px 0 0 0 !important;
+      border: 0 !important;
       color: var(--papers-ink) !important;
       font-family: var(--papers-font) !important;
-      font-size: clamp(1.24rem, 2vw, 1.56rem) !important;
+      font-size: 1.18rem !important;
       font-weight: 560 !important;
-      letter-spacing: 0 !important;
-      line-height: 1.2 !important;
-      scroll-margin-top: 1.5rem;
+      letter-spacing: -0.005em !important;
+      line-height: 1.35 !important;
     }
 
     .paper-day h2:first-of-type {
-      padding-top: 0 !important;
-      border-top: 0 !important;
+      padding-top: 20px !important;
     }
 
     .paper-day h2 a {
@@ -336,50 +325,81 @@ layout: compress
 
     .paper-day h2 a:hover {
       color: var(--papers-accent) !important;
-      text-decoration: underline;
-      text-underline-offset: 0.16em;
-      text-decoration-thickness: 1px;
     }
 
-    .rank-num {
-      color: var(--papers-accent);
+    /* Score bar (signature element) */
+    .score-bar-wrap {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 12px 0 8px;
+    }
+
+    .score-bar {
+      flex: 1;
+      max-width: 180px;
+      height: 4px;
+      border-radius: 2px;
+      background: var(--papers-line);
+      overflow: hidden;
+    }
+
+    .score-bar-fill {
+      height: 100%;
+      border-radius: 2px;
+      transition: width 0.4s ease;
+    }
+
+    .score-bar-fill.high { background: var(--papers-good); }
+    .score-bar-fill.mid { background: var(--papers-mid); }
+    .score-bar-fill.low { background: var(--papers-low); }
+
+    .score-num {
       font-family: var(--papers-mono);
       font-size: 0.78rem;
-      font-weight: 600;
-      line-height: 1.35;
-      padding-top: 0.12rem;
-      text-align: right;
-    }
-
-    .paper-day p {
-      margin: 0.28rem 0 !important;
-      color: var(--papers-muted) !important;
-      font-size: 0.95rem !important;
-      line-height: 1.58 !important;
-    }
-
-    .paper-day p strong,
-    .paper-day li strong {
-      color: var(--papers-ink) !important;
       font-weight: 650;
+      color: var(--papers-ink);
     }
 
-    .paper-day ul {
-      margin: 0.65rem 0 1rem 0 !important;
-      padding-left: 1.1rem !important;
+    .score-num.high { color: var(--papers-good); }
+    .score-num.mid { color: var(--papers-mid); }
+    .score-num.low { color: var(--papers-low); }
+
+    .score-axes {
+      font-family: var(--papers-mono);
+      font-size: 0.72rem;
+      color: var(--papers-faint);
+      letter-spacing: 0.02em;
+      margin-left: auto;
     }
 
-    .paper-day li {
-      color: var(--papers-text) !important;
-      font-size: 0.98rem !important;
-      line-height: 1.66 !important;
-      margin: 0.3rem 0 !important;
+    /* Chinese abstract block — the hero of each card */
+    .zh-abstract {
+      margin: 14px 0;
+      padding: 14px 16px;
+      background: var(--papers-zh-bg);
+      border-left: 2px solid var(--papers-accent);
+      border-radius: 0 4px 4px 0;
+      color: var(--papers-ink);
+      font-size: 0.96rem;
+      line-height: 1.72;
     }
 
+    .zh-abstract-label {
+      display: block;
+      margin-bottom: 4px;
+      color: var(--papers-accent);
+      font-size: 0.68rem;
+      font-weight: 650;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    /* English abstract — quiet, secondary */
     .paper-day blockquote {
-      margin: 1rem 0 1.35rem !important;
-      padding: 0 0 0 1rem !important;
-      border-left: 2px solid var(--papers-line-strong) !important;
+      margin: 10px 0 !important;
+      padding: 0 0 0 12px !important;
+      border-left: 2px solid var(--papers-line) !important;
       border-radius: 0;
       background: transparent !important;
       box-shadow: none !important;
@@ -387,56 +407,72 @@ layout: compress
 
     .paper-day blockquote p {
       color: var(--papers-muted) !important;
-      font-size: 0.98rem !important;
-      line-height: 1.62 !important;
+      font-size: 0.88rem !important;
+      line-height: 1.6 !important;
       margin: 0 !important;
     }
 
-    .paper-day code {
-      border: 1px solid var(--papers-line) !important;
-      border-radius: 3px !important;
-      background: var(--papers-surface) !important;
-      color: var(--papers-ink) !important;
-      font-family: var(--papers-mono) !important;
-      font-size: 0.78em !important;
-      padding: 0.05rem 0.28rem !important;
+    /* Strength/weakness lists (legacy review content) */
+    .paper-day ul {
+      margin: 8px 0 !important;
+      padding-left: 1rem !important;
     }
 
-    .paper-day hr {
-      margin: 28px 0 0 !important;
-      border: 0 !important;
-      border-top: 1px solid var(--papers-line) !important;
+    .paper-day li {
+      color: var(--papers-muted) !important;
+      font-size: 0.85rem !important;
+      line-height: 1.55 !important;
+      margin: 0.25rem 0 !important;
     }
 
-    .score-badge {
+    .paper-day li strong:first-child {
+      color: var(--papers-accent);
+      font-weight: 600;
+    }
+
+    /* Metadata row */
+    .paper-meta {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0;
+      margin: 10px 0 0;
+      font-size: 0.78rem;
+      color: var(--papers-faint);
+      line-height: 1.4;
+    }
+
+    .paper-meta-item {
       display: inline-flex;
       align-items: center;
-      min-height: 1.35rem;
-      border-radius: 3px;
-      font-family: var(--papers-mono);
-      font-size: 0.76rem;
-      font-weight: 650;
-      line-height: 1;
-      margin-left: 0.28rem;
-      padding: 0.18rem 0.42rem;
-      vertical-align: middle;
     }
 
-    .score-high {
-      background: var(--papers-good);
-      color: #315a45;
+    .paper-meta-item + .paper-meta-item:before {
+      content: "·";
+      padding: 0 0.45rem;
+      color: var(--papers-line-strong);
     }
 
-    .score-mid {
-      background: var(--papers-accent-soft);
-      color: var(--papers-ink);
+    .paper-meta code {
+      border: 0 !important;
+      background: transparent !important;
+      color: var(--papers-faint) !important;
+      font-family: var(--papers-mono) !important;
+      font-size: 0.78em !important;
+      padding: 0 !important;
     }
 
-    .score-low {
-      background: var(--papers-low);
-      color: #8a462f;
+    .paper-meta .comment-note {
+      color: var(--papers-accent);
     }
 
+    .paper-divider {
+      margin: 28px 0 0;
+      border: 0;
+      border-top: 1px solid var(--papers-line);
+    }
+
+    /* Theme toggle */
     .papers-theme-toggle {
       position: fixed;
       right: 1.25rem;
@@ -449,7 +485,7 @@ layout: compress
       height: 2.5rem;
       border: 1px solid var(--papers-line);
       border-radius: 50%;
-      background: var(--papers-bg);
+      background: var(--papers-surface);
       color: var(--papers-ink);
       cursor: pointer;
     }
@@ -464,69 +500,38 @@ layout: compress
       color: var(--papers-muted) !important;
     }
 
-    html[data-theme="dark"] .score-high {
-      color: #cfe3d6;
-    }
-
-    html[data-theme="dark"] .score-low {
-      color: #efd1c5;
-    }
-
-    @media (max-width: 900px) {
+    @media (max-width: 640px) {
       .papers-shell {
-        width: min(100% - 32px, 760px);
-        padding: 42px 0 72px;
+        width: min(100% - 24px, 860px);
+        padding: 30px 0 60px;
       }
 
       .papers-header {
-        padding-bottom: 30px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
       }
 
-      .papers-main-grid {
-        display: block;
-        padding-top: 26px;
-      }
-
-      .papers-rail {
-        position: static;
-        display: grid;
-        grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
-        gap: 22px;
-        margin-bottom: 36px;
-      }
-
-      .paper-date-selector {
-        margin-bottom: 0;
-      }
-
-      .papers-stats {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 14px 18px;
-      }
-    }
-
-    @media (max-width: 560px) {
-      .papers-shell {
-        width: min(100% - 24px, 760px);
-        padding-top: 30px;
-      }
-
-      .papers-header h1 {
-        font-size: clamp(2.25rem, 15vw, 3.6rem) !important;
-      }
-
-      .papers-rail {
-        grid-template-columns: 1fr;
-      }
-
-      .papers-stats {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
+      .papers-stats-bar {
+        gap: 20px;
+        flex-wrap: wrap;
       }
 
       .paper-day h2 {
-        grid-template-columns: 1.8rem minmax(0, 1fr);
-        gap: 0.7rem;
-        font-size: 1.16rem !important;
+        font-size: 1.05rem !important;
+      }
+
+      .zh-abstract {
+        font-size: 0.92rem;
+        padding: 12px 14px;
+      }
+
+      .score-bar {
+        max-width: 120px;
+      }
+
+      .score-axes {
+        display: none;
       }
     }
     </style>
@@ -536,48 +541,192 @@ layout: compress
       var selector = document.getElementById('paper-date');
       if (selector) {
         selector.addEventListener('change', function() {
-          if (this.value) {
-            window.location.href = this.value;
-          }
+          if (this.value) window.location.href = this.value;
         });
       }
 
-      document.querySelectorAll('.paper-day strong').forEach(function(el) {
-        var text = el.textContent;
-        var match = text.match(/Score:\s*([\d.]+)\/10/);
-        if (!match) return;
-
-        var score = parseFloat(match[1]);
-        var cls = score >= 8 ? 'score-high' : score >= 6.5 ? 'score-mid' : 'score-low';
-        var badge = document.createElement('span');
-        badge.className = 'score-badge ' + cls;
-        badge.textContent = match[1] + '/10';
-        el.textContent = 'Score:';
-        el.appendChild(badge);
-
-        var rest = text.replace(/Score:\s*[\d.]+\/10/, '').trim();
-        if (rest) {
-          el.parentNode.insertBefore(document.createTextNode(' ' + rest), el.nextSibling);
-        }
-      });
-
-      document.querySelectorAll('.paper-day h2').forEach(function(h2, index) {
-        var rank = index + 1;
+      // Parse each h2 (paper entry) and restructure into a card
+      document.querySelectorAll('.paper-day h2').forEach(function(h2, idx) {
+        var rank = idx + 1;
         var firstNode = h2.firstChild;
-
         if (firstNode && firstNode.nodeType === Node.TEXT_NODE) {
-          var match = firstNode.textContent.match(/^\s*(\d+)\.\s*/);
-          if (match) {
-            rank = match[1];
+          var m = firstNode.textContent.match(/^\s*(\d+)\.\s*/);
+          if (m) {
+            rank = parseInt(m[1], 10);
             firstNode.textContent = firstNode.textContent.replace(/^\s*\d+\.\s*/, '');
           }
         }
 
-        var marker = document.createElement('span');
-        marker.className = 'rank-num';
-        marker.textContent = rank;
-        h2.insertBefore(marker, h2.firstChild);
+        // Find Score line and extract breakdown
+        var scoreVal = null, scoreAxes = "";
+        var next = h2.nextElementSibling;
+        var scoreStrong = null;
+        while (next && next.tagName !== 'H2') {
+          if (next.tagName === 'P') {
+            var strongs = next.querySelectorAll('strong');
+            for (var s of strongs) {
+              var sm = s.textContent.match(/Score:\s*([\d.]+)\/10/);
+              if (sm) {
+                scoreVal = parseFloat(sm[1]);
+                scoreStrong = s;
+                var am = s.textContent.match(/\(Obj:(\d+)\s+Id:(\d+)\s+Ind:(\d+)\s+Comp:(\d+)\s+Eff:(\d+)\s+Nov:(\d+)\s+Rep:(\d+)\)/);
+                if (am) {
+                  scoreAxes = "Obj " + am[1] + " · Id " + am[2] + " · Ind " + am[3] + " · Comp " + am[4] + " · Eff " + am[5] + " · Nov " + am[6] + " · Rep " + am[7];
+                }
+                s.textContent = '';
+                next.remove();
+                break;
+              }
+            }
+            if (scoreVal) break;
+          }
+          next = next.nextElementSibling;
+        }
+
+        // Build score bar
+        if (scoreVal !== null) {
+          var cls = scoreVal >= 7.5 ? 'high' : scoreVal >= 6 ? 'mid' : 'low';
+          var wrap = document.createElement('div');
+          wrap.className = 'score-bar-wrap';
+          wrap.innerHTML = '<div class="score-bar"><div class="score-bar-fill ' + cls + '" style="width:' + (scoreVal * 10) + '%"></div></div>'
+            + '<span class="score-num ' + cls + '">' + scoreVal.toFixed(1) + '/10</span>'
+            + (scoreAxes ? '<span class="score-axes">' + scoreAxes + '</span>' : '');
+          h2.parentNode.insertBefore(wrap, h2.nextSibling);
+        }
+
+        // Rank prefix
+        var rankSpan = document.createElement('span');
+        rankSpan.style.color = 'var(--papers-accent)';
+        rankSpan.style.fontFamily = 'var(--papers-mono)';
+        rankSpan.style.fontSize = '0.78em';
+        rankSpan.style.fontWeight = '600';
+        rankSpan.style.marginRight = '0.5em';
+        rankSpan.textContent = String(rank).padStart(2, '0');
+        h2.insertBefore(rankSpan, h2.firstChild);
+
+        // Promote 中文摘要 to highlighted block
+        var blockquote = null;
+        var zhContent = null;
+        var sibling = h2.nextElementSibling;
+        while (sibling && sibling.tagName !== 'H2') {
+          if (sibling.tagName === 'BLOCKQUOTE') {
+            blockquote = sibling;
+            var p = sibling.querySelector('p');
+            if (p) {
+              var tm = p.textContent.match(/(?:\*\*)?中文摘要[：:]\s*\*?\*?(.+)/);
+              if (tm) {
+                zhContent = tm[1].trim();
+                sibling.remove();
+                break;
+              }
+            }
+          }
+          sibling = sibling.nextElementSibling;
+        }
+
+        if (zhContent) {
+          var zhBlock = document.createElement('div');
+          zhBlock.className = 'zh-abstract';
+          zhBlock.innerHTML = '<span class="zh-abstract-label">中文摘要</span>' + zhContent;
+          var insertAfter = scoreVal !== null ? h2.nextElementSibling : h2;
+          while (insertAfter && insertAfter.tagName === 'DIV' && insertAfter.classList.contains('score-bar-wrap')) {
+            insertAfter = insertAfter.nextElementSibling;
+          }
+          if (insertAfter === h2) {
+            h2.parentNode.insertBefore(zhBlock, h2.nextSibling);
+          } else {
+            insertAfter.parentNode.insertBefore(zhBlock, insertAfter);
+          }
+        }
+
+        // Build metadata row from remaining p tags (Authors, Categories, comment)
+        var metaP = null;
+        var metaItems = [];
+        var sib = h2.nextElementSibling;
+        while (sib && sib.tagName !== 'H2') {
+          if (sib.tagName === 'P') {
+            var txt = sib.textContent;
+            var am = txt.match(/Authors:\s*(.+)/);
+            var cm = txt.match(/Categories:\s*(.+)/);
+            var pipeM = txt.match(/\|\s*(.+)/);
+            if (am) metaItems.push('<span class="paper-meta-item">' + am[1].trim() + '</span>');
+            if (cm) metaItems.push('<span class="paper-meta-item"><code>' + cm[1].trim().replace(/`/g, '') + '</code></span>');
+            if (pipeM && pipeM[1].trim()) metaItems.push('<span class="paper-meta-item comment-note">' + pipeM[1].trim() + '</span>');
+            if (am || cm) {
+              sib.remove();
+              sib = h2.nextElementSibling;
+              continue;
+            }
+          }
+          sib = sib.nextElementSibling;
+        }
+
+        if (metaItems.length) {
+          var meta = document.createElement('div');
+          meta.className = 'paper-meta';
+          meta.innerHTML = metaItems.join('');
+          // append at end of card (after blockquote)
+          var last = h2;
+          var sib2 = h2.nextElementSibling;
+          while (sib2 && sib2.tagName !== 'H2' && sib2.tagName !== 'HR') {
+            last = sib2;
+            sib2 = sib2.nextElementSibling;
+          }
+          last.parentNode.insertBefore(meta, last.nextSibling);
+        }
+
+        // Add divider before next paper (except after last)
+        var nextH2 = h2.nextElementSibling;
+        while (nextH2 && nextH2.tagName !== 'H2') {
+          nextH2 = nextH2.nextElementSibling;
+        }
+        if (nextH2 && nextH2.tagName === 'H2') {
+          var div = document.createElement('hr');
+          div.className = 'paper-divider';
+          h2.parentNode.insertBefore(div, nextH2);
+        }
       });
+
+      // Compute stats from score bars
+      var scores = [];
+      document.querySelectorAll('.score-num').forEach(function(el) {
+        var m = el.textContent.match(/([\d.]+)\/10/);
+        if (m) scores.push(parseFloat(m[1]));
+      });
+      if (scores.length) {
+        var sum = scores.reduce(function(a, b) { return a + b; }, 0);
+        var avg = sum / scores.length;
+        var top = Math.max.apply(null, scores);
+        var fmt = function(n) { return n.toFixed(1); };
+        var sScored = document.getElementById('stat-scored');
+        var sAvg = document.getElementById('stat-avg');
+        var sTop = document.getElementById('stat-top');
+        if (sScored) sScored.textContent = scores.length;
+        if (sAvg) sAvg.textContent = fmt(avg);
+        if (sTop) sTop.textContent = fmt(top);
+      }
+
+      // Theme toggle
+      var toggle = document.getElementById('theme-toggle');
+      var icon = document.getElementById('theme-icon');
+      function updateIcon() {
+        var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+        if (icon) icon.className = dark ? 'fas fa-moon' : 'fas fa-sun';
+      }
+      updateIcon();
+      if (toggle) {
+        toggle.addEventListener('click', function() {
+          var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+          if (dark) {
+            document.documentElement.removeAttribute('data-theme');
+            localStorage.setItem('theme', 'light');
+          } else {
+            document.documentElement.setAttribute('data-theme', 'dark');
+            localStorage.setItem('theme', 'dark');
+          }
+          updateIcon();
+        });
+      }
     });
     </script>
   </body>
