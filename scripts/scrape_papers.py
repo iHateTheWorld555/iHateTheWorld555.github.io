@@ -338,7 +338,7 @@ def generate_markdown(date: str, papers: list[dict]) -> str:
         if p["comment"]:
             lines.append(f'  | {p["comment"]}')
         lines.append("")
-        lines.append(f'> {p["summary"][:500]}')
+        lines.append(f'> {p["summary"]}')
         lines.append("")
         lines.append("---")
         lines.append("")

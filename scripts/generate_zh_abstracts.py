@@ -17,6 +17,19 @@ LAUNCHER = REPO_ROOT / "scripts" / "claude_review_ccc_launcher.sh"
 CONFIG_DIR = REPO_ROOT / ".claude-review"
 PAPERS_DIR = REPO_ROOT / "_papers"
 
+BAD_PATTERNS = [
+    "英文摘要不完整", "让我尝试", "让我查找", "让我搜索", "我来尝试", "让我来",
+    "让我翻译", "我来概括", "让我总结", "我需要", "我来写", "让我写",
+    "我无法", "无法获取", "无法访问", "摘要不完整", "完整摘要",
+    "用户希望我", "用户想让我", "用户要求", "要写准确的中文摘要",
+    "需要先看到", "我用 WebFetch", "我使用", "我来为", "我去 arXiv",
+    "我尝试", "我直接根据", "基于您提供", "如需更精确",
+]
+
+
+def is_bad(zh: str) -> bool:
+    return any(p in zh for p in BAD_PATTERNS)
+
 
 def parse_papers(md_path: Path) -> list[dict]:
     text = md_path.read_text("utf-8")
@@ -29,7 +42,8 @@ def parse_papers(md_path: Path) -> list[dict]:
         url = header.group(2)
         m = re.search(r"^>\s*(.+?)(?:\n---|\n##|\Z)", section, re.M | re.S)
         abstract = re.sub(r"\s+", " ", m.group(1)).strip() if m else ""
-        has_zh = "**中文摘要：**" in section or "**中文摘要:**" in section
+        zh_m = re.search(r"\*\*中文摘要[：:]\*\*\s*(.+)", section)
+        has_zh = bool(zh_m) and not is_bad(zh_m.group(1))
         papers.append({
             "title": title,
             "url": url,
@@ -43,7 +57,8 @@ def parse_papers(md_path: Path) -> list[dict]:
 def gen_zh(title: str, abstract: str) -> str:
     prompt = (
         f"请用中文写一段3-5句的摘要，概括这篇arXiv论文的核心问题、方法和主要结果。"
-        f"只输出中文摘要正文，不要加任何前缀或标题，输出为一段连续文本。\n\n"
+        f"只输出中文摘要正文，不要加任何前缀、不要加标题、不要解释你在做什么、"
+        f"不要提到用户、摘要、翻译等元话语。直接输出摘要内容。\n\n"
         f"标题：{title}\n英文摘要：{abstract}"
     )
     cmd = [
@@ -114,11 +129,13 @@ def main() -> None:
         for i, p in enumerate(todo, 1):
             print(f"  [{i}/{len(todo)}] {p['title'][:60]}", flush=True)
             zh = gen_zh(p["title"], p["abstract"])
-            if zh:
+            if zh and not is_bad(zh):
                 zh_map[p["url"]] = zh
                 done += 1
+            elif zh:
+                print(f"    [FAIL: meta-commentary] {zh[:60]}", flush=True)
             else:
-                print(f"    [FAIL]", flush=True)
+                print(f"    [FAIL: empty]", flush=True)
             time.sleep(0.3)
         if zh_map:
             inject_zh(md, papers, zh_map)
