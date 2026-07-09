@@ -27,6 +27,9 @@ layout: compress
     <title>{% if page.title %}{{ page.title | escape }}{% else %}{{ site.title | escape }}{% endif %} | {{ site.name | default: site.title }}</title>
     {% include head.html %}
     {% include head/custom.html %}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Serif+SC:wght@400;500;600&display=swap" rel="stylesheet">
     <script>
       (function() {
         var theme = localStorage.getItem('theme');
@@ -113,8 +116,9 @@ layout: compress
       --papers-mid-soft: #efe1d8;
       --papers-low: #948b7f;
       --papers-low-soft: #e0dad0;
-      --papers-font: "Anthropic Sans", "Helvetica Neue", Helvetica, Arial, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
-      --papers-mono: "Anthropic Mono", "JetBrains Mono", "SFMono-Regular", Consolas, monospace;
+      --papers-font: "Inter", "Helvetica Neue", Helvetica, Arial, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      --papers-zh-font: "Noto Serif SC", "Source Han Serif SC", "思源宋体", "Songti SC", "STSong", serif;
+      --papers-mono: "JetBrains Mono", "SFMono-Regular", Consolas, monospace;
     }
 
     html[data-theme="dark"] {
@@ -184,26 +188,27 @@ layout: compress
       margin: 0 0 12px !important;
       color: var(--papers-accent) !important;
       font: 600 0.78rem/1.2 var(--papers-font) !important;
-      letter-spacing: 0.06em !important;
+      letter-spacing: 0.08em !important;
       text-transform: uppercase;
     }
 
     .papers-header h1 {
       margin: 0 !important;
       color: var(--papers-ink) !important;
-      font-family: var(--papers-font) !important;
+      font-family: var(--papers-zh-font), var(--papers-font) !important;
       font-size: clamp(1.8rem, 4vw, 2.6rem) !important;
-      font-weight: 550 !important;
-      letter-spacing: -0.01em !important;
-      line-height: 1.15 !important;
+      font-weight: 600 !important;
+      letter-spacing: 0.02em !important;
+      line-height: 1.2 !important;
     }
 
     .papers-dek {
       max-width: 560px;
       margin: 14px 0 0 !important;
       color: var(--papers-muted) !important;
+      font-family: var(--papers-zh-font), var(--papers-font) !important;
       font-size: 0.95rem !important;
-      line-height: 1.55 !important;
+      line-height: 1.6 !important;
     }
 
     .papers-meta {
@@ -268,6 +273,7 @@ layout: compress
 
     .stat-label {
       color: var(--papers-faint);
+      font-family: var(--papers-zh-font), var(--papers-font);
       font-size: 0.68rem;
       font-weight: 600;
       letter-spacing: 0.05em;
@@ -381,14 +387,16 @@ layout: compress
       border-left: 2px solid var(--papers-accent);
       border-radius: 0 4px 4px 0;
       color: var(--papers-ink);
+      font-family: var(--papers-zh-font), var(--papers-font);
       font-size: 0.96rem;
-      line-height: 1.72;
+      line-height: 1.78;
     }
 
     .zh-abstract-label {
       display: block;
       margin-bottom: 4px;
       color: var(--papers-accent);
+      font-family: var(--papers-font);
       font-size: 0.68rem;
       font-weight: 650;
       letter-spacing: 0.06em;
