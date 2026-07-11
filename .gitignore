@@ -7,6 +7,8 @@ local/
 
 # Ignore the Gemfile that is generated
 Gemfile.lock
+logs/
+.jekyll-metadata
 
 # Ignore files created by npm
 node_modules

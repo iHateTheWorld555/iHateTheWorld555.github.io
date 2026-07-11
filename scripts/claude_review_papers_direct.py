@@ -34,6 +34,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--dry-run", action="store_true")
     parser.add_argument("--commit", action="store_true")
     parser.add_argument("--push", action="store_true")
+    parser.add_argument("--push-branch", default=os.getenv("PAPER_REVIEW_PUSH_BRANCH", "master"))
     parser.add_argument("--review-dir", default=os.getenv("PAPER_REVIEW_DIR", "_paper_reviews"))
     parser.add_argument("--provider", default=os.getenv("CLAUDE_REVIEW_PROVIDER", "glm51ascend"))
     parser.add_argument("--model", default=os.getenv("CLAUDE_REVIEW_MODEL") or None)
@@ -333,10 +334,14 @@ def git_commit(args: argparse.Namespace, date: str) -> None:
     diff = subprocess.run(["git", "diff", "--cached", "--quiet"], cwd=REPO_ROOT)
     if diff.returncode == 0:
         print("No staged changes to commit.")
-        return
-    subprocess.run(["git", "commit", "-m", f"papers: claude reviews {date}"], cwd=REPO_ROOT, check=True)
+    else:
+        subprocess.run(["git", "commit", "-m", f"papers: claude reviews {date}"], cwd=REPO_ROOT, check=True)
     if args.push:
-        subprocess.run(["git", "push", "-u", "origin", "HEAD"], cwd=REPO_ROOT, check=True)
+        subprocess.run(
+            ["git", "push", "origin", f"HEAD:{args.push_branch}"],
+            cwd=REPO_ROOT,
+            check=True,
+        )
 
 
 def main() -> None:
@@ -364,14 +369,18 @@ def main() -> None:
             print(f"- {paper['arxiv_id']} {paper['title']}")
         return
 
+    failures = []
     for paper in selected:
         try:
             run_review(args, date, paper)
         except Exception as exc:
             print(f"  [FAIL] {paper['arxiv_id']}: {exc}", flush=True)
+            failures.append(paper["arxiv_id"])
 
     if args.commit:
         git_commit(args, date)
+    if failures:
+        raise SystemExit(f"{len(failures)} review(s) failed: {', '.join(failures)}")
 
 
 if __name__ == "__main__":

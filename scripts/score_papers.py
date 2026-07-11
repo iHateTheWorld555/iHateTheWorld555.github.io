@@ -438,6 +438,12 @@ def main():
         rewrite_paper_file(filepath, papers, scores)
         log.info("Written scores to %s", filepath)
 
+    # A partial score pass must be observable by the workflow so it can retry
+    # the remaining papers instead of publishing an incomplete daily digest.
+    if len(scores) != len(papers):
+        log.error("Scoring incomplete: %d/%d papers succeeded", len(scores), len(papers))
+        sys.exit(1)
+
 
 if __name__ == "__main__":
     main()
