@@ -12,6 +12,7 @@ Output: one markdown file per day in _papers/YYYY-MM-DD.md
 """
 
 import logging
+import os
 import re
 import sys
 import time
@@ -78,6 +79,7 @@ CORE_CATEGORIES_SET = set(CORE_CATEGORIES)
 
 ARXIV_API = "https://export.arxiv.org/api/query"
 PAGE_SIZE = 200  # max results per request (arxiv max=2000, 200 is safer)
+LOOKBACK_DAYS = int(os.getenv("PAPER_SCRAPE_LOOKBACK_DAYS", "7"))
 MAX_RETRIES = 7
 BACKOFF_BASE = 15.0
 BACKOFF_CAP = 120.0
@@ -369,7 +371,7 @@ def main():
     PAPERS_DIR.mkdir(exist_ok=True)
 
     core_q, cross_q = build_queries()
-    date_q = recent_date_filter(days=3)
+    date_q = recent_date_filter(days=LOOKBACK_DAYS)
 
     log.info("Fetching core categories: %s", CORE_CATEGORIES)
     papers = fetch_papers(f"({core_q}) AND {date_q}")
@@ -382,7 +384,7 @@ def main():
     log.info("  Got %d papers from cross categories", len(cross_papers))
 
     all_papers = deduplicate(papers + cross_papers)
-    all_papers = filter_recent(all_papers, days=3)
+    all_papers = filter_recent(all_papers, days=LOOKBACK_DAYS)
     all_papers = filter_excluded(all_papers)
     all_papers = filter_cross_by_title(all_papers)
     log.info("Total after dedup+filter+exclude: %d papers", len(all_papers))

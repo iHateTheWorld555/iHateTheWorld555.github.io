@@ -47,7 +47,8 @@ python3 scripts/scrape_papers.py
 if [[ -n "${1:-}" ]]; then
   target_dates=("$1")
 else
-  cutoff="$(date -u -d '3 days ago' +%Y-%m-%d)"
+  lookback_days="${PAPER_SCRAPE_LOOKBACK_DAYS:-7}"
+  cutoff="$(date -u -d "$lookback_days days ago" +%Y-%m-%d)"
   mapfile -t target_dates < <(
     find _papers -maxdepth 1 -type f -name '????-??-??.md' -printf '%f\n' \
       | sed 's/\.md$//' | awk -v cutoff="$cutoff" '$0 >= cutoff' | sort -r
