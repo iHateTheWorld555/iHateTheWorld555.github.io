@@ -36,7 +36,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--push", action="store_true")
     parser.add_argument("--push-branch", default=os.getenv("PAPER_REVIEW_PUSH_BRANCH", "master"))
     parser.add_argument("--review-dir", default=os.getenv("PAPER_REVIEW_DIR", "_paper_reviews"))
-    parser.add_argument("--provider", default=os.getenv("CLAUDE_REVIEW_PROVIDER", "glm51ascend"))
+    parser.add_argument("--provider", default=os.getenv("CLAUDE_REVIEW_PROVIDER", "glm52"))
     parser.add_argument("--model", default=os.getenv("CLAUDE_REVIEW_MODEL") or None)
     parser.add_argument("--launcher", default=os.getenv("CLAUDE_REVIEW_LAUNCHER", str(DEFAULT_LAUNCHER)))
     parser.add_argument("--config-dir", default=os.getenv("CLAUDE_REVIEW_CONFIG_DIR", str(REPO_ROOT / ".claude-review")))

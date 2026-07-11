@@ -34,7 +34,7 @@ if [[ -f "$ENV_FILE" ]]; then
   source "$ENV_FILE"
 fi
 
-provider="${1:-glm51ascend}"
+provider="${1:-glm52}"
 case "$provider" in
   glm51ascend)
     shift || true

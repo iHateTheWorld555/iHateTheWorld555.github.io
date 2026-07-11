@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Score daily arxiv papers based on research taste axioms.
 
-Uses internal glm5.1-w4a8 API (ccc glm51ascend) for scoring.
+Uses the internal GLM inference API for scoring.
 Fetches paper HTML from arxiv when available, falls back to abstract.
 
 Six axioms (effect+novelty prioritized):
@@ -37,8 +37,11 @@ PAPERS_DIR = REPO_ROOT / "_papers"
 
 # Internal API config (same as ccc glm51ascend)
 INF_API_KEY = os.getenv("INF_API_KEY")
-INF_BASE_URL = "https://9obb5eeg99okcgjmhmh8kp5ekqj5ejeh.openapi-sj.sii.edu.cn/v1"
-MODEL = "glm5.1-w4a8"
+INF_BASE_URL = os.getenv(
+    "PAPER_SCORE_BASE_URL",
+    "https://kkdam8deopmhch9cjd8qoghcpjdhh8ch.openapi-sj.sii.edu.cn/v1",
+)
+MODEL = os.getenv("PAPER_SCORE_MODEL", "GLM-5.2-w4a8")
 
 SCORING_PROMPT = """你是一位音频/语音/音乐ML领域的研究品味评审。基于六条科研公理给论文打分。
 偏好：效果好的论文、创新的论文给高分；过于拘泥于数学但效果一般的论文不给高分。
@@ -395,7 +398,11 @@ def main():
         sys.exit(0)
 
     # Create httpx client for internal API
-    client = httpx.Client(timeout=180, follow_redirects=True)
+    # The machine-wide proxy is intended for public internet access, but the
+    # internal inference endpoint must be reached directly (the CC launcher
+    # follows the same rule). Otherwise requests fail immediately at the local
+    # proxy and enter the long retry loop.
+    client = httpx.Client(timeout=180, follow_redirects=True, trust_env=False)
 
     scores = {}
     for i, paper in enumerate(papers):

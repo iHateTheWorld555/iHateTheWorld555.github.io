@@ -16,7 +16,7 @@ import re
 import sys
 import time
 import xml.etree.ElementTree as ET
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 import httpx
@@ -92,6 +92,7 @@ USER_AGENT = (
 )
 
 NS = {"atom": "http://www.w3.org/2005/Atom", "arxiv": "http://arxiv.org/schemas/atom"}
+OPENSEARCH_NS = "http://a9.com/-/spec/opensearch/1.1/"
 WS_RE = re.compile(r"\s+")
 RETRY_STATUSES = {429, 500, 502, 503, 504}
 
@@ -164,7 +165,7 @@ def request_with_retry(client: httpx.Client, params: dict) -> str:
     raise RuntimeError("ArXiv request exhausted retries")
 
 
-def fetch_papers(query: str, max_results: int = 2000) -> list[dict]:
+def fetch_papers(query: str, max_results: int | None = None) -> list[dict]:
     """Fetch papers from arxiv API with pagination."""
     client = httpx.Client(
         timeout=REQUEST_TIMEOUT,
@@ -174,17 +175,23 @@ def fetch_papers(query: str, max_results: int = 2000) -> list[dict]:
     all_papers = []
     start = 0
     parse_failures = 0
+    total_results: int | None = None
 
     try:
         while True:
+            page_size = PAGE_SIZE
+            if max_results is not None:
+                page_size = min(PAGE_SIZE, max_results - start)
+                if page_size <= 0:
+                    break
             params = {
                 "search_query": query,
                 "sortBy": "submittedDate",
                 "sortOrder": "descending",
-                "max_results": str(min(max_results - start, PAGE_SIZE)),
+                "max_results": str(page_size),
                 "start": str(start),
             }
-            log.info("Fetching start=%d max=%d", start, min(max_results, PAGE_SIZE))
+            log.info("Fetching start=%d max=%d", start, page_size)
             body = request_with_retry(client, params)
 
             try:
@@ -195,6 +202,13 @@ def fetch_papers(query: str, max_results: int = 2000) -> list[dict]:
                     raise RuntimeError("ArXiv returned non-Atom body 3 times, giving up")
                 log.warning("ArXiv returned non-Atom body (attempt %d/3), retrying", parse_failures)
                 continue
+
+            if total_results is None:
+                total_text = root.findtext(f"{{{OPENSEARCH_NS}}}totalResults")
+                total_results = int(total_text or 0)
+                if max_results is not None:
+                    total_results = min(total_results, max_results)
+                log.info("Query reports %d total results", total_results)
 
             entries = root.findall("atom:entry", NS)
             if not entries:
@@ -233,10 +247,8 @@ def fetch_papers(query: str, max_results: int = 2000) -> list[dict]:
                 })
                 page_count += 1
 
-            if page_count < PAGE_SIZE:
-                break
-            start += PAGE_SIZE
-            if start >= max_results:
+            start += page_size
+            if page_count < page_size or start >= (total_results or 0):
                 break
             time.sleep(3)  # polite delay between pages
     finally:
@@ -265,8 +277,15 @@ def deduplicate(papers: list[dict]) -> list[dict]:
 
 
 def filter_recent(papers: list[dict], days: int = 3) -> list[dict]:
-    cutoff = (datetime.now() - timedelta(days=days)).strftime("%Y-%m-%d")
+    cutoff = (datetime.now(timezone.utc) - timedelta(days=days)).strftime("%Y-%m-%d")
     return [p for p in papers if p["date"] >= cutoff]
+
+
+def recent_date_filter(days: int = 3) -> str:
+    """Return an API-side UTC date window so pagination cannot truncate recency."""
+    now = datetime.now(timezone.utc)
+    cutoff = now - timedelta(days=days)
+    return f"submittedDate:[{cutoff:%Y%m%d}0000 TO {now:%Y%m%d}2359]"
 
 
 def filter_excluded(papers: list[dict]) -> list[dict]:
@@ -350,15 +369,16 @@ def main():
     PAPERS_DIR.mkdir(exist_ok=True)
 
     core_q, cross_q = build_queries()
+    date_q = recent_date_filter(days=3)
 
     log.info("Fetching core categories: %s", CORE_CATEGORIES)
-    papers = fetch_papers(core_q)
+    papers = fetch_papers(f"({core_q}) AND {date_q}")
     log.info("  Got %d papers from core categories", len(papers))
 
     time.sleep(5)  # delay between queries
 
     log.info("Fetching cross categories with keywords")
-    cross_papers = fetch_papers(cross_q)
+    cross_papers = fetch_papers(f"({cross_q}) AND {date_q}")
     log.info("  Got %d papers from cross categories", len(cross_papers))
 
     all_papers = deduplicate(papers + cross_papers)
