@@ -18,6 +18,7 @@ from sync_review_scores import parse_review, sync_file
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_LAUNCHER = REPO_ROOT / "scripts" / "claude_review_ccc_launcher.sh"
+OMC_PLUGIN_ROOT = Path("/root/.claude/plugins/marketplaces/oh-my-claudecode")
 DEFAULT_SKILLS = [
     "/root/.claude/skills/review-paper",
     "/root/.claude/skills/paper-wiki",
@@ -105,7 +106,7 @@ def ensure_config_dir(config_dir: Path) -> None:
     # (no SessionStart hooks of its own), so enabling it does not reintroduce
     # the hook-caused hangs that motivated the isolated config in the first
     # place. claude-mem and other plugins stay disabled.
-    omc_root = Path("/root/.claude/plugins/marketplaces/oh-my-claudecode")
+    omc_root = OMC_PLUGIN_ROOT
     (config_dir / "settings.json").write_text(
         json.dumps(
             {
@@ -133,6 +134,71 @@ def ensure_config_dir(config_dir: Path) -> None:
         if dst.exists() or dst.is_symlink():
             continue
         dst.symlink_to(src, target_is_directory=True)
+
+    mcp_server = find_omc_mcp_server()
+    state_path = config_dir / ".claude.json"
+    try:
+        state = json.loads(state_path.read_text(encoding="utf-8")) if state_path.exists() else {}
+    except json.JSONDecodeError as exc:
+        raise RuntimeError(f"Invalid isolated Claude state: {state_path}") from exc
+    state.setdefault("mcpServers", {})["omc-wiki"] = {
+        "type": "stdio",
+        "command": "node",
+        "args": [str(mcp_server)],
+        "env": {},
+    }
+    state_path.write_text(json.dumps(state, indent=2) + "\n", encoding="utf-8")
+    state_path.chmod(0o600)
+    probe_omc_mcp(mcp_server)
+
+
+def find_omc_mcp_server() -> Path:
+    candidates = list(Path("/root/.claude/plugins/cache/oh-my-claudecode/oh-my-claudecode").glob("*/bridge/mcp-server.cjs"))
+    candidates.append(OMC_PLUGIN_ROOT / "bridge" / "mcp-server.cjs")
+    available = [path for path in candidates if path.is_file()]
+    if not available:
+        raise RuntimeError("OMC MCP server bundle not found")
+    return max(available, key=lambda path: path.stat().st_mtime)
+
+
+def probe_omc_mcp(server_path: Path) -> None:
+    requests = [
+        {
+            "jsonrpc": "2.0",
+            "id": 1,
+            "method": "initialize",
+            "params": {
+                "protocolVersion": "2025-03-26",
+                "capabilities": {},
+                "clientInfo": {"name": "daily-paper-review-probe", "version": "1"},
+            },
+        },
+        {"jsonrpc": "2.0", "method": "notifications/initialized", "params": {}},
+        {"jsonrpc": "2.0", "id": 2, "method": "tools/list", "params": {}},
+    ]
+    payload = "\n".join(json.dumps(request) for request in requests) + "\n"
+    try:
+        result = subprocess.run(
+            ["node", str(server_path)],
+            input=payload,
+            text=True,
+            capture_output=True,
+            timeout=20,
+            check=True,
+        )
+    except (subprocess.SubprocessError, OSError) as exc:
+        raise RuntimeError(f"OMC MCP preflight failed: {exc}") from exc
+    responses = []
+    for line in result.stdout.splitlines():
+        try:
+            responses.append(json.loads(line))
+        except json.JSONDecodeError:
+            continue
+    tools_response = next((item for item in responses if item.get("id") == 2), None)
+    names = {tool.get("name") for tool in (tools_response or {}).get("result", {}).get("tools", [])}
+    required = {"wiki_query", "wiki_ingest"}
+    if not required.issubset(names):
+        raise RuntimeError(f"OMC MCP preflight missing tools: {', '.join(sorted(required - names))}")
 
 
 def review_path(args: argparse.Namespace, date: str, paper: dict) -> Path:
@@ -255,6 +321,8 @@ def run_review(args: argparse.Namespace, date: str, paper: dict) -> None:
     assistant_text_parts: list[str] = []
     result_obj = {}
     full_text_tool_evidence = False
+    wiki_tool_registered = False
+    wiki_query_used = False
 
     with subprocess.Popen(
         cmd,
@@ -286,9 +354,11 @@ def run_review(args: argparse.Namespace, date: str, paper: dict) -> None:
                 continue
             if msg.get("type") == "system" and msg.get("subtype") == "init":
                 session_id = msg.get("session_id", "")
+                wiki_tool_registered = any(str(tool).endswith("wiki_query") for tool in msg.get("tools", []))
                 print(f"  session: {session_id}", flush=True)
             elif msg.get("type") == "assistant":
                 full_text_tool_evidence = full_text_tool_evidence or _has_full_text_tool_evidence(msg, paper["arxiv_id"])
+                wiki_query_used = wiki_query_used or _uses_tool(msg, "wiki_query")
                 text = _assistant_text(msg)
                 if text:
                     assistant_text_parts.append(text)
@@ -315,6 +385,10 @@ def run_review(args: argparse.Namespace, date: str, paper: dict) -> None:
         raise RuntimeError(f"No result text captured; see {log_path}")
     if not full_text_tool_evidence:
         raise RuntimeError(f"No tool evidence that the full paper was read; see {log_path}")
+    if not wiki_tool_registered:
+        raise RuntimeError(f"OMC wiki_query was not registered in Claude Code; see {log_path}")
+    if not wiki_query_used:
+        raise RuntimeError(f"OMC wiki_query was registered but not used; see {log_path}")
     try:
         parse_review(result_text)
     except ValueError as exc:
@@ -359,6 +433,13 @@ def _has_full_text_tool_evidence(msg: dict, arxiv_id: str) -> bool:
     return False
 
 
+def _uses_tool(msg: dict, tool_name: str) -> bool:
+    return any(
+        chunk.get("type") == "tool_use" and str(chunk.get("name", "")).endswith(tool_name)
+        for chunk in msg.get("message", {}).get("content", [])
+    )
+
+
 def git_commit(args: argparse.Namespace, date: str) -> None:
     subprocess.run(["git", "add", "_papers", args.review_dir], cwd=REPO_ROOT, check=True)
     diff = subprocess.run(["git", "diff", "--cached", "--quiet"], cwd=REPO_ROOT)
@@ -372,6 +453,22 @@ def git_commit(args: argparse.Namespace, date: str) -> None:
             cwd=REPO_ROOT,
             check=True,
         )
+        local_sha = subprocess.check_output(
+            ["git", "rev-parse", "HEAD"],
+            cwd=REPO_ROOT,
+            text=True,
+        ).strip()
+        remote_line = subprocess.check_output(
+            ["git", "ls-remote", "origin", f"refs/heads/{args.push_branch}"],
+            cwd=REPO_ROOT,
+            text=True,
+        ).strip()
+        remote_sha = remote_line.split()[0] if remote_line else ""
+        if remote_sha != local_sha:
+            raise RuntimeError(
+                f"Push verification failed: local {local_sha}, remote {remote_sha or 'missing'}"
+            )
+        print(f"Verified origin/{args.push_branch} at {local_sha}")
 
 
 def main() -> None:
