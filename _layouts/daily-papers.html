@@ -61,7 +61,7 @@ layout: compress
 
           <div class="papers-date-nav">
             <label for="paper-date">日期</label>
-            <select id="paper-date" aria-label="选择日期">
+            <select id="paper-date" aria-label="选择日期" onchange="if (this.value) window.location.assign(this.value);">
               {% for p in all_papers %}
                 {% assign p_date = p.date | date: "%Y-%m-%d" %}
                 <option value="{% if forloop.first %}{{ '/daily-papers/' | relative_url }}{% else %}{{ p.url | relative_url }}{% endif %}"{% if p_date == current_date %} selected{% endif %}>{{ p_date }}</option>
@@ -546,13 +546,6 @@ layout: compress
 
     <script>
     document.addEventListener('DOMContentLoaded', function() {
-      var selector = document.getElementById('paper-date');
-      if (selector) {
-        selector.addEventListener('change', function() {
-          if (this.value) window.location.href = this.value;
-        });
-      }
-
       // Parse each h2 (paper entry) and restructure into a card
       document.querySelectorAll('.paper-day h2').forEach(function(h2, idx) {
         var rank = idx + 1;
