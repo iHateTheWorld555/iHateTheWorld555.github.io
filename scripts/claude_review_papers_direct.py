@@ -385,8 +385,14 @@ def main() -> None:
     for paper in papers:
         if args.arxiv_id and paper["arxiv_id"] not in args.arxiv_id:
             continue
-        if not args.force and review_path(args, date, paper).exists():
-            continue
+        existing_review = review_path(args, date, paper)
+        if not args.force and existing_review.exists():
+            try:
+                parse_review(existing_review.read_text(encoding="utf-8"))
+            except ValueError as exc:
+                print(f"Existing review is invalid and will be retried: {paper['arxiv_id']} ({exc})")
+            else:
+                continue
         selected.append(paper)
         if args.max and len(selected) >= args.max:
             break
