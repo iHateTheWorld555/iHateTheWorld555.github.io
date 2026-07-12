@@ -64,4 +64,14 @@ for target_date in "${target_dates[@]}"; do
   fi
 done
 
+# Reviews produced before OMC wiki was registered contain a false
+# "MCP unavailable" evidence note. Repair them only after today's papers, so
+# catch-up work can never delay the current daily update. Each repaired paper
+# is committed, pushed, and checked against origin/master by the reviewer.
+if [[ "${PAPER_REVIEW_REPAIR_LEGACY_WIKI:-1}" == "1" ]]; then
+  if ! bash scripts/repair_legacy_wiki_reviews.sh; then
+    echo "Warning: some legacy wiki reviews remain queued for the next daily run" >&2
+  fi
+fi
+
 echo "$(date -u +'%Y-%m-%dT%H:%M:%SZ') paper workflow completed for ${target_dates[*]}"
