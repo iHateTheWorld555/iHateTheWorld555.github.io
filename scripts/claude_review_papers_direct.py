@@ -13,6 +13,8 @@ import sys
 import time
 from pathlib import Path
 
+from sync_review_scores import parse_review, sync_file
+
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_LAUNCHER = REPO_ROOT / "scripts" / "claude_review_ccc_launcher.sh"
@@ -29,6 +31,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--date")
     parser.add_argument("--max", type=int, default=int(os.getenv("PAPER_REVIEW_MAX", "0")))
     parser.add_argument("--force", action="store_true")
+    parser.add_argument("--arxiv-id", action="append", default=[], help="Only review the specified arXiv ID; repeatable")
     parser.add_argument("--scrape", action="store_true", default=True)
     parser.add_argument("--no-scrape", action="store_false", dest="scrape")
     parser.add_argument("--dry-run", action="store_true")
@@ -73,9 +76,7 @@ def parse_papers(date: str) -> list[dict]:
                 "arxiv_id": url.rsplit("/abs/", 1)[1],
                 "authors": _line(section, "Authors"),
                 "categories": _code_line(section, "Categories"),
-                "score": _score(section),
                 "summary": re.sub(r"\s+", " ", summary.group(1)).strip() if summary else "",
-                "section": section.strip(),
             }
         )
     return papers
@@ -146,7 +147,8 @@ def build_prompt(paper: dict) -> str:
 
 要求：
 - 按 review-paper skill 的七条公理输出最终 Markdown review。
-- 尽量读取 arXiv 论文全文；如果只能读摘要，要明确说明。
+- **必须先通过工具读取 arXiv HTML 或 PDF 全文，再进行评分**。不能把输入中的摘要或截断文本当作全文。
+- 如果全文确实无法获取，本次 review 必须失败，不得根据摘要输出正式分数。
 - 按 skill 使用可用的 Bash/Read/Web/paper-wiki/free-search 工具建立事实锚点（Step 1-4 必须读 wiki）。
 - 如果某个查询或工具失败，直接写失败原因，不要假装查过。
 - 不要修改当前 git 仓库文件。
@@ -184,6 +186,13 @@ def build_prompt(paper: dict) -> str:
 - **研究阶段（Step 0-3）最多用 15 turns**：读 PDF + wiki_query + paper-wiki + free-search 补充。每个查询失败就记一笔，不要反复重试。
 - **Step 4 必须输出完整 review**：研究阶段结束后，立即输出结构化 Markdown review（按 skill 模板：论文类型 → 七条公理审查 → 总评+打分）。
 - review 必须是一个完整的 Markdown 文档，以 `# Paper Review:` 开头，以打分结束。不要输出研究过程的叙述，只输出最终 review。
+- 在 `## 打分` 之前必须增加以下机器可读小节，内容必须来自全文审查结论，不得提及“截断文本”：
+
+```
+## 日报摘要
+- **Strength:** <一句话核心优势，包含关键事实或量化结果>
+- **Weakness:** <一句话核心缺陷，包含关键事实或缺失证据>
+```
 
 论文信息：
 - Title: {paper["title"]}
@@ -191,13 +200,9 @@ def build_prompt(paper: dict) -> str:
 - URL: {paper["url"]}
 - Authors: {paper["authors"]}
 - Categories: {paper["categories"]}
-- Digest score: {paper["score"]}
 
 Digest 摘要：
 {paper["summary"]}
-
-Digest 原始条目：
-{paper["section"]}
 """
 
 
@@ -249,6 +254,7 @@ def run_review(args: argparse.Namespace, date: str, paper: dict) -> None:
     result_text = ""
     assistant_text_parts: list[str] = []
     result_obj = {}
+    full_text_tool_evidence = False
 
     with subprocess.Popen(
         cmd,
@@ -282,6 +288,7 @@ def run_review(args: argparse.Namespace, date: str, paper: dict) -> None:
                 session_id = msg.get("session_id", "")
                 print(f"  session: {session_id}", flush=True)
             elif msg.get("type") == "assistant":
+                full_text_tool_evidence = full_text_tool_evidence or _has_full_text_tool_evidence(msg, paper["arxiv_id"])
                 text = _assistant_text(msg)
                 if text:
                     assistant_text_parts.append(text)
@@ -306,6 +313,12 @@ def run_review(args: argparse.Namespace, date: str, paper: dict) -> None:
         raise RuntimeError(f"Claude Code result error: {result_obj.get('result')}; see {log_path}")
     if not result_text:
         raise RuntimeError(f"No result text captured; see {log_path}")
+    if not full_text_tool_evidence:
+        raise RuntimeError(f"No tool evidence that the full paper was read; see {log_path}")
+    try:
+        parse_review(result_text)
+    except ValueError as exc:
+        raise RuntimeError(f"Review output is not machine-readable: {exc}; see {log_path}") from exc
 
     frontmatter = {
         "date": date,
@@ -314,7 +327,7 @@ def run_review(args: argparse.Namespace, date: str, paper: dict) -> None:
         "arxiv_id": paper["arxiv_id"],
         "arxiv_url": paper["url"],
         "daily_index": paper["index"],
-        "daily_score": paper["score"],
+        "daily_score": "",
         "claude_session_id": session_id or result_obj.get("session_id", ""),
         "claude_turns": result_obj.get("num_turns", ""),
         "runner": "direct-ccc",
@@ -327,6 +340,23 @@ def run_review(args: argparse.Namespace, date: str, paper: dict) -> None:
 def _assistant_text(msg: dict) -> str:
     chunks = msg.get("message", {}).get("content", [])
     return "".join(c.get("text", "") for c in chunks if c.get("type") == "text")
+
+
+def _has_full_text_tool_evidence(msg: dict, arxiv_id: str) -> bool:
+    base_id = re.sub(r"v\d+$", "", arxiv_id)
+    for chunk in msg.get("message", {}).get("content", []):
+        if chunk.get("type") != "tool_use":
+            continue
+        name = chunk.get("name", "")
+        payload = json.dumps(chunk.get("input", {}), ensure_ascii=False)
+        has_paper_id = arxiv_id in payload or base_id in payload
+        if name == "WebFetch" and has_paper_id and any(token in payload for token in ("arxiv.org/html", "arxiv.org/pdf", "ar5iv")):
+            return True
+        if name == "Read" and payload.lower().endswith(('pdf"}', 'html"}')):
+            return True
+        if name == "Bash" and has_paper_id and any(token in payload for token in ("arxiv.org/html", "arxiv.org/pdf", "ar5iv", "paper-wiki ingest")):
+            return True
+    return False
 
 
 def git_commit(args: argparse.Namespace, date: str) -> None:
@@ -353,6 +383,8 @@ def main() -> None:
     papers = parse_papers(date)
     selected = []
     for paper in papers:
+        if args.arxiv_id and paper["arxiv_id"] not in args.arxiv_id:
+            continue
         if not args.force and review_path(args, date, paper).exists():
             continue
         selected.append(paper)
@@ -377,6 +409,7 @@ def main() -> None:
             print(f"  [FAIL] {paper['arxiv_id']}: {exc}", flush=True)
             failures.append(paper["arxiv_id"])
 
+    sync_file(REPO_ROOT / "_papers" / f"{date}.md", REPO_ROOT / args.review_dir)
     if args.commit:
         git_commit(args, date)
     if failures:

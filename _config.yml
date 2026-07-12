@@ -137,6 +137,9 @@ collections:
   papers:
     output: true
     permalink: /:collection/:path/
+  paper_reviews:
+    output: true
+    permalink: /reviews/:path/
 
 # Defaults
 defaults:
