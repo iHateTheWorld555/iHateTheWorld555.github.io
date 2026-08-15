@@ -10,7 +10,7 @@ redirect_from:
 
 <span class='anchor' id='about-me'></span>
 
-I'm an incoming Ph.D. student (2026) at [X-LANCE Lab](https://x-lance.sjtu.edu.cn/en), [Shanghai Jiao Tong University](https://en.sjtu.edu.cn/) & [Beijing Institute for General Artificial Intelligence (BIGAI)](https://www.bigai.ai/), advised by [Xie Chen](https://chenxie95.github.io/) and [Zilong Zheng](https://zilongzheng.github.io/). Prior to this, I will receive my Bachelor's degree from [Xiamen University](https://en.xmu.edu.cn/) in 2026.
+I'm a Ph.D. student (2026) at [X-LANCE Lab](https://x-lance.sjtu.edu.cn/en), [Shanghai Jiao Tong University](https://en.sjtu.edu.cn/) & [Beijing Institute for General Artificial Intelligence (BIGAI)](https://www.bigai.ai/), advised by [Xie Chen](https://chenxie95.github.io/) and [Zilong Zheng](https://zilongzheng.github.io/).
 
 **Research Interests:** Speech synthesis, Audio understanding.
 
@@ -19,10 +19,11 @@ I'm an incoming Ph.D. student (2026) at [X-LANCE Lab](https://x-lance.sjtu.edu.c
 - **2022.09 - 2026.06**, B.E., Xiamen University (XMU)
 
 ## 💼 Internship
+- **2026.07 - present**, Tencent Hunyuan, Shanghai, China
 - **2025.11 - 2026.06**, Sii & OpenMOSS, Shanghai, China
 
 ## 🔥 News
-- **2026.06**: 1 papers were accepted by **INTERSPEECH 2026**!
+- **2026.06**: Our VISA paper was accepted to **INTERSPEECH 2026** and selected for an oral presentation!
 - **2026.04**: 1 paper was accepted by **ACL 2026 Findings**!
 - **2026.02**: We won 2nd place in the Agent Track of the [Interspeech 2026 Audio Reasoning Challenge](https://audio-reasoning-challenge.github.io/leaderboard/). See the [Challenge Report](https://arxiv.org/abs/2602.14224).
 
@@ -44,7 +45,7 @@ ACL 2026 Findings | [**arXiv**](https://arxiv.org/abs/2509.09748) | [**Code**](h
 
 Wenming Tu, Jian Gao, **Yanru Huo**, Yixuan Wang, Jing Peng, Bohan Li, Ziyang Ma, Tao Liu, Shuai Fan, Kai Yu, Xie Chen, Zilong Zheng
 \\
-INTERSPEECH 2026 | [**arXiv**](https://arxiv.org/abs/2606.07264)
+INTERSPEECH 2026 (Oral) | [**arXiv**](https://arxiv.org/abs/2606.07264)
 
 </div></div>
 
