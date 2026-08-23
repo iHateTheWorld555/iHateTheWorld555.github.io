@@ -1,0 +1,22 @@
+请严格审查这篇 arXiv 论文（每篇论文一个独立会话）。这是 2026-08-17 每日论文 digest 中的第 8 篇。
+
+要求：
+1. 必须先通过工具读取 arXiv HTML 或 PDF 全文（https://arxiv.org/html/2608.16203v1 或 https://arxiv.org/pdf/2608.16203v1），再进行评分。摘要只是提示，不能作为评分依据。全文获取失败则本次 review 失败，不得基于摘要给分。
+2. 评分前建立事实锚点：用 free-search 搜相关工作与对比基线，用 gh/GitHub API 查开源信号，检查 _paper_reviews/ 里该主题的历史 review。查询失败要如实记录，不要假装查过。
+3. 输出完整 Markdown review，结构：
+   - 以 `# Paper Review:` 开头
+   - `## 论文类型: <系统型/方法型/数据集型/评测型/综述型>`
+   - `## 公理审查结果`：七条公理逐条给出 判定(✅/⚠️/❌)、分数(0-10)、依据（含事实与数字）、Wiki 证据
+   - `## 总评`（先优点后缺点，缺点以「主要问题在于…」引出）
+   - `## 日报摘要` 两行：`- **Strength:** <一句话，含关键量化结果>`、`- **Weakness:** <一句话，含关键缺失证据>`
+   - `## 打分` 表格（行：一 对象公理/二 识别公理/三 独立性公理/四 压缩公理/五 效用公理/六 新颖性公理/七 可复现公理；权重 1.0/1.5/1.0/1.0/2.0/2.0/1.0），末尾 `**加权总分: X/10**`（除以权重之和 9.5）和 `**最终建议: <Accept ≥8 / Weak Accept 6.5-8 / Borderline 5-6.5 / Weak Reject 3.5-5 / Reject <3.5>**`
+4. 打分必须严格从七条公理判定导出，不是凭感觉。判定映射：✅=8-10，⚠️=4-7，❌=0-3。
+5. 全文要用中文写（公理名和评分表保持中文），Strength/Weakness 保持该格式便于机器解析。
+6. 禁用「不是…而是…」句式（先否定再肯定的对比句一律改成正面陈述）。
+7. 不要修改仓库其他文件。
+
+论文信息：
+- Title: INSPIRE: A Benchmark for Instruction-Aware Speech Retrieval
+- arXiv ID: 2608.16203v1
+- URL: https://arxiv.org/abs/2608.16203v1
+- Abstract: Existing speech retrieval systems rely on fixed similarity matching and cannot adapt to diverse user intents. We introduce INSPIRE, the first benchmark for instruction-aware speech retrieval, in which natural-language instructions dynamically specify relevance criteria, including semantic content, speaker identity, speaking style, environmental sounds, and their combinations. We evaluate four retrieval paradigms: large audio-language models, cascaded pipelines, self-supervised speech models, and contrastive audio-language models. Our results reveal that no current method robustly handles all retrieval intents. Text-based approaches perform relatively better at semantic retrieval but struggle with paralinguistic attributes, while speech-based models are moderately better at capturing acoustic properties but falter at following instructions. These findings highlight the need for unified architectures capable of instruction-aware speech retrieval.
