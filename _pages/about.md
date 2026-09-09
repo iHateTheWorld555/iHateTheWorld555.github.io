@@ -29,6 +29,18 @@ I'm a Ph.D. student (2026) at [X-LANCE Lab](https://x-lance.sjtu.edu.cn/en), [Sh
 
 ## 📝 Publications
 
+<div class='paper-box'><div class='paper-box-image'><div><img src='/images/auk.png' alt="AuK" width="100%"></div></div><div class='paper-box-text' markdown="1">
+
+[AuK Technical Report: An Open-Source Foundational Model for Speech Generation and Editing](https://arxiv.org/abs/2609.08936)
+
+AuK Team
+\\
+*Core Contributor.*
+\\
+arXiv 2609.08936 | [**arXiv**](https://arxiv.org/abs/2609.08936) | [**Code**](https://github.com/Tencent-Hunyuan/AuK)
+
+</div></div>
+
 <div class='paper-box'><div class='paper-box-image'><div><img src='/images/ditreducio.png' alt="DiTReducio" width="100%"></div></div><div class='paper-box-text' markdown="1">
 
 [DiTReducio: A Training-Free Acceleration for DiT-Based TTS via Progressive Calibration](https://arxiv.org/abs/2509.09748)
