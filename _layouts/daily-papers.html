@@ -98,48 +98,48 @@ layout: compress
 
     <style>
     :root {
-      --papers-bg: #f5f1ea;
-      --papers-surface: #fbfaf7;
-      --papers-surface-2: #f0ebe1;
-      --papers-zh-bg: #f1ebde;
-      --papers-line: #ddd6c8;
-      --papers-line-strong: #c4bcae;
-      --papers-ink: #1a1a1a;
-      --papers-text: #3d392f;
-      --papers-muted: #766f64;
-      --papers-faint: #948b7f;
-      --papers-accent: #c76542;
-      --papers-accent-soft: #e8d9cf;
-      --papers-good: #4a7c59;
-      --papers-good-soft: #d8e4d8;
-      --papers-mid: #c76542;
-      --papers-mid-soft: #efe1d8;
-      --papers-low: #948b7f;
-      --papers-low-soft: #e0dad0;
-      --papers-font: "Inter", "Helvetica Neue", Helvetica, Arial, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      --papers-zh-font: "Noto Serif SC", "Source Han Serif SC", "思源宋体", "Songti SC", "STSong", serif;
-      --papers-mono: "JetBrains Mono", "SFMono-Regular", Consolas, monospace;
+      --papers-bg: #ffffff;
+      --papers-surface: #ffffff;
+      --papers-surface-2: #f7f8f9;
+      --papers-zh-bg: #f5f8fb;
+      --papers-line: #e2e5e9;
+      --papers-line-strong: #c3c9d1;
+      --papers-ink: #14181d;
+      --papers-text: #3d4650;
+      --papers-muted: #6b7480;
+      --papers-faint: #8b95a1;
+      --papers-accent: #2a6496;
+      --papers-accent-soft: #e4eef7;
+      --papers-good: #2f7d5d;
+      --papers-good-soft: #dfeee7;
+      --papers-mid: #b5761e;
+      --papers-mid-soft: #f6ecd9;
+      --papers-low: #8b95a1;
+      --papers-low-soft: #eceef1;
+      --papers-font: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+      --papers-zh-font: "Inter", -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+      --papers-mono: "SFMono-Regular", "JetBrains Mono", Consolas, monospace;
     }
 
     html[data-theme="dark"] {
-      --papers-bg: #1a1815;
-      --papers-surface: #232120;
-      --papers-surface-2: #2a2826;
-      --papers-zh-bg: #2a2520;
-      --papers-line: #3d3935;
-      --papers-line-strong: #56504a;
-      --papers-ink: #f4efe7;
-      --papers-text: #d6cec2;
-      --papers-muted: #aaa095;
-      --papers-faint: #8b8278;
-      --papers-accent: #e09a75;
-      --papers-accent-soft: #3d2e25;
-      --papers-good: #8fbc9a;
-      --papers-good-soft: #1f2f25;
-      --papers-mid: #e09a75;
-      --papers-mid-soft: #3d2e25;
-      --papers-low: #8b8278;
-      --papers-low-soft: #2a2826;
+      --papers-bg: #14181d;
+      --papers-surface: #1b2027;
+      --papers-surface-2: #212832;
+      --papers-zh-bg: #1a2430;
+      --papers-line: #2f3641;
+      --papers-line-strong: #454e5b;
+      --papers-ink: #f3f5f7;
+      --papers-text: #dfe4ea;
+      --papers-muted: #98a2b0;
+      --papers-faint: #7d8794;
+      --papers-accent: #6aa9dd;
+      --papers-accent-soft: #1e3046;
+      --papers-good: #6cbb96;
+      --papers-good-soft: #172c23;
+      --papers-mid: #d8a860;
+      --papers-mid-soft: #322616;
+      --papers-low: #7d8794;
+      --papers-low-soft: #212832;
     }
 
     body.daily-papers-layout {
@@ -195,11 +195,11 @@ layout: compress
     .papers-header h1 {
       margin: 0 !important;
       color: var(--papers-ink) !important;
-      font-family: var(--papers-zh-font), var(--papers-font) !important;
-      font-size: clamp(1.8rem, 4vw, 2.6rem) !important;
-      font-weight: 600 !important;
-      letter-spacing: 0.02em !important;
-      line-height: 1.2 !important;
+      font-family: var(--papers-font) !important;
+      font-size: clamp(1.4rem, 2.6vw, 1.7rem) !important;
+      font-weight: 650 !important;
+      letter-spacing: -0.015em !important;
+      line-height: 1.25 !important;
     }
 
     .papers-dek {
@@ -314,10 +314,10 @@ layout: compress
       border: 0 !important;
       color: var(--papers-ink) !important;
       font-family: var(--papers-font) !important;
-      font-size: 1.18rem !important;
-      font-weight: 560 !important;
-      letter-spacing: -0.005em !important;
-      line-height: 1.35 !important;
+      font-size: 1.06rem !important;
+      font-weight: 600 !important;
+      letter-spacing: -0.01em !important;
+      line-height: 1.4 !important;
     }
 
     .paper-day h2:first-of-type {
@@ -382,14 +382,14 @@ layout: compress
     /* Chinese abstract block — the hero of each card */
     .zh-abstract {
       margin: 14px 0;
-      padding: 14px 16px;
+      padding: 13px 15px;
       background: var(--papers-zh-bg);
       border-left: 2px solid var(--papers-accent);
       border-radius: 0 4px 4px 0;
-      color: var(--papers-ink);
+      color: var(--papers-text);
       font-family: var(--papers-zh-font), var(--papers-font);
-      font-size: 0.96rem;
-      line-height: 1.78;
+      font-size: 0.94rem;
+      line-height: 1.8;
     }
 
     .zh-abstract-label {
@@ -415,8 +415,8 @@ layout: compress
 
     .paper-day blockquote p {
       color: var(--papers-muted) !important;
-      font-size: 0.88rem !important;
-      line-height: 1.6 !important;
+      font-size: 0.9rem !important;
+      line-height: 1.65 !important;
       margin: 0 !important;
     }
 
@@ -428,14 +428,29 @@ layout: compress
 
     .paper-day li {
       color: var(--papers-muted) !important;
-      font-size: 0.85rem !important;
-      line-height: 1.55 !important;
-      margin: 0.25rem 0 !important;
+      font-size: 0.9rem !important;
+      line-height: 1.65 !important;
+      margin: 0.3rem 0 !important;
     }
 
     .paper-day li strong:first-child {
       color: var(--papers-accent);
       font-weight: 600;
+    }
+
+    /* Inline links inside review body text */
+    .paper-day li a,
+    .paper-day p a,
+    .zh-abstract a {
+      color: var(--papers-accent) !important;
+      text-decoration: none;
+      border-bottom: 1px solid transparent;
+    }
+
+    .paper-day li a:hover,
+    .paper-day p a:hover,
+    .zh-abstract a:hover {
+      border-bottom-color: var(--papers-accent);
     }
 
     /* Metadata row */

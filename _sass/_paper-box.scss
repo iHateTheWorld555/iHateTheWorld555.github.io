@@ -3,35 +3,35 @@
    ========================================================================== */
 
 :root {
-  --accent-bg: #faf9f5;
-  --accent-bg-alt: #f1ede4;
-  --accent-panel: #fffaf3;
-  --accent-border: #ddd4c5;
-  --accent-muted: #81786d;
-  --accent-primary: #b86a4b;
-  --accent-dark: #554a40;
-  --accent-text: #26221d;
-  --accent-heading: #171411;
-  --accent-shadow: rgba(38, 34, 29, 0.08);
-  --accent-shadow-strong: rgba(38, 34, 29, 0.12);
-  --accent-highlight: #d7eee5;
-  --accent-font-serif: "LXGW WenKai", "Noto Serif SC", "Source Han Serif SC", Georgia, serif;
-  --accent-font-ui: "DM Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --accent-bg: #ffffff;
+  --accent-bg-alt: #f7f8f9;
+  --accent-panel: #ffffff;
+  --accent-border: #e2e5e9;
+  --accent-muted: #6b7480;
+  --accent-primary: #2a6496;
+  --accent-dark: #3d4650;
+  --accent-text: #24292f;
+  --accent-heading: #14181d;
+  --accent-shadow: rgba(20, 24, 29, 0.05);
+  --accent-shadow-strong: rgba(20, 24, 29, 0.09);
+  --accent-highlight: #e4eef7;
+  --accent-font-serif: "Noto Serif SC", "Source Han Serif SC", Georgia, "Times New Roman", serif;
+  --accent-font-ui: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
 }
 
 html[data-theme="dark"] {
-  --accent-bg: #1a1714;
-  --accent-bg-alt: #27221d;
-  --accent-panel: #27221d;
-  --accent-border: #4d4338;
-  --accent-muted: #a89b8c;
-  --accent-primary: #e29a74;
-  --accent-dark: #e8ddd0;
-  --accent-text: #efe7dc;
-  --accent-heading: #fffaf3;
-  --accent-shadow: rgba(0, 0, 0, 0.28);
-  --accent-shadow-strong: rgba(0, 0, 0, 0.36);
-  --accent-highlight: #233b34;
+  --accent-bg: #14181d;
+  --accent-bg-alt: #1b2027;
+  --accent-panel: #1b2027;
+  --accent-border: #2f3641;
+  --accent-muted: #98a2b0;
+  --accent-primary: #6aa9dd;
+  --accent-dark: #d4dae2;
+  --accent-text: #dfe4ea;
+  --accent-heading: #f3f5f7;
+  --accent-shadow: rgba(0, 0, 0, 0.3);
+  --accent-shadow-strong: rgba(0, 0, 0, 0.42);
+  --accent-highlight: #1e3046;
 }
 
 /* ==========================================================================
@@ -45,16 +45,22 @@ html[data-theme="dark"] {
   flex-direction: row;
   flex-wrap: wrap;
   border: 1px solid var(--accent-border) !important;
-  border-radius: 10px;
+  border-radius: 8px;
   background: var(--accent-panel);
-  box-shadow: 0 3px 12px var(--accent-shadow);
-  padding: 1.5em;
-  margin-bottom: 1.5em;
+  box-shadow: 0 1px 3px var(--accent-shadow);
+  padding: 1.4em;
+  margin-bottom: 1.2em;
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.paper-box:hover {
+  border-color: var(--accent-muted) !important;
+  box-shadow: 0 3px 10px var(--accent-shadow-strong);
 }
 
 .paper-box:last-of-type {
-  padding-bottom: 1.5em !important;
-  margin-bottom: 1.5em !important;
+  padding-bottom: 1.4em !important;
+  margin-bottom: 1.2em !important;
 }
 
 .paper-box .paper-box-image {
@@ -66,9 +72,10 @@ html[data-theme="dark"] {
 
 .paper-box .paper-box-image img {
   max-width: 400px;
-  box-shadow: 0 4px 14px var(--accent-shadow-strong);
+  box-shadow: none;
+  border: 1px solid var(--accent-border);
   object-fit: cover;
-  border-radius: 8px;
+  border-radius: 6px;
 }
 
 .paper-box .paper-box-text {
@@ -110,11 +117,11 @@ h1:before, .anchor:before {
    ========================================================================== */
 
 ::selection {
-  background: var(--accent-border) !important;
+  background: var(--accent-highlight) !important;
   color: var(--accent-heading) !important;
 }
 ::-moz-selection {
-  background: var(--accent-border) !important;
+  background: var(--accent-highlight) !important;
   color: var(--accent-heading) !important;
 }
 
@@ -125,13 +132,13 @@ h1:before, .anchor:before {
 .sidebar {
   padding: 1.5em 1.5em 2em 2em !important;
   border-right: 1px solid var(--accent-border) !important;
-  background: var(--accent-bg);
+  background: var(--accent-bg-alt);
   margin-top: 0 !important;
   top: 0 !important;
 }
 
 html[data-theme="dark"] .sidebar {
-  background: linear-gradient(180deg, rgba(39, 34, 29, 0.95), rgba(26, 23, 20, 0.82));
+  background: var(--accent-bg-alt);
 }
 
 /* Remove top margin from page to align with sidebar */
@@ -164,11 +171,11 @@ html[data-theme="dark"] .sidebar {
 }
 
 .author__avatar img {
-  max-width: 240px !important;
-  width: 240px !important;
+  max-width: 200px !important;
+  width: 200px !important;
   height: auto !important;
   border-radius: 50% !important;
-  border: 3px solid var(--accent-border) !important;
+  border: 1px solid var(--accent-border) !important;
   padding: 0 !important;
   display: block !important;
   margin: 0 auto !important;
@@ -183,13 +190,13 @@ html[data-theme="dark"] .sidebar {
 }
 
 .author__name {
-  font-size: 1.5em !important;
-  font-weight: bold !important;
+  font-size: 1.35em !important;
+  font-weight: 650 !important;
   color: var(--accent-heading) !important;
   margin-top: 0.2em !important;
   margin-bottom: 0.2em !important;
   text-align: left !important;
-  letter-spacing: 0.01em !important;
+  letter-spacing: -0.01em !important;
   line-height: 1.3 !important;
 }
 
@@ -314,7 +321,7 @@ textarea:focus,
 /* No navbar */
 body {
   padding-top: 0 !important;
-  background: linear-gradient(180deg, var(--accent-bg-alt) 0%, var(--accent-bg) 16rem) !important;
+  background: var(--accent-bg) !important;
   color: var(--accent-text) !important;
   font-family: var(--accent-font-ui) !important;
 }
@@ -343,6 +350,12 @@ body {
   .page {
     padding-right: 2em !important;
   }
+}
+
+/* Cap the measure so lines stay in the comfortable reading range */
+.page__content,
+.archive {
+  max-width: 58rem !important;
 }
 
 /* Minimize footer / sitemap */
@@ -380,8 +393,8 @@ p,
 li,
 .page__content {
   font-family: var(--accent-font-ui) !important;
-  font-size: 1.125rem !important;
-  line-height: 1.6 !important;
+  font-size: 1rem !important;
+  line-height: 1.7 !important;
 }
 
 h1,
@@ -391,11 +404,17 @@ h4,
 h5,
 h6,
 .author__name {
-  font-family: var(--accent-font-serif) !important;
-  font-weight: 700 !important;
+  font-family: var(--accent-font-ui) !important;
+  font-weight: 650 !important;
+  letter-spacing: -0.01em !important;
 }
 
 h2 {
-  font-size: 1.5rem !important;
-  line-height: 1.3 !important;
+  font-size: 1.25rem !important;
+  line-height: 1.35 !important;
+}
+
+h3 {
+  font-size: 1.05rem !important;
+  line-height: 1.4 !important;
 }

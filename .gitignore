@@ -34,3 +34,9 @@ package-lock.json
 # Python cache
 __pycache__/
 *.pyc
+
+# Local venv for the paper pipeline
+.venv/
+
+# Review prompt scaffolding (transient)
+_paper_reviews/**/*.prompt
