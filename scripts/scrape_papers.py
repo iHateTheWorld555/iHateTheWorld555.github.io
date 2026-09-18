@@ -16,11 +16,12 @@ import os
 import re
 import sys
 import time
+import urllib.error
+import urllib.parse
+import urllib.request
 import xml.etree.ElementTree as ET
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
-
-import httpx
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
 log = logging.getLogger(__name__)
@@ -96,7 +97,9 @@ USER_AGENT = (
 NS = {"atom": "http://www.w3.org/2005/Atom", "arxiv": "http://arxiv.org/schemas/atom"}
 OPENSEARCH_NS = "http://a9.com/-/spec/opensearch/1.1/"
 WS_RE = re.compile(r"\s+")
-RETRY_STATUSES = {429, 500, 502, 503, 504}
+# 406 shows up intermittently from Fastly's edge on this network (plain requests
+# succeed on retry), so treat it as transient alongside the arxiv ToU statuses.
+RETRY_STATUSES = {406, 429, 500, 502, 503, 504}
 
 
 LIQUID_RE = re.compile(r"\{%.*?%\}|\{\{.*?\}\}")
@@ -119,7 +122,32 @@ def backoff(attempt: int) -> float:
 _last_request_time: float = 0
 
 
-def request_with_retry(client: httpx.Client, params: dict) -> str:
+class _Response:
+    """Minimal stand-in for the httpx.Response fields this module reads."""
+
+    def __init__(self, status_code: int, headers, text: str):
+        self.status_code = status_code
+        self.headers = headers
+        self.text = text
+
+
+def _http_get(params: dict) -> _Response:
+    """GET the arxiv API via urllib.
+
+    urllib is used instead of httpx on purpose: from this network Fastly's edge
+    returns a bare `406 Not Acceptable` for httpx's TLS/HTTP fingerprint on every
+    request, while urllib's fingerprint passes reliably (verified 6/6 vs 0/6).
+    """
+    url = ARXIV_API + "?" + urllib.parse.urlencode(params)
+    req = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
+    try:
+        with urllib.request.urlopen(req, timeout=REQUEST_TIMEOUT) as resp:
+            return _Response(resp.status, resp.headers, resp.read().decode("utf-8", "replace"))
+    except urllib.error.HTTPError as exc:
+        return _Response(exc.code, exc.headers, exc.read().decode("utf-8", "replace"))
+
+
+def request_with_retry(params: dict) -> str:
     """GET arxiv API with retry/backoff on 429, 5xx, and network errors."""
     global _last_request_time
     # Enforce arxiv ToU: no more than 1 request per 3 seconds
@@ -129,8 +157,8 @@ def request_with_retry(client: httpx.Client, params: dict) -> str:
 
     for attempt in range(1, MAX_RETRIES + 1):
         try:
-            resp = client.get(ARXIV_API, params=params)
-        except httpx.RequestError as exc:
+            resp = _http_get(params)
+        except (urllib.error.URLError, OSError) as exc:
             if attempt >= MAX_RETRIES:
                 raise RuntimeError(
                     f"ArXiv failed after {MAX_RETRIES} attempts: {exc}"
@@ -160,7 +188,9 @@ def request_with_retry(client: httpx.Client, params: dict) -> str:
         if resp.status_code in RETRY_STATUSES:
             raise RuntimeError(f"ArXiv returned {resp.status_code} after {MAX_RETRIES} attempts")
 
-        resp.raise_for_status()
+        if resp.status_code >= 400:
+            raise RuntimeError(f"ArXiv returned HTTP {resp.status_code}")
+
         _last_request_time = time.time()
         return resp.text
 
@@ -169,92 +199,84 @@ def request_with_retry(client: httpx.Client, params: dict) -> str:
 
 def fetch_papers(query: str, max_results: int | None = None) -> list[dict]:
     """Fetch papers from arxiv API with pagination."""
-    client = httpx.Client(
-        timeout=REQUEST_TIMEOUT,
-        follow_redirects=True,
-        headers={"User-Agent": USER_AGENT},
-    )
     all_papers = []
     start = 0
     parse_failures = 0
     total_results: int | None = None
 
-    try:
-        while True:
-            page_size = PAGE_SIZE
-            if max_results is not None:
-                page_size = min(PAGE_SIZE, max_results - start)
-                if page_size <= 0:
-                    break
-            params = {
-                "search_query": query,
-                "sortBy": "submittedDate",
-                "sortOrder": "descending",
-                "max_results": str(page_size),
-                "start": str(start),
-            }
-            log.info("Fetching start=%d max=%d", start, page_size)
-            body = request_with_retry(client, params)
+    while True:
+        page_size = PAGE_SIZE
+        if max_results is not None:
+            page_size = min(PAGE_SIZE, max_results - start)
+            if page_size <= 0:
+                break
+        params = {
+            "search_query": query,
+            "sortBy": "submittedDate",
+            "sortOrder": "descending",
+            "max_results": str(page_size),
+            "start": str(start),
+        }
+        log.info("Fetching start=%d max=%d", start, page_size)
+        body = request_with_retry(params)
 
-            try:
-                root = ET.fromstring(body)
-            except ET.ParseError:
-                parse_failures += 1
-                if parse_failures >= 3:
-                    raise RuntimeError("ArXiv returned non-Atom body 3 times, giving up")
-                log.warning("ArXiv returned non-Atom body (attempt %d/3), retrying", parse_failures)
+        try:
+            root = ET.fromstring(body)
+        except ET.ParseError:
+            parse_failures += 1
+            if parse_failures >= 3:
+                raise RuntimeError("ArXiv returned non-Atom body 3 times, giving up")
+            log.warning("ArXiv returned non-Atom body (attempt %d/3), retrying", parse_failures)
+            continue
+
+        if total_results is None:
+            total_text = root.findtext(f"{{{OPENSEARCH_NS}}}totalResults")
+            total_results = int(total_text or 0)
+            if max_results is not None:
+                total_results = min(total_results, max_results)
+            log.info("Query reports %d total results", total_results)
+
+        entries = root.findall("atom:entry", NS)
+        if not entries:
+            break
+
+        page_count = 0
+        for entry in entries:
+            raw_url = (entry.find("atom:id", NS).text or "").strip()
+            if not raw_url or "Error" in raw_url:
                 continue
 
-            if total_results is None:
-                total_text = root.findtext(f"{{{OPENSEARCH_NS}}}totalResults")
-                total_results = int(total_text or 0)
-                if max_results is not None:
-                    total_results = min(total_results, max_results)
-                log.info("Query reports %d total results", total_results)
+            url = raw_url.replace("http://", "https://", 1)
+            title = normalise(entry.find("atom:title", NS).text)
+            published = (entry.find("atom:published", NS).text or "")[:10]
+            authors = []
+            for a_el in entry.findall("atom:author", NS):
+                name_el = a_el.find("atom:name", NS)
+                if name_el is not None and name_el.text:
+                    authors.append(normalise(name_el.text))
+            cats = [c.get("term") for c in entry.findall("atom:category", NS)]
+            summary = normalise(entry.find("atom:summary", NS).text)
+            comment_el = entry.find("arxiv:comment", NS)
+            comment = normalise(comment_el.text) if comment_el is not None and comment_el.text else ""
+            primary_el = entry.find("arxiv:primary_category", NS)
+            primary_cat = primary_el.attrib.get("term") if primary_el is not None else None
 
-            entries = root.findall("atom:entry", NS)
-            if not entries:
-                break
+            all_papers.append({
+                "title": title,
+                "date": published,
+                "arxiv_url": url,
+                "authors": ", ".join(authors[:5]) + (" et al." if len(authors) > 5 else ""),
+                "categories": ", ".join(cats),
+                "primary_category": primary_cat or "",
+                "summary": summary,
+                "comment": comment,
+            })
+            page_count += 1
 
-            page_count = 0
-            for entry in entries:
-                raw_url = (entry.find("atom:id", NS).text or "").strip()
-                if not raw_url or "Error" in raw_url:
-                    continue
-
-                url = raw_url.replace("http://", "https://", 1)
-                title = normalise(entry.find("atom:title", NS).text)
-                published = (entry.find("atom:published", NS).text or "")[:10]
-                authors = []
-                for a_el in entry.findall("atom:author", NS):
-                    name_el = a_el.find("atom:name", NS)
-                    if name_el is not None and name_el.text:
-                        authors.append(normalise(name_el.text))
-                cats = [c.get("term") for c in entry.findall("atom:category", NS)]
-                summary = normalise(entry.find("atom:summary", NS).text)
-                comment_el = entry.find("arxiv:comment", NS)
-                comment = normalise(comment_el.text) if comment_el is not None and comment_el.text else ""
-                primary_el = entry.find("arxiv:primary_category", NS)
-                primary_cat = primary_el.attrib.get("term") if primary_el is not None else None
-
-                all_papers.append({
-                    "title": title,
-                    "date": published,
-                    "arxiv_url": url,
-                    "authors": ", ".join(authors[:5]) + (" et al." if len(authors) > 5 else ""),
-                    "categories": ", ".join(cats),
-                    "primary_category": primary_cat or "",
-                    "summary": summary,
-                    "comment": comment,
-                })
-                page_count += 1
-
-            start += page_size
-            if page_count < page_size or start >= (total_results or 0):
-                break
-            time.sleep(3)  # polite delay between pages
-    finally:
-        client.close()
+        start += page_size
+        if page_count < page_size or start >= (total_results or 0):
+            break
+        time.sleep(3)  # polite delay between pages
 
     return all_papers
 
