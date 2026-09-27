@@ -10,7 +10,7 @@ redirect_from:
 
 <span class='anchor' id='about-me'></span>
 
-I'm a Ph.D. student (2026) at [X-LANCE Lab](https://x-lance.sjtu.edu.cn/en), [Shanghai Jiao Tong University](https://en.sjtu.edu.cn/) & [Beijing Institute for General Artificial Intelligence (BIGAI)](https://www.bigai.ai/), advised by [Xie Chen](https://chenxie95.github.io/) and [Zilong Zheng](https://zilongzheng.github.io/).
+I'm currently a first-year Ph.D. student (2026) at [X-LANCE Lab](https://x-lance.sjtu.edu.cn/en), [Shanghai Jiao Tong University](https://en.sjtu.edu.cn/) & [Beijing Institute for General Artificial Intelligence (BIGAI)](https://www.bigai.ai/), advised by [Prof. Xie Chen](https://chenxie95.github.io/) and [Dr. Zilong Zheng](https://zilongzheng.github.io/).
 
 **Research Interests:** Speech synthesis, Audio understanding.
 
@@ -21,6 +21,7 @@ I'm a Ph.D. student (2026) at [X-LANCE Lab](https://x-lance.sjtu.edu.cn/en), [Sh
 ## 💼 Internship
 - **2026.07 - present**, Tencent Hunyuan, Shanghai, China
 - **2025.11 - 2026.06**, Sii & OpenMOSS, Shanghai, China
+- **2024.11 - 2025.09**, TAL Education Group, Beijing, China
 
 ## 🔥 News
 - **2026.06**: Our VISA paper was accepted to **INTERSPEECH 2026** and selected for an oral presentation!
@@ -37,7 +38,11 @@ AuK Team
 \\
 *Core Contributor.*
 \\
-arXiv 2609.08936 | [**arXiv**](https://arxiv.org/abs/2609.08936) | [**Code**](https://github.com/Tencent-Hunyuan/AuK)
+[![arXiv](https://img.shields.io/badge/arXiv-2609.08936-b31b1b?logo=arxiv&logoColor=white)](https://arxiv.org/abs/2609.08936)
+[![Code](https://img.shields.io/badge/Code-GitHub-181717?logo=github&logoColor=white)](https://github.com/Tencent-Hunyuan/AuK)
+[![Project Page](https://img.shields.io/badge/Project-Page-4A90D9)](https://auk-project.github.io/)
+[![Model](https://img.shields.io/badge/Model-HuggingFace-FFD21E?logo=huggingface&logoColor=white)](https://huggingface.co/tencent/AuK)
+[![Demo](https://img.shields.io/badge/Demo-HuggingFace-FFD21E?logo=huggingface&logoColor=white)](https://huggingface.co/spaces/tencent/AuK)
 
 </div></div>
 
@@ -47,7 +52,10 @@ arXiv 2609.08936 | [**arXiv**](https://arxiv.org/abs/2609.08936) | [**Code**](ht
 
 **Yanru Huo**, Ziyue Jiang, Zuoli Tang, Qingyang Hong, Zhou Zhao\*
 \\
-ACL 2026 Findings | [**arXiv**](https://arxiv.org/abs/2509.09748) | [**Code**](https://github.com/MM-Speech/DiTReducio)
+ACL 2026 Findings
+\\
+[![arXiv](https://img.shields.io/badge/arXiv-2509.09748-b31b1b?logo=arxiv&logoColor=white)](https://arxiv.org/abs/2509.09748)
+[![Code](https://img.shields.io/badge/Code-GitHub-181717?logo=github&logoColor=white)](https://github.com/MM-Speech/DiTReducio)
 
 </div></div>
 
@@ -57,7 +65,10 @@ ACL 2026 Findings | [**arXiv**](https://arxiv.org/abs/2509.09748) | [**Code**](h
 
 Wenming Tu, Jian Gao, **Yanru Huo**, Yixuan Wang, Jing Peng, Bohan Li, Ziyang Ma, Tao Liu, Shuai Fan, Kai Yu, Xie Chen, Zilong Zheng
 \\
-INTERSPEECH 2026 (Oral) | [**arXiv**](https://arxiv.org/abs/2606.07264)
+INTERSPEECH 2026 (Oral)
+\\
+[![arXiv](https://img.shields.io/badge/arXiv-2606.07264-b31b1b?logo=arxiv&logoColor=white)](https://arxiv.org/abs/2606.07264)
+[![Code](https://img.shields.io/badge/Code-GitHub-181717?logo=github&logoColor=white)](https://github.com/DELTA-DoubleWise/Audio-Mind)
 
 </div></div>
 
@@ -69,7 +80,9 @@ MMAE Team
 \\
 Contributor.
 \\
-arXiv 2606.07229 | [**arXiv**](https://arxiv.org/abs/2606.07229) | [**Code**](https://github.com/ddlBoJack/MMAE)
+[![arXiv](https://img.shields.io/badge/arXiv-2606.07229-b31b1b?logo=arxiv&logoColor=white)](https://arxiv.org/abs/2606.07229)
+[![Code](https://img.shields.io/badge/Code-GitHub-181717?logo=github&logoColor=white)](https://github.com/ddlBoJack/MMAE)
+[![Dataset](https://img.shields.io/badge/Dataset-HuggingFace-FFD21E?logo=huggingface&logoColor=white)](https://huggingface.co/datasets/BoJack/MMAE)
 
 </div></div>
 
@@ -81,7 +94,10 @@ SII-OpenMOSS Team
 \\
 *Core contributor.*
 \\
-arXiv 2602.08794 | [**arXiv**](https://arxiv.org/abs/2602.08794) | [**Code**](https://github.com/OpenMOSS/MOVA)
+[![arXiv](https://img.shields.io/badge/arXiv-2602.08794-b31b1b?logo=arxiv&logoColor=white)](https://arxiv.org/abs/2602.08794)
+[![Project Page](https://img.shields.io/badge/Project-Page-4A90D9)](https://mosi.cn/models/mova)
+[![Code](https://img.shields.io/badge/Code-GitHub-181717?logo=github&logoColor=white)](https://github.com/OpenMOSS/MOVA)
+[![Model](https://img.shields.io/badge/Model-HuggingFace-FFD21E?logo=huggingface&logoColor=white)](https://huggingface.co/collections/OpenMOSS-Team/mova)
 
 </div></div>
 
