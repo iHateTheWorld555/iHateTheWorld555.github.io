@@ -41,8 +41,8 @@ AuK Team
 [![arXiv](https://img.shields.io/badge/arXiv-2609.08936-b31b1b?logo=arxiv&logoColor=white)](https://arxiv.org/abs/2609.08936)
 [![Code](https://img.shields.io/badge/Code-GitHub-181717?logo=github&logoColor=white)](https://github.com/Tencent-Hunyuan/AuK)
 [![Project Page](https://img.shields.io/badge/Project-Page-4A90D9)](https://auk-project.github.io/)
-[![Model](https://img.shields.io/badge/Model-HuggingFace-FFD21E?logo=huggingface&logoColor=1b1b1b)](https://huggingface.co/tencent/AuK)
-[![Demo](https://img.shields.io/badge/Demo-HuggingFace-FFD21E?logo=huggingface&logoColor=1b1b1b)](https://huggingface.co/spaces/tencent/AuK)
+[![Model](https://img.shields.io/badge/Model-HuggingFace-000000?logo=huggingface&logoColor=FFD21E)](https://huggingface.co/tencent/AuK)
+[![Demo](https://img.shields.io/badge/Demo-HuggingFace-000000?logo=huggingface&logoColor=FFD21E)](https://huggingface.co/spaces/tencent/AuK)
 
 </div></div>
 
@@ -82,7 +82,7 @@ Contributor.
 \\
 [![arXiv](https://img.shields.io/badge/arXiv-2606.07229-b31b1b?logo=arxiv&logoColor=white)](https://arxiv.org/abs/2606.07229)
 [![Code](https://img.shields.io/badge/Code-GitHub-181717?logo=github&logoColor=white)](https://github.com/ddlBoJack/MMAE)
-[![Dataset](https://img.shields.io/badge/Dataset-HuggingFace-FFD21E?logo=huggingface&logoColor=1b1b1b)](https://huggingface.co/datasets/BoJack/MMAE)
+[![Dataset](https://img.shields.io/badge/Dataset-HuggingFace-000000?logo=huggingface&logoColor=FFD21E)](https://huggingface.co/datasets/BoJack/MMAE)
 
 </div></div>
 
@@ -97,7 +97,7 @@ SII-OpenMOSS Team
 [![arXiv](https://img.shields.io/badge/arXiv-2602.08794-b31b1b?logo=arxiv&logoColor=white)](https://arxiv.org/abs/2602.08794)
 [![Project Page](https://img.shields.io/badge/Project-Page-4A90D9)](https://mosi.cn/models/mova)
 [![Code](https://img.shields.io/badge/Code-GitHub-181717?logo=github&logoColor=white)](https://github.com/OpenMOSS/MOVA)
-[![Model](https://img.shields.io/badge/Model-HuggingFace-FFD21E?logo=huggingface&logoColor=1b1b1b)](https://huggingface.co/collections/OpenMOSS-Team/mova)
+[![Model](https://img.shields.io/badge/Model-HuggingFace-000000?logo=huggingface&logoColor=FFD21E)](https://huggingface.co/collections/OpenMOSS-Team/mova)
 
 </div></div>
 
