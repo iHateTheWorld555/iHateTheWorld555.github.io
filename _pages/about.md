@@ -21,7 +21,6 @@ I'm currently a first-year Ph.D. student (2026) at [X-LANCE Lab](https://x-lance
 ## 💼 Internship
 - **2026.07 - present**, Tencent Hunyuan, Shanghai, China
 - **2025.11 - 2026.06**, Sii & OpenMOSS, Shanghai, China
-- **2024.11 - 2025.09**, TAL Education Group, Beijing, China
 
 ## 🔥 News
 - **2026.06**: Our VISA paper was accepted to **INTERSPEECH 2026** and selected for an oral presentation!
