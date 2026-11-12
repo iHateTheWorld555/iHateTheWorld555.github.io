@@ -37,9 +37,9 @@ I'm currently a first-year Ph.D. student (2026) at [X-LANCE Lab](https://x-lance
 
 **Yanru Huo**, Zhikang Niu, Wenming Tu, Junxi Liu, Tian Tan, Shan Yang, Yipeng Kang, Ziyang Ma, Xie Chen, Zilong Zheng
 \\
-[![arXiv](https://img.shields.io/badge/arXiv-2611.08011-b31b1b?logo=arxiv&logoColor=white)](https://arxiv.org/abs/2611.08011)
-[![Code](https://img.shields.io/badge/Code-GitHub-181717?logo=github&logoColor=white)](https://github.com/iHateTheWorld555/AuK-RouteDMD)
-[![Project Page](https://img.shields.io/badge/Project-Page-4A90D9)](https://route-dmd.github.io/)
+[![arXiv](https://img.shields.io/badge/arXiv-2611.08011-b31b1b?style=flat&logo=arxiv&logoColor=white)](https://arxiv.org/abs/2611.08011)
+[![Code](https://img.shields.io/badge/Code-181717?style=flat&logo=github&logoColor=white)](https://github.com/iHateTheWorld555/AuK-RouteDMD)
+[![Project Page](https://img.shields.io/badge/%F0%9F%8C%90%20Project%20Page-1f6feb?style=flat)](https://route-dmd.github.io/)
 [![Model](https://img.shields.io/badge/%F0%9F%A4%97%20Model-FFD21E?style=flat)](https://huggingface.co/tencent/AuK-Flash)
 
 </div></div>
@@ -52,9 +52,9 @@ AuK Team
 \\
 *Core Contributor.*
 \\
-[![arXiv](https://img.shields.io/badge/arXiv-2609.08936-b31b1b?logo=arxiv&logoColor=white)](https://arxiv.org/abs/2609.08936)
-[![Code](https://img.shields.io/badge/Code-GitHub-181717?logo=github&logoColor=white)](https://github.com/Tencent-Hunyuan/AuK)
-[![Project Page](https://img.shields.io/badge/Project-Page-4A90D9)](https://auk-project.github.io/)
+[![arXiv](https://img.shields.io/badge/arXiv-2609.08936-b31b1b?style=flat&logo=arxiv&logoColor=white)](https://arxiv.org/abs/2609.08936)
+[![Code](https://img.shields.io/badge/Code-181717?style=flat&logo=github&logoColor=white)](https://github.com/Tencent-Hunyuan/AuK)
+[![Project Page](https://img.shields.io/badge/%F0%9F%8C%90%20Project%20Page-1f6feb?style=flat)](https://auk-project.github.io/)
 [![Model](https://img.shields.io/badge/%F0%9F%A4%97%20Model-FFD21E?style=flat)](https://huggingface.co/tencent/AuK)
 [![Demo](https://img.shields.io/badge/%F0%9F%A4%97%20Demo-FFD21E?style=flat)](https://huggingface.co/spaces/tencent/AuK)
 
@@ -68,9 +68,9 @@ SII-OpenMOSS Team
 \\
 *Core contributor.*
 \\
-[![arXiv](https://img.shields.io/badge/arXiv-2602.08794-b31b1b?logo=arxiv&logoColor=white)](https://arxiv.org/abs/2602.08794)
-[![Project Page](https://img.shields.io/badge/Project-Page-4A90D9)](https://mosi.cn/models/mova)
-[![Code](https://img.shields.io/badge/Code-GitHub-181717?logo=github&logoColor=white)](https://github.com/OpenMOSS/MOVA)
+[![arXiv](https://img.shields.io/badge/arXiv-2602.08794-b31b1b?style=flat&logo=arxiv&logoColor=white)](https://arxiv.org/abs/2602.08794)
+[![Project Page](https://img.shields.io/badge/%F0%9F%8C%90%20Project%20Page-1f6feb?style=flat)](https://mosi.cn/models/mova)
+[![Code](https://img.shields.io/badge/Code-181717?style=flat&logo=github&logoColor=white)](https://github.com/OpenMOSS/MOVA)
 [![Model](https://img.shields.io/badge/%F0%9F%A4%97%20Model-FFD21E?style=flat)](https://huggingface.co/collections/OpenMOSS-Team/mova)
 
 </div></div>
@@ -83,8 +83,8 @@ Wenming Tu, Jian Gao, **Yanru Huo**, Yixuan Wang, Jing Peng, Bohan Li, Ziyang Ma
 \\
 INTERSPEECH 2026 (Oral)
 \\
-[![arXiv](https://img.shields.io/badge/arXiv-2606.07264-b31b1b?logo=arxiv&logoColor=white)](https://arxiv.org/abs/2606.07264)
-[![Code](https://img.shields.io/badge/Code-GitHub-181717?logo=github&logoColor=white)](https://github.com/DELTA-DoubleWise/Audio-Mind)
+[![arXiv](https://img.shields.io/badge/arXiv-2606.07264-b31b1b?style=flat&logo=arxiv&logoColor=white)](https://arxiv.org/abs/2606.07264)
+[![Code](https://img.shields.io/badge/Code-181717?style=flat&logo=github&logoColor=white)](https://github.com/DELTA-DoubleWise/Audio-Mind)
 
 </div></div>
 
@@ -94,9 +94,9 @@ INTERSPEECH 2026 (Oral)
 
 Zhikang Niu, Wenming Tu, Yalin Li, **Yanru Huo**, Junxi Liu, Tianrui Wang, Ruiqi Yan, Junxuan Liang, Ziyang Ma, Zilong Zheng, Xie Chen
 \\
-[![arXiv](https://img.shields.io/badge/arXiv-2611.08251-b31b1b?logo=arxiv&logoColor=white)](https://arxiv.org/abs/2611.08251)
-[![Code](https://img.shields.io/badge/Code-GitHub-181717?logo=github&logoColor=white)](https://github.com/ZhikangNiu/VoxCanvas)
-[![Project Page](https://img.shields.io/badge/Project-Page-4A90D9)](https://zhikangniu.github.io/voxcanvas/)
+[![arXiv](https://img.shields.io/badge/arXiv-2611.08251-b31b1b?style=flat&logo=arxiv&logoColor=white)](https://arxiv.org/abs/2611.08251)
+[![Code](https://img.shields.io/badge/Code-181717?style=flat&logo=github&logoColor=white)](https://github.com/ZhikangNiu/VoxCanvas)
+[![Project Page](https://img.shields.io/badge/%F0%9F%8C%90%20Project%20Page-1f6feb?style=flat)](https://zhikangniu.github.io/voxcanvas/)
 [![Dataset](https://img.shields.io/badge/%F0%9F%A4%97%20Dataset-FFD21E?style=flat)](https://huggingface.co/datasets/zkniu/VoxCanvas)
 
 </div></div>
@@ -107,9 +107,9 @@ Zhikang Niu, Wenming Tu, Yalin Li, **Yanru Huo**, Junxi Liu, Tianrui Wang, Ruiqi
 
 Junxi Liu, Xiquan Li, Wenhao Guan, Yifan Duan, Zhikang Niu, **Yanru Huo**, Ziyang Ma, Xie Chen
 \\
-[![arXiv](https://img.shields.io/badge/arXiv-2609.31525-b31b1b?logo=arxiv&logoColor=white)](https://arxiv.org/abs/2609.31525)
-[![Code](https://img.shields.io/badge/Code-GitHub-181717?logo=github&logoColor=white)](https://github.com/junxi25liu/TinyAudio)
-[![Project Page](https://img.shields.io/badge/Project-Page-4A90D9)](https://tinyaudio-project.github.io/)
+[![arXiv](https://img.shields.io/badge/arXiv-2609.31525-b31b1b?style=flat&logo=arxiv&logoColor=white)](https://arxiv.org/abs/2609.31525)
+[![Code](https://img.shields.io/badge/Code-181717?style=flat&logo=github&logoColor=white)](https://github.com/junxi25liu/TinyAudio)
+[![Project Page](https://img.shields.io/badge/%F0%9F%8C%90%20Project%20Page-1f6feb?style=flat)](https://tinyaudio-project.github.io/)
 
 </div></div>
 
@@ -121,8 +121,8 @@ MMAE Team
 \\
 Contributor.
 \\
-[![arXiv](https://img.shields.io/badge/arXiv-2606.07229-b31b1b?logo=arxiv&logoColor=white)](https://arxiv.org/abs/2606.07229)
-[![Code](https://img.shields.io/badge/Code-GitHub-181717?logo=github&logoColor=white)](https://github.com/ddlBoJack/MMAE)
+[![arXiv](https://img.shields.io/badge/arXiv-2606.07229-b31b1b?style=flat&logo=arxiv&logoColor=white)](https://arxiv.org/abs/2606.07229)
+[![Code](https://img.shields.io/badge/Code-181717?style=flat&logo=github&logoColor=white)](https://github.com/ddlBoJack/MMAE)
 [![Dataset](https://img.shields.io/badge/%F0%9F%A4%97%20Dataset-FFD21E?style=flat)](https://huggingface.co/datasets/BoJack/MMAE)
 
 </div></div>
@@ -137,8 +137,8 @@ Contributor.
 \\
 ACL 2026 Findings
 \\
-[![arXiv](https://img.shields.io/badge/arXiv-2509.09748-b31b1b?logo=arxiv&logoColor=white)](https://arxiv.org/abs/2509.09748)
-[![Code](https://img.shields.io/badge/Code-GitHub-181717?logo=github&logoColor=white)](https://github.com/MM-Speech/DiTReducio)
+[![arXiv](https://img.shields.io/badge/arXiv-2509.09748-b31b1b?style=flat&logo=arxiv&logoColor=white)](https://arxiv.org/abs/2509.09748)
+[![Code](https://img.shields.io/badge/Code-181717?style=flat&logo=github&logoColor=white)](https://github.com/MM-Speech/DiTReducio)
 
 </div></div>
 
