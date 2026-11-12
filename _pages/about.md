@@ -42,6 +42,19 @@ I'm currently a first-year Ph.D. student (2026) at [X-LANCE Lab](https://x-lance
 
 </div></div>
 
+<div class='paper-box'><div class='paper-box-image'><div><img src='/images/voxcanvas.png' alt="VoxCanvas-41M" width="100%"></div></div><div class='paper-box-text' markdown="1">
+
+[VoxCanvas-41M: A Large-Scale Bilingual Dataset for Instruction-Based Speech Editing and Its Learning Dynamics](https://arxiv.org/abs/2611.08251)
+
+Zhikang Niu, Wenming Tu, Yalin Li, **Yanru Huo**, Junxi Liu, Tianrui Wang, Ruiqi Yan, Junxuan Liang, Ziyang Ma, Zilong Zheng, Xie Chen
+\\
+[![arXiv](https://img.shields.io/badge/arXiv-2611.08251-b31b1b?logo=arxiv&logoColor=white)](https://arxiv.org/abs/2611.08251)
+[![Code](https://img.shields.io/badge/Code-GitHub-181717?logo=github&logoColor=white)](https://github.com/ZhikangNiu/VoxCanvas)
+[![Project Page](https://img.shields.io/badge/Project-Page-4A90D9)](https://zhikangniu.github.io/voxcanvas/)
+[![Dataset](https://img.shields.io/badge/Dataset-HuggingFace-000000?logo=huggingface&logoColor=FFD21E)](https://huggingface.co/datasets/zkniu/VoxCanvas)
+
+</div></div>
+
 <div class='paper-box'><div class='paper-box-image'><div><img src='/images/auk.png' alt="AuK" width="100%"></div></div><div class='paper-box-text' markdown="1">
 
 [AuK Technical Report: An Open-Source Foundational Model for Speech Generation and Editing](https://arxiv.org/abs/2609.08936)
