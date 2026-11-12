@@ -29,6 +29,19 @@ I'm currently a first-year Ph.D. student (2026) at [X-LANCE Lab](https://x-lance
 
 ## 📝 Publications
 
+<div class='paper-box'><div class='paper-box-image'><div><img src='/images/routedmd.png' alt="Route-DMD" width="100%"></div></div><div class='paper-box-text' markdown="1">
+
+[Route-DMD: Distribution Matching Distillation with Task-Routed Mechanism for Speech Foundation Models](https://arxiv.org/abs/2611.08011)
+
+**Yanru Huo**, Zhikang Niu, Wenming Tu, Junxi Liu, Tian Tan, Shan Yang, Yipeng Kang, Ziyang Ma, Xie Chen, Zilong Zheng
+\\
+[![arXiv](https://img.shields.io/badge/arXiv-2611.08011-b31b1b?logo=arxiv&logoColor=white)](https://arxiv.org/abs/2611.08011)
+[![Code](https://img.shields.io/badge/Code-GitHub-181717?logo=github&logoColor=white)](https://github.com/iHateTheWorld555/AuK-RouteDMD)
+[![Project Page](https://img.shields.io/badge/Project-Page-4A90D9)](https://route-dmd.github.io/)
+[![Model](https://img.shields.io/badge/Model-HuggingFace-000000?logo=huggingface&logoColor=FFD21E)](https://huggingface.co/tencent/AuK-Flash)
+
+</div></div>
+
 <div class='paper-box'><div class='paper-box-image'><div><img src='/images/auk.png' alt="AuK" width="100%"></div></div><div class='paper-box-text' markdown="1">
 
 [AuK Technical Report: An Open-Source Foundational Model for Speech Generation and Editing](https://arxiv.org/abs/2609.08936)
@@ -55,6 +68,18 @@ ACL 2026 Findings
 \\
 [![arXiv](https://img.shields.io/badge/arXiv-2509.09748-b31b1b?logo=arxiv&logoColor=white)](https://arxiv.org/abs/2509.09748)
 [![Code](https://img.shields.io/badge/Code-GitHub-181717?logo=github&logoColor=white)](https://github.com/MM-Speech/DiTReducio)
+
+</div></div>
+
+<div class='paper-box'><div class='paper-box-image'><div><img src='/images/tinyaudio.png' alt="TinyAudio" width="100%"></div></div><div class='paper-box-text' markdown="1">
+
+[TinyAudio: Compact and Efficient Text-to-Audio Generation for Low-Resource Deployment](https://arxiv.org/abs/2609.31525)
+
+Junxi Liu, Xiquan Li, Wenhao Guan, Yifan Duan, Zhikang Niu, **Yanru Huo**, Ziyang Ma, Xie Chen
+\\
+[![arXiv](https://img.shields.io/badge/arXiv-2609.31525-b31b1b?logo=arxiv&logoColor=white)](https://arxiv.org/abs/2609.31525)
+[![Code](https://img.shields.io/badge/Code-GitHub-181717?logo=github&logoColor=white)](https://github.com/junxi25liu/TinyAudio)
+[![Project Page](https://img.shields.io/badge/Project-Page-4A90D9)](https://tinyaudio-project.github.io/)
 
 </div></div>
 
