@@ -1,0 +1,150 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Yanru Huo</title><meta name="description" content="Yanru Huo's academic homepage"><link rel="icon" type="image/svg+xml" href="/images/favicon.svg"><link rel="icon" type="image/png" href="/images/favicon-32x32.png" sizes="32x32"><link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-180x180.png"><style>
+@font-face{font-family:"ETBook";src:url(/assets/fonts/home/et-book-roman-line-figures.woff) format("woff");font-weight:400}
+@font-face{font-family:"ETBook";src:url(/assets/fonts/home/et-book-display-italic-old-style-figures.woff) format("woff");font-weight:400;font-style:italic}
+@font-face{font-family:"ETBook";src:url(/assets/fonts/home/et-book-bold-line-figures.woff) format("woff");font-weight:700}
+@font-face{font-family:"PlexMono";src:url(/assets/fonts/home/plexmono-italic.woff2) format("woff2");font-style:italic}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;background:#FFFFFF}
+body{background:#FFFFFF;color:#1A1D1B;font-family:"ETBook",Palatino,Georgia,serif;-webkit-font-smoothing:antialiased;padding-bottom:80px}
+a{color:inherit;text-decoration:none}
+svg{width:15px;height:15px;flex:none}
+.w{max-width:1680px;margin:0 auto;padding:0 48px}
+.top{display:flex;justify-content:flex-end;align-items:center;padding:20px 0;font-size:14.5px;letter-spacing:.1em;text-transform:uppercase;color:#5F6661;font-variant:normal;border-bottom:1px solid #1A1D1B}
+.top a{margin-left:30px}
+.top a:hover{color:#1A1D1B;border-bottom:1px solid #D3DBD5}
+.front{display:grid;grid-template-columns:minmax(0,1fr) 440px;grid-template-areas:"hero news" "edu news";column-gap:40px;padding-top:56px}
+.hero{grid-area:hero;padding-bottom:56px}
+#edu{grid-area:edu}
+.idrow{display:flex;align-items:center;gap:30px}
+.idrow img{width:180px;height:180px;border-radius:50%;object-fit:cover;object-position:50% 30%;flex:none;box-shadow:0 0 0 1px #E6E9E6,0 0 0 7px #FFFFFF,0 0 0 8px #D3DBD5}
+h1{font-size:116px;font-weight:400;line-height:.95;letter-spacing:-.025em;white-space:nowrap}
+h1 i{color:#6F9C7A}
+.lede{font-size:23px;line-height:1.52;margin-top:34px;max-width:none}
+.lede a{border-bottom:1px solid #D3DBD5}
+.lede a:hover{color:#1A1D1B;border-color:#D3DBD5}
+.quote{font-family:"PlexMono",Menlo,monospace;font-style:italic;font-size:16px;line-height:1.6;color:Your lack of commitment is an insult to those who believe in you.;margin-top:16px}
+.ri{margin-top:24px;font-size:18px;display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+.ri .k{font-size:14.5px;letter-spacing:.1em;text-transform:uppercase;color:#5F6661;font-variant:normal}
+.ri .tg{font-style:italic}
+.ct{margin-top:18px;display:flex;flex-wrap:wrap;align-items:center;gap:4px 22px;font-size:18px}
+.ct a{display:inline-flex;align-items:center;gap:7px}
+.ct a svg{color:#6F9C7A;width:15px;height:15px}
+.ct a:hover{color:#557A5E}
+.news{grid-area:news;border-left:1px solid #E6E9E6;padding-left:28px}
+/* the column spans hero and education and scrolls with the page */
+.nin{display:flex;flex-direction:column;max-height:calc(100vh - 48px)}
+.news h2{font-weight:400;font-size:33px;line-height:1.1;color:#1A1D1B;display:flex;justify-content:space-between;align-items:baseline;margin-bottom:22px}
+.news h2 .tt{display:inline-flex;align-items:center}
+.news h2 .more{font-size:14.5px;letter-spacing:.1em;text-transform:uppercase;color:#5F6661;font-variant:normal;display:none}
+.news.of h2 .more{display:inline}
+/* height:0 + flex-grow: the list fills the hero row height and never stretches it */
+.scroll{position:relative;flex:0 1 auto;min-height:0;display:flex;overflow-y:auto;padding:0 12px 0 7px;scrollbar-width:thin;scrollbar-color:#D3DBD5 transparent}
+.scroll::-webkit-scrollbar{width:4px}.scroll::-webkit-scrollbar-thumb{background:#D3DBD5;border-radius:2px}
+.items{border-left:1px solid #D3DBD5;margin-left:0;display:flex;flex-direction:column;flex:1}
+.item{position:relative;padding:0 0 30px 24px;font-size:20px;line-height:1.55}
+/* dot is 9px wide, rail is 1px, so left is -(9+1)/2 = -5px and both centres land on the same pixel */
+.item::before{content:"";position:absolute;left:0;top:6px;width:10px;height:10px;box-sizing:border-box;border-radius:50%;background:#FFFFFF;border:2px solid #6F9C7A;transform:translateX(calc(-50% - .5px))}
+.item:last-child{padding-bottom:2px}
+.item:last-of-type::after{display:none}
+.item .d{display:block;font-size:14.5px;letter-spacing:.1em;text-transform:uppercase;color:#5F6661;font-variant:normal;margin-bottom:4px}
+.item a{border-bottom:1px solid #D3DBD5}
+.fade{position:sticky;bottom:0;height:34px;margin-top:-34px;background:linear-gradient(rgba(255,255,255,0),#FFFFFF);pointer-events:none;display:none}
+.news.of .fade{display:block}
+.blk{display:grid;grid-template-columns:minmax(0,1fr);gap:20px;padding:34px 0;border-top:1px solid #DDE2DE}
+.blk:first-child{border-top:none;padding-top:0}
+/* Internship and Honors share one row */
+.pair{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:40px;border-top:1px solid #DDE2DE}
+.pair .blk{border-top:none;padding-top:34px}
+.blk h2{font-weight:400;font-size:33px;line-height:1.1;text-wrap:balance}
+.em{font-size:.78em;margin-right:.3em;line-height:1;display:inline-block;vertical-align:-.04em}
+.blk h2 small{display:block;font-size:14.5px;letter-spacing:.1em;text-transform:uppercase;color:#5F6661;font-variant:normal;margin-bottom:8px}
+.tl{list-style:none;border-left:1px solid #D3DBD5;margin-left:4px}
+.tl li{position:relative;padding:0 0 18px 24px}
+.tl li:last-child{padding-bottom:0}
+.tl li::before{content:"";position:absolute;left:0;top:6px;width:10px;height:10px;box-sizing:border-box;border-radius:50%;background:#FFFFFF;border:2px solid #6F9C7A;transform:translateX(calc(-50% - .5px))}
+.tl li:first-child::before{background:#6F9C7A;border-color:#6F9C7A}
+.tl .d{font-size:14.5px;letter-spacing:.1em;text-transform:uppercase;color:#5F6661;font-variant:normal;margin-bottom:3px}
+.tl .t{font-size:20px;line-height:1.45}
+.tl .t b{font-weight:400;color:#1A1D1B}
+.tl .s{font-size:18px;font-style:italic;color:#5F6661;line-height:1.45}
+.sec{padding:60px 0 0}
+.sh{border-bottom:1px solid #1A1D1B;padding-bottom:12px}
+.sh h2{font-weight:400;font-size:52px;letter-spacing:-.01em}
+.yr{display:grid;grid-template-columns:140px minmax(0,1fr);gap:40px;padding:30px 0 10px;border-bottom:1px solid #DDE2DE}
+.yr .y{font-size:58px;line-height:1;color:#6F9C7A;font-variant-numeric:lining-nums;position:sticky;top:20px;align-self:start}
+.yr .y small{display:block;font-size:20px;font-style:italic;color:#5F6661;margin-top:12px}
+.p{display:grid;grid-template-columns:400px minmax(0,1fr);gap:44px;padding:0 0 34px;margin-bottom:34px;border-bottom:1px solid #DDE2DE}
+.p:last-child{border-bottom:none;margin-bottom:0}
+/* every figure box has the same size, the figure is fitted inside without cropping */
+.fig{position:relative;width:400px;height:270px;border:1px solid #E6E9E6;border-radius:5px;background:#fff;display:flex;align-items:center;justify-content:center;padding:14px;margin:0 0 18px 10px}
+/* Bookmark tab: a solid rounded label that hangs off the lower-left corner of the panel,
+   protruding past the border on both edges. */
+.bm{position:absolute;left:-10px;top:-11px;z-index:2;display:inline-flex;align-items:center;gap:8px;
+  max-width:calc(100% - 26px);
+  background:#557A5E;color:#fff;font-size:14.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  line-height:1;padding:9px 15px;border-radius:5px;
+  box-shadow:0 2px 6px rgba(26,29,27,.18)}
+.bm span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.bm em{font-style:normal;font-size:12.5px;letter-spacing:.1em;background:#fff;color:#557A5E;padding:3px 7px;border-radius:3px;flex:none}
+.im{display:flex;align-items:center;justify-content:center;width:100%;height:100%}
+.im img{max-width:100%;max-height:100%;object-fit:contain;display:block}
+.p h3{font-weight:400;font-size:26px;line-height:1.28}
+.p .a{font-size:18px;color:#5F6661;margin-top:10px;line-height:1.52}
+.p .a b{color:#1A1D1B}
+.lk{margin-top:18px;display:flex;flex-wrap:wrap;gap:10px}
+.lk a{display:inline-flex;align-items:center;gap:9px;font-size:16.5px;font-weight:700;line-height:1;padding:9px 16px;border-radius:999px;border:1px solid transparent;background:var(--bg);color:#fff;transition:filter .15s,transform .15s}
+.lk a svg{color:#fff;width:16px;height:16px;opacity:.95}
+.lk a .st{display:inline-flex;align-items:center;gap:4px;font-size:16.5px;color:#fff;padding-left:8px;margin-left:1px;border-left:1px solid rgba(255,255,255,.45)}
+.lk a .st svg{width:14px;height:14px;color:#FFD35C;opacity:1}
+.lk a:hover{filter:brightness(.92);transform:translateY(-1px)}
+
+.nb{font-size:18px;font-style:italic;color:#557A5E;margin-top:7px;display:flex;align-items:center;gap:7px}
+.nb::before{content:"";width:18px;height:1px;background:#D3DBD5;display:inline-block}
+.note{font-size:18px;font-style:italic;color:#5F6661;margin-top:14px}
+.note a{color:#1A1D1B;border-bottom:1px solid #D3DBD5}
+@media (max-width:1060px){h1{font-size:78px}.front{grid-template-columns:minmax(0,1fr) 320px;column-gap:32px}
+.p{grid-template-columns:320px minmax(0,1fr);gap:32px}.fig{width:320px;height:210px}.idrow img{width:150px;height:150px}}
+@media (max-width:760px){.w{padding:0 20px}
+.front{grid-template-columns:minmax(0,1fr);grid-template-areas:"hero" "news" "edu";padding-top:30px}.hero{padding-bottom:30px}
+.idrow{gap:18px}.idrow img{width:112px;height:112px}h1{font-size:clamp(40px,12vw,60px);white-space:normal}
+.lede{font-size:18.5px;margin-top:24px}.quote{font-size:13px}
+.news{border-left:none;padding-left:0;border-top:1px solid #E6E9E6;padding:22px 0 30px}.nin{max-height:none}.scroll{max-height:320px}
+.sh h2{font-size:36px}.yr{grid-template-columns:minmax(0,1fr);gap:16px}.yr .y{position:static;font-size:38px}
+.p{grid-template-columns:minmax(0,1fr);gap:16px}.fig{width:100%;max-width:400px;height:240px}
+.blk{gap:18px}.pair{grid-template-columns:minmax(0,1fr)}.pair .blk+.blk{border-top:1px solid #DDE2DE}}
+</style></head><body><div class="w">
+<nav class="top"><a href="#news">news</a><a href="#pubs">publications</a><a href="/daily-papers/">daily papers</a></nav>
+<div class="front"><header class="hero">
+<div class="idrow"><img src="/images/profile.jpg" alt="Yanru Huo"><h1>Yanru <i>Huo</i></h1></div>
+<div class="ct"><a href="mailto:huoyanru123@gmail.com"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3.5 6.5l8.5 6.5l8.5-6.5"/></svg>Email</a><a href="https://scholar.google.com/citations?user=D_LzryQAAAAJ"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 9.5L12 4l10 5.5L12 15z"/><path d="M6.5 12v4.5c0 1.4 2.5 2.5 5.5 2.5s5.5-1.1 5.5-2.5V12"/><path d="M22 9.5v5"/></svg>Google Scholar</a><a href="https://github.com/iHateTheWorld555"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34c-.45-1.16-1.11-1.47-1.11-1.47c-.91-.62.07-.6.07-.6c1 .07 1.53 1.03 1.53 1.03c.89 1.53 2.34 1.09 2.91.83c.09-.65.35-1.09.63-1.34c-2.22-.25-4.55-1.11-4.55-4.94c0-1.09.39-1.98 1.03-2.68c-.1-.25-.45-1.27.1-2.65c0 0 .84-.27 2.75 1.02a9.6 9.6 0 0 1 5 0c1.91-1.29 2.75-1.02 2.75-1.02c.55 1.38.2 2.4.1 2.65c.64.7 1.03 1.59 1.03 2.68c0 3.84-2.34 4.68-4.57 4.93c.36.31.68.92.68 1.85v2.74c0 .27.18.58.69.48A10 10 0 0 0 12 2z"/></svg>GitHub</a></div>
+<p class="lede">I'm currently a first-year Ph.D. student (2026) at <a href='https://x-lance.sjtu.edu.cn/en'>X-LANCE Lab</a>, <a href='https://en.sjtu.edu.cn/'>Shanghai Jiao Tong University</a> &amp; <a href='https://www.bigai.ai/'>Beijing Institute for General Artificial Intelligence (BIGAI)</a>, advised by <a href='https://chenxie95.github.io/'>Prof. Xie Chen</a> and <a href='https://zilongzheng.github.io/'>Dr. Zilong Zheng</a>.</p>
+<p class="quote">Your lack of commitment is an insult to those who believe in you.</p>
+<div class="ri"><span class="k">Research Interests</span><span class="tg">Speech synthesis, audio understanding</span></div>
+</header>
+<aside class="news" id="news"><div class="nin"><h2><span class="tt"><span class="em">&#128227;</span>News</span><span class="more">scroll for more</span></h2><div class="scroll">
+<div class="items"><div class="item"><span class="d">Jun 2026</span>1 paper was accepted to <b>INTERSPEECH 2026</b> and selected for an oral presentation!</div><div class="item"><span class="d">Apr 2026</span>1 paper was accepted by <b>ACL 2026 Findings</b>!</div><div class="item"><span class="d">Feb 2026</span>We won 2nd place in the Agent Track of the <a href='https://audio-reasoning-challenge.github.io/leaderboard/'>Interspeech 2026 Audio Reasoning Challenge</a>. See the <a href='https://arxiv.org/abs/2602.14224'>Challenge Report</a>.</div></div><div class="fade"></div></div></div></aside>
+<section id="edu">
+<div class="blk"><h2><small>01</small><span class="em">&#127891;</span>Education</h2><ul class="tl"><li><div class="d">2026.09 – 2031.06 (expected)</div><div class="t"><b>Ph.D.</b>, X-LANCE Lab, Shanghai Jiao Tong University (SJTU) &amp; Beijing Institute for General Artificial Intelligence (BIGAI)</div></li><li><div class="d">2022.09 – 2026.06</div><div class="t"><b>B.E.</b>, Xiamen University (XMU)</div></li></ul></div>
+<div class="pair"><div class="blk"><h2><small>02</small><span class="em">&#128188;</span>Internship</h2><ul class="tl"><li><div class="d">2026.07 – present</div><div class="t">Tencent Hunyuan</div><div class="s">Shanghai, China</div></li><li><div class="d">2025.11 – 2026.06</div><div class="t">Sii &amp; OpenMOSS</div><div class="s">Shanghai, China</div></li></ul></div>
+<div class="blk"><h2><small>03</small><span class="em">&#127942;</span>Honors &amp; Awards</h2><ul class="tl"><li><div class="d">2024.11</div><div class="t">Second Prize, China Undergraduate Mathematical Contest in Modeling (CUMCM), National Level</div></li><li><div class="d">2024.09</div><div class="t">National Scholarship</div></li></ul></div></div>
+</section></div>
+<section class="sec" id="pubs"><div class="sh"><h2><span class="em">&#128218;</span>Publications</h2></div>
+<div class="yr"><div class="y">2026<small>7 papers</small></div><div><article class="p"><div class="fig"><div class="bm"><span>arXiv Preprint</span></div><div class="im"><img src="/images/routedmd.jpg" alt=""></div></div><div>
+<h3>Route-DMD: Distribution Matching Distillation with Task-Routed Mechanism for Speech Foundation Models</h3><div class="a"><b>Yanru Huo</b>, Zhikang Niu, Wenming Tu, Junxi Liu, Tian Tan, Shan Yang, Yipeng Kang, Ziyang Ma, Xie Chen<sup>&dagger;</sup>, Zilong Zheng<sup>&dagger;</sup></div>
+<div class="lk"><a href="https://arxiv.org/abs/2611.08011" style="--bg:#B31B1B"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M9 13h6M9 17h4"/></svg>arXiv</a><a href="https://github.com/iHateTheWorld555/AuK-RouteDMD" style="--bg:#24292F"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 7l-5 5l5 5"/><path d="M16 7l5 5l-5 5"/><path d="M14 4l-4 16"/></svg>Code<span class="st"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.6l2.9 5.9 6.5.95-4.7 4.6 1.1 6.5-5.8-3.05-5.8 3.05 1.1-6.5-4.7-4.6 6.5-.95z"/></svg>7</span></a><a href="https://route-dmd.github.io/" style="--bg:#557A5E"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M10 8.5l5.5 3.5l-5.5 3.5z"/></svg>Demo</a></div></div></article><article class="p"><div class="fig"><div class="bm"><span>Technical Report</span></div><div class="im"><img src="/images/auk_fig2.jpg" alt=""></div></div><div>
+<h3>AuK Technical Report: An Open-Source Foundational Model for Speech Generation and Editing</h3><div class="a">AuK Team</div><div class="nb">Core Contributor</div>
+<div class="lk"><a href="https://arxiv.org/abs/2609.08936" style="--bg:#B31B1B"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M9 13h6M9 17h4"/></svg>arXiv</a><a href="https://github.com/Tencent-Hunyuan/AuK" style="--bg:#24292F"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 7l-5 5l5 5"/><path d="M16 7l5 5l-5 5"/><path d="M14 4l-4 16"/></svg>Code<span class="st"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.6l2.9 5.9 6.5.95-4.7 4.6 1.1 6.5-5.8-3.05-5.8 3.05 1.1-6.5-4.7-4.6 6.5-.95z"/></svg>1601</span></a><a href="https://auk-project.github.io/" style="--bg:#2166B0"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3a14 14 0 0 1 0 18a14 14 0 0 1 0-18"/></svg>Project</a><a href="https://huggingface.co/tencent/AuK" style="--bg:#FFD21E"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9z"/><path d="M4 7.5l8 4.5l8-4.5"/><path d="M12 12v9"/></svg>Model</a><a href="https://huggingface.co/spaces/tencent/AuK" style="--bg:#557A5E"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M10 8.5l5.5 3.5l-5.5 3.5z"/></svg>Demo</a></div></div></article><article class="p"><div class="fig"><div class="bm"><span>INTERSPEECH 2026</span><em>Oral</em></div><div class="im"><img src="/images/visa.png" alt=""></div></div><div>
+<h3>VISA: A Visual Information Strengthened Audio-Reasoning System for the Interspeech 2026 ARC Agent Track</h3><div class="a">Wenming Tu*, Jian Gao*, <b>Yanru Huo</b>, Yixuan Wang, Jing Peng, Bohan Li, Ziyang Ma, Tao Liu, Shuai Fan<sup>&dagger;</sup>, Kai Yu, Xie Chen, Zilong Zheng<sup>&dagger;</sup></div>
+<div class="lk"><a href="https://arxiv.org/abs/2606.07264" style="--bg:#B31B1B"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M9 13h6M9 17h4"/></svg>arXiv</a><a href="https://github.com/DELTA-DoubleWise/Audio-Mind" style="--bg:#24292F"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 7l-5 5l5 5"/><path d="M16 7l5 5l-5 5"/><path d="M14 4l-4 16"/></svg>Code<span class="st"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.6l2.9 5.9 6.5.95-4.7 4.6 1.1 6.5-5.8-3.05-5.8 3.05 1.1-6.5-4.7-4.6 6.5-.95z"/></svg>14</span></a></div></div></article><article class="p"><div class="fig"><div class="bm"><span>arXiv Preprint</span></div><div class="im"><img src="/images/mova.png" alt=""></div></div><div>
+<h3>MOVA: Towards Scalable and Synchronized Video-Audio Generation</h3><div class="a">SII-OpenMOSS Team</div><div class="nb">Core Contributor</div>
+<div class="lk"><a href="https://arxiv.org/abs/2602.08794" style="--bg:#B31B1B"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M9 13h6M9 17h4"/></svg>arXiv</a><a href="https://mosi.cn/models/mova" style="--bg:#2166B0"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3a14 14 0 0 1 0 18a14 14 0 0 1 0-18"/></svg>Project</a><a href="https://github.com/OpenMOSS/MOVA" style="--bg:#24292F"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 7l-5 5l5 5"/><path d="M16 7l5 5l-5 5"/><path d="M14 4l-4 16"/></svg>Code<span class="st"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.6l2.9 5.9 6.5.95-4.7 4.6 1.1 6.5-5.8-3.05-5.8 3.05 1.1-6.5-4.7-4.6 6.5-.95z"/></svg>1144</span></a><a href="https://huggingface.co/collections/OpenMOSS-Team/mova" style="--bg:#FFD21E"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9z"/><path d="M4 7.5l8 4.5l8-4.5"/><path d="M12 12v9"/></svg>Model</a></div></div></article><article class="p"><div class="fig"><div class="bm"><span>arXiv Preprint</span></div><div class="im"><img src="/images/voxcanvas.jpg" alt=""></div></div><div>
+<h3>VoxCanvas-41M: A Large-Scale Bilingual Dataset for Instruction-Based Speech Editing and Its Learning Dynamics</h3><div class="a">Zhikang Niu, Wenming Tu, Yalin Li, <b>Yanru Huo</b>, Junxi Liu, Tianrui Wang, Ruiqi Yan, Junxuan Liang, Zilong Zheng<sup>&dagger;</sup>, Ziyang Ma, Xie Chen<sup>&dagger;</sup></div>
+<div class="lk"><a href="https://arxiv.org/abs/2611.08251" style="--bg:#B31B1B"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M9 13h6M9 17h4"/></svg>arXiv</a><a href="https://zhikangniu.github.io/voxcanvas/" style="--bg:#2166B0"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3a14 14 0 0 1 0 18a14 14 0 0 1 0-18"/></svg>Project</a></div></div></article><article class="p"><div class="fig"><div class="bm"><span>arXiv Preprint</span></div><div class="im"><img src="/images/tinyaudio.jpg" alt=""></div></div><div>
+<h3>TinyAudio: Compact and Efficient Text-to-Audio Generation for Low-Resource Deployment</h3><div class="a">Junxi Liu, Xiquan Li, Wenhao Guan, Yifan Duan, Zhikang Niu, <b>Yanru Huo</b>, Ziyang Ma, Xie Chen<sup>&dagger;</sup></div>
+<div class="lk"><a href="https://arxiv.org/abs/2609.31525" style="--bg:#B31B1B"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M9 13h6M9 17h4"/></svg>arXiv</a></div></div></article><article class="p"><div class="fig"><div class="bm"><span>arXiv Preprint</span></div><div class="im"><img src="/images/mmae.png" alt=""></div></div><div>
+<h3>MMAE: A Massive Multitask Audio Editing Benchmark</h3><div class="a">MMAE Team</div><div class="nb">Contributor</div>
+<div class="lk"><a href="https://arxiv.org/abs/2606.07229" style="--bg:#B31B1B"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M9 13h6M9 17h4"/></svg>arXiv</a><a href="https://github.com/ddlBoJack/MMAE" style="--bg:#24292F"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 7l-5 5l5 5"/><path d="M16 7l5 5l-5 5"/><path d="M14 4l-4 16"/></svg>Code<span class="st"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.6l2.9 5.9 6.5.95-4.7 4.6 1.1 6.5-5.8-3.05-5.8 3.05 1.1-6.5-4.7-4.6 6.5-.95z"/></svg>113</span></a><a href="https://huggingface.co/datasets/BoJack/MMAE" style="--bg:#FFD21E"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="12" cy="5.5" rx="8" ry="2.5"/><path d="M4 5.5v13c0 1.4 3.6 2.5 8 2.5s8-1.1 8-2.5v-13"/><path d="M4 12c0 1.4 3.6 2.5 8 2.5s8-1.1 8-2.5"/></svg>Dataset</a></div></div></article></div></div><div class="yr"><div class="y">2025<small>1 paper</small></div><div><article class="p"><div class="fig"><div class="bm"><span>ACL 2026 Findings</span></div><div class="im"><img src="/images/ditreducio_fig1.png" alt=""></div></div><div>
+<h3>DiTReducio: A Training-Free Acceleration for DiT-Based TTS via Progressive Calibration</h3><div class="a"><b>Yanru Huo</b>, Ziyue Jiang, Zuoli Tang, Qingyang Hong, Zhou Zhao<sup>&dagger;</sup></div>
+<div class="lk"><a href="https://arxiv.org/abs/2509.09748" style="--bg:#B31B1B"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M9 13h6M9 17h4"/></svg>arXiv</a><a href="https://github.com/MM-Speech/DiTReducio" style="--bg:#24292F"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 7l-5 5l5 5"/><path d="M16 7l5 5l-5 5"/><path d="M14 4l-4 16"/></svg>Code<span class="st"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.6l2.9 5.9 6.5.95-4.7 4.6 1.1 6.5-5.8-3.05-5.8 3.05 1.1-6.5-4.7-4.6 6.5-.95z"/></svg>15</span></a></div></div></article></div></div>
+<p class="note">* equal contribution. &dagger; corresponding author. Full list on <a href="https://scholar.google.com/citations?user=D_LzryQAAAAJ">Google Scholar</a>.</p></section>
+</div><script>(function(){var n=document.querySelector(".news"),s=n.querySelector(".scroll");function f(){n.classList.toggle("of",s.scrollHeight>s.clientHeight+2)}f();addEventListener("resize",f);addEventListener("load",f)})()</script></body></html>

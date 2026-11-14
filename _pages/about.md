@@ -1,6 +1,7 @@
 ---
 permalink: /
 title: "Yanru Huo"
+layout: home
 excerpt: ""
 author_profile: true
 redirect_from:
